@@ -67,7 +67,7 @@ jobs:
         with:
           arguments: --stacktrace build
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         name: Save unit test results
         if: always()
         with:
@@ -94,7 +94,7 @@ jobs:
         with:
           arguments: --stacktrace integrationTest
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         name: Save integrationTest results
         if: always()
         with:
