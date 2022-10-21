@@ -94,7 +94,7 @@ jobs:
 
           git commit -a -m "$message"
           git push --set-upstream origin HEAD:update-opentelemetry-jmx-metrics-to-${VERSION}
-          gh pr create --title "$message" \
-                       --body "$body" \
-                       --repo open-telemetry/opentelemetry-collector-contrib \
-                       --base main
+#          gh pr create --title "$message" \
+#                       --body "$body" \
+#                       --repo open-telemetry/opentelemetry-collector-contrib \
+#                       --base main
