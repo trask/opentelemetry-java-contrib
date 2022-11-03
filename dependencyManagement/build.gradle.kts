@@ -22,7 +22,6 @@ val DEPENDENCY_BOMS = listOf(
   "com.linecorp.armeria:armeria-bom:1.20.1",
   "org.junit:junit-bom:5.9.1",
   "io.grpc:grpc-bom:1.50.2",
-  "io.opentelemetry:opentelemetry-bom:$otelSdkVersion",
   "io.opentelemetry:opentelemetry-bom-alpha:${otelSdkVersion}-alpha",
   "io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${otelInstrumentationVersion}-alpha",
   "org.testcontainers:testcontainers-bom:1.17.5"
