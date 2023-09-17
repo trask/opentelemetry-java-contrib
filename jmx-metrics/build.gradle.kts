@@ -22,7 +22,6 @@ repositories {
   maven {
     url = uri("https://oss.sonatype.org/content/repositories/snapshots")
   }
-  mavenLocal()
 }
 
 val groovyVersion = "3.0.19"
