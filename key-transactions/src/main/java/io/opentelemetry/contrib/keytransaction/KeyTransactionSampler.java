@@ -16,6 +16,8 @@ import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 public final class KeyTransactionSampler implements Sampler {
 
   private final Sampler delegate;
@@ -37,7 +39,9 @@ public final class KeyTransactionSampler implements Sampler {
       Attributes attributes,
       List<LinkData> parentLinks) {
 
-    String bt = Span.fromContext(parentContext).getSpanContext().getTraceState().get("microsoft.bt");
+    List<String> existingTransactionNames = getExistingTransactionNames(Span.fromContext(parentContext).getSpanContext().getTraceState());
+
+    List<String> newTransactionNames = getNewTransactionNames(spanKind, attributes);
 
     SamplingResult result = delegate.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
 
@@ -55,6 +59,14 @@ public final class KeyTransactionSampler implements Sampler {
   public String toString() {
     return getDescription();
   }
+
+  List<String> getExistingTransactionNames(TraceState traceState) {
+    String bt = traceState.get("microsoft.bt");
+    // TODO implement me!
+    return emptyList();
+  }
+
+  private List<String> getNewTransactionNames(SpanKind spanKind, Attributes attributes) {}
 
   private static class TransactionSamplingResult implements SamplingResult {
 
