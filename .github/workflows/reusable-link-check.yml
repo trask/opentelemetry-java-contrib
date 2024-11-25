@@ -1,0 +1,38 @@
+name: Reusable - Check links
+
+on:
+  workflow_call:
+
+jobs:
+  check-links-github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+        # need to rate limit requests to github.com in order to avoid 429s
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >
+            --include-fragments
+            --exclude-path CHANGELOG.md
+            --include github.com
+            -vvv
+            --max-concurrency 5
+            --max-retries 5
+            --retry-wait-time 5000
+            .
+
+  check-links-other:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >
+            --include-fragments
+            --exclude-path CHANGELOG.md
+            --exclude github.com
+            -vvv
+            --max-concurrency 1
+            .

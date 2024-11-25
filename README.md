@@ -7,6 +7,8 @@ the express scope of the [OpenTelemetry Java](https://github.com/open-telemetry/
 easier way to bring observability to remote JVM-based applications and workflows that isn't easily satisfied by an SDK
 feature or via instrumentation, this project is hopefully for you.
 
+Testing https://httpstat.us/429
+
 ## Provided Libraries
 
 | Status* | Library                                                           |

@@ -2,6 +2,8 @@
 
 version=$("$(dirname "$0")/get-version.sh")
 
+# test a bad link https://doesnotexist23423223.com
+
 if [[ $version =~ ([0-9]+)\.([0-9]+)\.0 ]]; then
   major="${BASH_REMATCH[1]}"
   minor="${BASH_REMATCH[2]}"
