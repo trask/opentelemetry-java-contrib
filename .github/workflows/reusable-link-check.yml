@@ -1,0 +1,20 @@
+name: Reusable - Check links
+
+on:
+  workflow_call:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          # TODO (trask) remove "--accept 200,429"
+          # once https://github.com/lycheeverse/lychee/pull/1573 is addressed
+          args: >
+            --include-fragments
+            --exclude-path CHANGELOG.md
+            --accept 200,429
+            .
