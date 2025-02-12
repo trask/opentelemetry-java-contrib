@@ -2,6 +2,7 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/open-telemetry/opentelemetry-java-contrib/badge)](https://scorecard.dev/viewer/?uri=github.com/open-telemetry/opentelemetry-java-contrib)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9992/badge)](https://www.bestpractices.dev/projects/9992)
 [![Slack](https://img.shields.io/badge/slack-@cncf/otel--java-blue.svg?logo=slack)](https://cloud-native.slack.com/archives/C014L2KCTE3)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftrask%2Fopentelemetry-java-contrib.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftrask%2Fopentelemetry-java-contrib?ref=badge_shield)
 
 # OpenTelemetry Java Contrib
 
@@ -99,3 +100,7 @@ Thanks to all the people who already contributed!
 <a href="https://github.com/open-telemetry/opentelemetry-java-contrib/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=open-telemetry/opentelemetry-java-contrib" />
 </a>
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftrask%2Fopentelemetry-java-contrib.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftrask%2Fopentelemetry-java-contrib?ref=badge_large)
