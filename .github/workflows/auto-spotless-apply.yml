@@ -84,17 +84,10 @@ jobs:
           git config user.name otelbot
           git config user.email 197425009+otelbot@users.noreply.github.com
 
-      - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
-        if: steps.download-patch.outputs.exists == 'true'
-        id: otelbot-token
-        with:
-          app-id: ${{ vars.OTELBOT_APP_ID }}
-          private-key: ${{ secrets.OTELBOT_PRIVATE_KEY }}
-
       - name: Apply patch and push
         if: steps.download-patch.outputs.exists == 'true'
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git apply "${{ runner.temp }}/artifacts/patch"
           git commit -a -m "./gradlew spotlessApply"
@@ -102,12 +95,12 @@ jobs:
 
       - if: steps.download-patch.outputs.exists == 'true' && success()
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "🔧 The result from spotlessApply was committed to the PR branch."
 
       - if: steps.download-patch.outputs.exists == 'true' && failure()
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "❌ The result from spotlessApply could not be committed to the PR branch, see logs: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
