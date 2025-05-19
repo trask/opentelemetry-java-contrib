@@ -37,9 +37,9 @@ jobs:
         with:
           token: ${{ github.token }}
 
-      - id: get-pr-number
+      - id: get-pr
         if: steps.unzip-patch.outputs.exists == 'true'
-        name: Get PR number
+        name: Get PR
         env:
           PR_BRANCH: |-
             ${{
@@ -49,13 +49,16 @@ jobs:
             }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr view "${PR_BRANCH}" --json 'number' --jq '"pr-number=\(.number)' >> $GITHUB_OUTPUT
+          echo gh pr view "${PR_BRANCH}" --json number --jq .number
+          number=$(gh pr view "${PR_BRANCH}" --json number --jq .number)
+          echo $number
+          echo "number=$number" >> $GITHUB_OUTPUT
 
       - name: Check out PR branch
         if: steps.unzip-patch.outputs.exists == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr checkout ${{ steps.get-pr-number.outputs.pr-number }}
+        run: gh pr checkout ${{ steps.get-pr.outputs.number }}
 
       - name: Use CLA approved github bot
         if: steps.unzip-patch.outputs.exists == 'true'
@@ -76,10 +79,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "🔧 The result from spotlessApply was committed to the PR branch."
+          gh pr comment ${{ steps.get-pr.outputs.number }} --body "🔧 The result from spotlessApply was committed to the PR branch."
 
       - if: steps.unzip-patch.outputs.exists == 'true' && failure()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "❌ The result from spotlessApply could not be committed to the PR branch, see logs: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+          gh pr comment ${{ steps.get-pr.outputs.number }} --body "❌ The result from spotlessApply could not be committed to the PR branch, see logs: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
