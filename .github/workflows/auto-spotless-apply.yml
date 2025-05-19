@@ -32,17 +32,10 @@ jobs:
             echo "exists=true" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
-        if: steps.unzip-patch.outputs.exists == 'true'
-        id: otelbot-token
-        with:
-          app-id: 1295839
-          private-key: ${{ secrets.OTELBOT_JAVA_INSTRUMENTATION_PRIVATE_KEY }}
-
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         if: steps.unzip-patch.outputs.exists == 'true'
         with:
-          token: ${{ steps.otelbot-token.outputs.token }}
+          token: ${{ github.token }}
 
       - id: get-pr-number
         if: steps.unzip-patch.outputs.exists == 'true'
@@ -81,12 +74,12 @@ jobs:
 
       - if: steps.unzip-patch.outputs.exists == 'true' && success()
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "🔧 The result from spotlessApply was committed to the PR branch."
 
       - if: steps.unzip-patch.outputs.exists == 'true' && failure()
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr comment ${{ steps.get-pr-number.outputs.pr-number }} --body "❌ The result from spotlessApply could not be committed to the PR branch, see logs: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
