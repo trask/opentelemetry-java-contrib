@@ -68,7 +68,7 @@ jobs:
             }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          number=$(gh pr view --repo "${{ github.event.workflow_run.repository }}" "${PR_BRANCH}" --json number --jq .number)
+          number=$(gh pr view --repo "${{ github.event.workflow_run.repository.full_name }}" "${PR_BRANCH}" --json number --jq .number)
           echo "number=$number" >> $GITHUB_OUTPUT
 
       - if: steps.unzip-patch.outputs.exists == 'true' && success()
