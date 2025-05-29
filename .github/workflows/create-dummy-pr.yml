@@ -20,15 +20,9 @@ jobs:
       - name: Use CLA approved bot
         run: .github/scripts/use-cla-approved-bot.sh
 
-      - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
-        id: otelbot-token
-        with:
-          app-id: 1296620
-          private-key: ${{ secrets.OTELBOT_JAVA_CONTRIB_PRIVATE_KEY }}
-
       - name: Create pull request against the release branch
         env:
-          GH_TOKEN: ${{ steps.otelbot-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           message="A dummy PR to give otelbot-java-contrib one merged PR under its belt"
           branch="otelbot/dummy-pr"
