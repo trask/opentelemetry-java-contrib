@@ -27,7 +27,7 @@ The following OpenTelemetry semantic conventions will be detected:
 | faas.instance           |          | auto            |                   |                      |
 | faas.faas.max_memory    |          | auto            |                   |                      |
 
-## Component Owners
+## Component owners
 
 - [Trask Stalnaker](https://github.com/trask), Microsoft
 - [Gregor Zeitlinger](https://github.com/zeitlinger), Grafana

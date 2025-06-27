@@ -148,7 +148,7 @@ application {
 }
 ```
 
-## Component Owners
+## Component owners
 
 - [Josh Suereth](https://github.com/jsuereth), Google
 - [Pranav Sharma](https://github.com/psx95), Google

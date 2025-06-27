@@ -57,7 +57,7 @@ With the release of [v2.2.0 of the OpenTelemetry Java Instrumentation](https://g
 
 For users of Java Agent v2.2.0 and later, the GCP resource detectors can be enabled by following the instructions provided in the [agent configuration documentation](https://opentelemetry.io/docs/languages/java/automatic/configuration/#enable-resource-providers-that-are-disabled-by-default).
 
-## Component Owners
+## Component owners
 
 - [Josh Suereth](https://github.com/jsuereth), Google
 - [Pranav Sharma](https://github.com/psx95), Google
