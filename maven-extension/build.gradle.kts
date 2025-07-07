@@ -34,6 +34,7 @@ dependencies {
 
   testImplementation("org.apache.maven:maven-core:3.5.0")
   testImplementation("org.slf4j:slf4j-simple")
+  testImplementation("org.junit-pioneer:junit-pioneer")
 }
 
 // The jar dependencies bundled in the uber-jar by the shadow plugin are wrongly added as
