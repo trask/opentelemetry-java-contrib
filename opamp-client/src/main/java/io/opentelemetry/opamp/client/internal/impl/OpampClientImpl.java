@@ -13,9 +13,7 @@ import javax.annotation.Nullable;
 import opamp.proto.AgentDescription;
 import opamp.proto.RemoteConfigStatus;
 
-/**
- * Implementation of the OpAMP client that handles communication with the OpAMP server.
- */
+/** Implementation of the OpAMP client that handles communication with the OpAMP server. */
 public class OpampClientImpl implements OpampClient {
 
   private final RequestService requestService;
@@ -37,10 +35,10 @@ public class OpampClientImpl implements OpampClient {
     if (stopped) {
       throw new IllegalStateException("OpampClient has been stopped and cannot be started again");
     }
-    
+
     this.callbacks = callbacks;
     this.started = true;
-    
+
     // Start the request service which will handle the actual network communication
     requestService.start(new RequestServiceCallback(), OpampClientImpl::createRequest);
   }
@@ -53,7 +51,7 @@ public class OpampClientImpl implements OpampClient {
     if (stopped) {
       throw new IllegalStateException("OpampClient has already been stopped");
     }
-    
+
     stopped = true;
     requestService.stop();
     callbacks = null;
@@ -76,8 +74,8 @@ public class OpampClientImpl implements OpampClient {
   }
 
   /**
-   * Gets the current remote config status.
-   * This method is used internally and in tests to verify the status has been set correctly.
+   * Gets the current remote config status. This method is used internally and in tests to verify
+   * the status has been set correctly.
    */
   @Nullable
   public RemoteConfigStatus getRemoteConfigStatus() {
@@ -109,7 +107,8 @@ public class OpampClientImpl implements OpampClient {
     }
 
     @Override
-    public void onRequestSuccess(io.opentelemetry.opamp.client.internal.response.Response response) {
+    public void onRequestSuccess(
+        io.opentelemetry.opamp.client.internal.response.Response response) {
       Callbacks currentCallbacks = callbacks;
       if (currentCallbacks != null) {
         // TODO: Convert response to MessageData
