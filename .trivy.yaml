@@ -1,0 +1,66 @@
+# Trivy configuration file
+# https://aquasecurity.github.io/trivy/latest/docs/references/configuration/config-file/
+
+# Vulnerability detection settings
+vulnerability:
+  # Ignore unfixed vulnerabilities
+  ignore-unfixed: false
+  # Security scanner types to run
+  type: "vuln"
+
+# Misconfiguration detection settings
+misconfiguration:
+  # Scan for misconfigurations
+  enabled: true
+  # Include test files in misconfiguration scans
+  include-non-failures: false
+
+# Secret detection settings
+secret:
+  # Enable secret scanning
+  enabled: true
+
+# License detection settings  
+license:
+  # Skip license scanning for now
+  enabled: false
+
+# Output settings
+format: "table"
+output: ""
+
+# Cache settings
+cache:
+  # Cache directory (will be set by GitHub Actions)
+  dir: ""
+
+# Database settings
+db:
+  # Skip database update
+  skip-update: false
+
+# Skip directories and files
+skip-dirs:
+  - "**/.gradle/**"
+  - "**/build/**"
+  - "**/target/**"
+  - "**/.git/**"
+  - "**/node_modules/**"
+
+skip-files:
+  - "**/*.log"
+  - "**/*.tmp"
+  - "**/.DS_Store"
+
+# Vulnerability severity levels to include
+severity:
+  - "CRITICAL"
+  - "HIGH" 
+  - "MEDIUM"
+
+# Exit code settings
+exit-code: 0  # Don't fail the build on vulnerabilities found
+
+# Ignore specific vulnerabilities (example)
+# IgnoreVulnerabilities:
+#   - "CVE-2023-12345"  # Example: ignore specific CVE if needed

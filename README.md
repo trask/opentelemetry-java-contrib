@@ -47,6 +47,33 @@ On reaching stable status, the `otel.stable` value in `gradle.properties` should
 Note that currently all the libraries are released together with the version of this repo, so breaking changes (after stable
 status is reached) would bump the major version of all libraries together. This could get complicated so `stable` has a high bar.
 
+## Security
+
+This project takes security seriously and implements multiple layers of security scanning:
+
+- **[Trivy Security Scanning](./docs/TRIVY_SECURITY_SCANNING.md)** - Comprehensive vulnerability, configuration, and secret scanning
+- **CodeQL Analysis** - Static code analysis for security vulnerabilities
+- **OWASP Dependency Check** - Daily dependency vulnerability scanning
+- **OSSF Scorecard** - Security best practices assessment
+
+### Security Scanning
+
+Automated security scans run on every pull request and daily via GitHub Actions. You can also run scans locally:
+
+```bash
+# Linux/macOS
+./scripts/trivy-local-scan.sh
+
+# Windows
+scripts\trivy-local-scan.bat
+```
+
+For detailed information about security scanning, see [docs/TRIVY_SECURITY_SCANNING.md](./docs/TRIVY_SECURITY_SCANNING.md).
+
+### Reporting Security Issues
+
+Please report security vulnerabilities to the [OpenTelemetry Security Team](https://github.com/open-telemetry/community/blob/main/SECURITY.md).
+
 ## Getting Started
 
 ```bash
