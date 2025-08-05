@@ -509,7 +509,7 @@ class OpampClientImplTest {
       System.out.println("[DEBUG] Taking request from server - Thread: " + Thread.currentThread().getName());
       RecordedRequest request = server.takeRequest(5, TimeUnit.SECONDS); // Increased timeout
       System.out.println("[DEBUG] Request taken: " + (request != null ? 
-        "SUCCESS - Method: " + request.getMethod() + ", Path: " + request.getPath() : "TIMEOUT"));
+        "SUCCESS - Method: " + request.getMethod() + ", URL: " + request.getRequestUrl() : "TIMEOUT"));
       return request;
     } catch (InterruptedException e) {
       System.out.println("[DEBUG] takeRequest interrupted: " + e.getMessage());
