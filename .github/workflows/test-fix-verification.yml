@@ -1,0 +1,59 @@
+name: Verify OpAMP Client Fix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ flaky ]
+
+jobs:
+  verify-fix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17, 21]
+        iteration: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+    
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+      with:
+        cache-read-only: true
+    
+    - name: Test the fixed OpAMP client test (Iteration ${{ matrix.iteration }})
+      run: |
+        echo "=== Testing OpAMP client - Java ${{ matrix.java }}, Iteration ${{ matrix.iteration }} ==="
+        ./gradlew opamp-client:test --tests "*whenServerProvidesNewInstanceUid_useIt*" --rerun-tasks --info
+        echo "SUCCESS: Iteration ${{ matrix.iteration }} passed"
+    
+    - name: Upload test results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-java${{ matrix.java }}-iter${{ matrix.iteration }}
+        path: |
+          opamp-client/build/reports/
+          opamp-client/build/test-results/
+        retention-days: 3
+
+  summary:
+    needs: verify-fix
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Check results
+      run: |
+        if [ "${{ needs.verify-fix.result }}" == "success" ]; then
+          echo "✅ ALL TESTS PASSED! The OpAMP client fix is verified."
+          echo "🎉 Ran 20 iterations across Java 17 and 21 - no flakiness detected!"
+        else
+          echo "❌ Some tests failed. The fix may need more work."
+          exit 1
+        fi
