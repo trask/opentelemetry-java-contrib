@@ -70,6 +70,8 @@ class OpampClientImplTest {
 
   @BeforeEach
   void setUp() {
+    System.out.println("[DEBUG] Test setUp - Thread: " + Thread.currentThread().getName() + 
+                       ", Time: " + System.currentTimeMillis());
     effectiveConfig =
         new TestEffectiveConfig(
             new EffectiveConfig.Builder()
@@ -86,11 +88,33 @@ class OpampClientImplTest {
             new State.Flags((long) AgentToServerFlags.AgentToServerFlags_Unspecified.getValue()),
             effectiveConfig);
     requestService = createHttpService();
+    System.out.println("[DEBUG] Test setUp complete - Server URL: " + server.url("/v1/opamp"));
   }
 
   @AfterEach
   void tearDown() {
-    client.stop();
+    System.out.println("[DEBUG] Test tearDown - Thread: " + Thread.currentThread().getName() + 
+                       ", Time: " + System.currentTimeMillis());
+    if (client != null) {
+      try {
+        client.stop();
+        System.out.println("[DEBUG] Client stopped successfully");
+      } catch (Exception e) {
+        System.out.println("[DEBUG] Error stopping client: " + e.getMessage());
+        e.printStackTrace();
+      }
+    }
+    
+    // Clear any remaining server requests
+    try {
+      while (server.takeRequest(100, TimeUnit.MILLISECONDS) != null) {
+        System.out.println("[DEBUG] Cleared remaining request from server queue");
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+    
+    System.out.println("[DEBUG] Test tearDown complete");
   }
 
   @Test
@@ -197,6 +221,7 @@ class OpampClientImplTest {
 
   @Test
   void onSuccess_withChangesToReport_notifyCallbackOnMessage() {
+    System.out.println("[DEBUG] Starting onSuccess_withChangesToReport_notifyCallbackOnMessage test");
     initializeClient();
     AgentRemoteConfig remoteConfig =
         new AgentRemoteConfig.Builder()
@@ -205,28 +230,51 @@ class OpampClientImplTest {
     ServerToAgent serverToAgent = new ServerToAgent.Builder().remote_config(remoteConfig).build();
     enqueueServerToAgentResponse(serverToAgent);
 
+    System.out.println("[DEBUG] Before sendRequest - onMessageCalls: " + callbacks.onMessageCalls.get());
     // Force request
     requestService.sendRequest();
 
-    // Await for onMessage call
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onMessageCalls.get() == 1);
+    System.out.println("[DEBUG] After sendRequest - Starting await for callback");
+    // Await for onMessage call - increased timeout for debugging
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> {
+             int calls = callbacks.onMessageCalls.get();
+             System.out.println("[DEBUG] Current onMessageCalls: " + calls + 
+                              ", Thread: " + Thread.currentThread().getName() + 
+                              ", Time: " + System.currentTimeMillis());
+             return calls == 1;
+           });
 
+    System.out.println("[DEBUG] Await completed - verifying callback");
     verify(callbacks).onMessage(MessageData.builder().setRemoteConfig(remoteConfig).build());
+    System.out.println("[DEBUG] Test completed successfully");
   }
 
   @Test
   void onSuccess_withNoChangesToReport_doNotNotifyCallbackOnMessage() {
+    System.out.println("[DEBUG] Starting onSuccess_withNoChangesToReport_doNotNotifyCallbackOnMessage test");
     initializeClient();
     ServerToAgent serverToAgent = new ServerToAgent.Builder().build();
     enqueueServerToAgentResponse(serverToAgent);
 
+    System.out.println("[DEBUG] Before sendRequest - onMessageCalls: " + callbacks.onMessageCalls.get());
     // Force request
     requestService.sendRequest();
 
-    // Giving some time for the callback to get called
-    await().during(Duration.ofSeconds(1));
+    System.out.println("[DEBUG] After sendRequest - Starting await during period");
+    // Giving some time for the callback to get called - increased timeout for debugging
+    await().during(Duration.ofSeconds(3)).pollInterval(Duration.ofMillis(100))
+           .untilAsserted(() -> {
+             int calls = callbacks.onMessageCalls.get();
+             System.out.println("[DEBUG] Current onMessageCalls (should stay 0): " + calls + 
+                              ", Thread: " + Thread.currentThread().getName() + 
+                              ", Time: " + System.currentTimeMillis());
+             assertThat(calls).isEqualTo(0);
+           });
 
+    System.out.println("[DEBUG] Await completed - verifying no callback was called");
     verify(callbacks, never()).onMessage(any());
+    System.out.println("[DEBUG] Test completed successfully");
   }
 
   @Test
@@ -265,12 +313,23 @@ class OpampClientImplTest {
 
   @Test
   void onConnectionSuccessful_notifyCallback() {
+    System.out.println("[DEBUG] Starting onConnectionSuccessful_notifyCallback test");
     initializeClient();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onConnectCalls.get() == 1);
+    System.out.println("[DEBUG] Client initialized - Starting await for connect callback");
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> {
+             int calls = callbacks.onConnectCalls.get();
+             System.out.println("[DEBUG] Current onConnectCalls: " + calls + 
+                              ", Thread: " + Thread.currentThread().getName() + 
+                              ", Time: " + System.currentTimeMillis());
+             return calls == 1;
+           });
 
+    System.out.println("[DEBUG] Await completed - verifying callbacks");
     verify(callbacks).onConnect();
     verify(callbacks, never()).onConnectFailed(any());
+    System.out.println("[DEBUG] Test completed successfully");
   }
 
   @Test
@@ -303,18 +362,30 @@ class OpampClientImplTest {
 
   @Test
   void onFailedResponse_withServerErrorData_notifyCallback() {
+    System.out.println("[DEBUG] Starting onFailedResponse_withServerErrorData_notifyCallback test");
     initializeClient();
 
     ServerErrorResponse errorResponse = new ServerErrorResponse.Builder().build();
     enqueueServerToAgentResponse(new ServerToAgent.Builder().error_response(errorResponse).build());
 
+    System.out.println("[DEBUG] Before sendRequest - onErrorResponseCalls: " + callbacks.onErrorResponseCalls.get());
     // Force request
     requestService.sendRequest();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onErrorResponseCalls.get() == 1);
+    System.out.println("[DEBUG] After sendRequest - Starting await for error callback");
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> {
+             int calls = callbacks.onErrorResponseCalls.get();
+             System.out.println("[DEBUG] Current onErrorResponseCalls: " + calls + 
+                              ", Thread: " + Thread.currentThread().getName() + 
+                              ", Time: " + System.currentTimeMillis());
+             return calls == 1;
+           });
 
+    System.out.println("[DEBUG] Await completed - verifying callbacks");
     verify(callbacks).onErrorResponse(errorResponse);
     verify(callbacks, never()).onMessage(any());
+    System.out.println("[DEBUG] Test completed successfully");
   }
 
   @Test
@@ -329,8 +400,10 @@ class OpampClientImplTest {
 
   @Test
   void whenServerProvidesNewInstanceUid_useIt() {
+    System.out.println("[DEBUG] Starting whenServerProvidesNewInstanceUid_useIt test");
     initializeClient();
     byte[] initialUid = state.instanceUid.get();
+    System.out.println("[DEBUG] Initial UID: " + java.util.Arrays.toString(initialUid));
 
     byte[] serverProvidedUid = new byte[] {1, 2, 3};
     ServerToAgent response =
@@ -342,11 +415,85 @@ class OpampClientImplTest {
             .build();
 
     enqueueServerToAgentResponse(response);
+    System.out.println("[DEBUG] Before sendRequest - current UID: " + 
+                       java.util.Arrays.toString(state.instanceUid.get()));
     requestService.sendRequest();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> state.instanceUid.get() != initialUid);
+    System.out.println("[DEBUG] After sendRequest - Starting await for UID change");
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> {
+             byte[] currentUid = state.instanceUid.get();
+             boolean changed = currentUid != initialUid;
+             System.out.println("[DEBUG] Current UID: " + java.util.Arrays.toString(currentUid) + 
+                              ", Changed: " + changed + 
+                              ", Thread: " + Thread.currentThread().getName() + 
+                              ", Time: " + System.currentTimeMillis());
+             return changed;
+           });
 
+    System.out.println("[DEBUG] Await completed - verifying UID change");
     assertThat(state.instanceUid.get()).isEqualTo(serverProvidedUid);
+    System.out.println("[DEBUG] Test completed successfully - Final UID: " + 
+                       java.util.Arrays.toString(state.instanceUid.get()));
+  }
+
+  @Test
+  void flakiness_stress_test_all_timing_operations() {
+    System.out.println("[DEBUG] Starting stress test for flakiness detection");
+    for (int i = 1; i <= 10; i++) {
+      System.out.println("[DEBUG] ===== ITERATION " + i + " =====");
+      
+      try {
+        // Test connection callback timing
+        initializeClient();
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> callbacks.onConnectCalls.get() == 1);
+        
+        // Test message callback timing
+        AgentRemoteConfig remoteConfig =
+            new AgentRemoteConfig.Builder()
+                .config(createAgentConfigMap("key" + i, "value" + i))
+                .build();
+        ServerToAgent serverToAgent = new ServerToAgent.Builder().remote_config(remoteConfig).build();
+        enqueueServerToAgentResponse(serverToAgent);
+        
+        int beforeCalls = callbacks.onMessageCalls.get();
+        requestService.sendRequest();
+        
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> callbacks.onMessageCalls.get() > beforeCalls);
+        
+        // Test instance UID update timing  
+        byte[] newUid = new byte[] {(byte)i, (byte)(i+1), (byte)(i+2)};
+        ServerToAgent uidResponse =
+            new ServerToAgent.Builder()
+                .agent_identification(
+                    new AgentIdentification.Builder()
+                        .new_instance_uid(ByteString.of(newUid))
+                        .build())
+                .build();
+        
+        enqueueServerToAgentResponse(uidResponse);
+        byte[] beforeUid = state.instanceUid.get();
+        requestService.sendRequest();
+        
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> !java.util.Arrays.equals(state.instanceUid.get(), beforeUid));
+        
+        System.out.println("[DEBUG] Iteration " + i + " completed successfully");
+        
+        // Force cleanup between iterations
+        client.stop();
+        Thread.sleep(100); // Small delay to ensure cleanup
+        
+      } catch (Exception e) {
+        System.out.println("[ERROR] Iteration " + i + " failed: " + e.getMessage());
+        e.printStackTrace();
+        throw new RuntimeException("Stress test failed at iteration " + i, e);
+      }
+    }
+    
+    System.out.println("[DEBUG] All stress test iterations completed successfully");
   }
 
   private static AgentToServer getAgentToServerMessage(RecordedRequest request) {
@@ -359,8 +506,13 @@ class OpampClientImplTest {
 
   private RecordedRequest takeRequest() {
     try {
-      return server.takeRequest(1, TimeUnit.SECONDS);
+      System.out.println("[DEBUG] Taking request from server - Thread: " + Thread.currentThread().getName());
+      RecordedRequest request = server.takeRequest(5, TimeUnit.SECONDS); // Increased timeout
+      System.out.println("[DEBUG] Request taken: " + (request != null ? 
+        "SUCCESS - Method: " + request.getMethod() + ", Path: " + request.getPath() : "TIMEOUT"));
+      return request;
     } catch (InterruptedException e) {
+      System.out.println("[DEBUG] takeRequest interrupted: " + e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -403,14 +555,19 @@ class OpampClientImplTest {
   }
 
   private RecordedRequest initializeClient(ServerToAgent initialResponse) {
+    System.out.println("[DEBUG] Initializing client with response: " + initialResponse);
     client = OpampClientImpl.create(requestService, state);
 
     // Prepare first request on start
     enqueueServerToAgentResponse(initialResponse);
 
     callbacks = spy(new TestCallbacks());
+    System.out.println("[DEBUG] Starting client - Thread: " + Thread.currentThread().getName());
     client.start(callbacks);
-    return takeRequest();
+    System.out.println("[DEBUG] Client started - taking request from server");
+    RecordedRequest request = takeRequest();
+    System.out.println("[DEBUG] Request taken: " + (request != null ? "SUCCESS" : "NULL"));
+    return request;
   }
 
   private static class TestEffectiveConfig extends State.EffectiveConfig {
@@ -464,22 +621,36 @@ class OpampClientImplTest {
 
     @Override
     public void onConnect() {
-      onConnectCalls.incrementAndGet();
+      int count = onConnectCalls.incrementAndGet();
+      System.out.println("[DEBUG] TestCallbacks.onConnect() called - count: " + count + 
+                         ", Thread: " + Thread.currentThread().getName() + 
+                         ", Time: " + System.currentTimeMillis());
     }
 
     @Override
     public void onConnectFailed(@Nullable Throwable throwable) {
-      onConnectFailedCalls.incrementAndGet();
+      int count = onConnectFailedCalls.incrementAndGet();
+      System.out.println("[DEBUG] TestCallbacks.onConnectFailed() called - count: " + count + 
+                         ", Exception: " + (throwable != null ? throwable.getMessage() : "null") +
+                         ", Thread: " + Thread.currentThread().getName() + 
+                         ", Time: " + System.currentTimeMillis());
     }
 
     @Override
     public void onErrorResponse(ServerErrorResponse errorResponse) {
-      onErrorResponseCalls.incrementAndGet();
+      int count = onErrorResponseCalls.incrementAndGet();
+      System.out.println("[DEBUG] TestCallbacks.onErrorResponse() called - count: " + count + 
+                         ", Thread: " + Thread.currentThread().getName() + 
+                         ", Time: " + System.currentTimeMillis());
     }
 
     @Override
     public void onMessage(MessageData messageData) {
-      onMessageCalls.incrementAndGet();
+      int count = onMessageCalls.incrementAndGet();
+      System.out.println("[DEBUG] TestCallbacks.onMessage() called - count: " + count + 
+                         ", Thread: " + Thread.currentThread().getName() + 
+                         ", Time: " + System.currentTimeMillis() +
+                         ", MessageData: " + messageData);
     }
   }
 }

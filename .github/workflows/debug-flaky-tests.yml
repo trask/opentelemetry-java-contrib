@@ -1,0 +1,150 @@
+name: Debug Flaky Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  debug-flaky-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 17, 21 ]
+        iteration: [ 1, 2, 3, 4, 5 ]
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+    
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+      with:
+        gradle-home-cache-cleanup: true
+    
+    - name: Print system information
+      run: |
+        echo "Java Version: $(java -version)"
+        echo "OS: $(uname -a)"
+        echo "CPU Count: $(nproc)"
+        echo "Memory: $(free -h)"
+        echo "Load Average: $(uptime)"
+        echo "Disk Space: $(df -h)"
+        echo "Current Time: $(date)"
+        echo "Iteration: ${{ matrix.iteration }}"
+    
+    - name: Run OpAMP client tests (Iteration ${{ matrix.iteration }})
+      run: |
+        echo "=== Running OpAMP client tests - Iteration ${{ matrix.iteration }} ==="
+        ./gradlew opamp-client:test --rerun-tasks --info --stacktrace -Dorg.gradle.parallel=false
+      env:
+        JAVA_OPTS: "-Xmx2g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+    
+    - name: Upload test results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-java${{ matrix.java }}-iter${{ matrix.iteration }}
+        path: |
+          opamp-client/build/reports/
+          opamp-client/build/test-results/
+        retention-days: 7
+    
+    - name: Print test timing information
+      if: always()
+      run: |
+        echo "=== Test Timing Information ==="
+        find opamp-client/build/test-results -name "*.xml" -exec echo "File: {}" \; -exec grep -E "(time=|testcase)" {} \; 2>/dev/null || echo "No test results found"
+
+  # Run additional stress test
+  stress-test-multiple-times:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 17, 21 ]
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+    
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+    
+    - name: Run stress test multiple times in sequence
+      run: |
+        echo "=== Running stress tests sequentially ==="
+        for i in {1..20}; do
+          echo "--- Sequential Run $i ---"
+          if ! ./gradlew opamp-client:test --tests "*.flakiness_stress_test_all_timing_operations" --rerun-tasks --info; then
+            echo "FAILURE: Sequential run $i failed"
+            exit 1
+          fi
+          echo "SUCCESS: Sequential run $i passed"
+          sleep 1
+        done
+        echo "All sequential stress tests passed!"
+    
+    - name: Upload stress test results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: stress-test-results-java${{ matrix.java }}
+        path: |
+          opamp-client/build/reports/
+          opamp-client/build/test-results/
+        retention-days: 7
+
+  # Run tests with different JVM options
+  test-different-jvm-options:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 17, 21 ]
+        jvm-opts: 
+          - "-Xmx1g -XX:+UseSerialGC"
+          - "-Xmx2g -XX:+UseG1GC"
+          - "-Xmx1g -XX:+UseParallelGC"
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+    
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+    
+    - name: Run tests with JVM options
+      run: |
+        echo "=== Running tests with JVM options: ${{ matrix.jvm-opts }} ==="
+        ./gradlew opamp-client:test --rerun-tasks --info
+      env:
+        JAVA_OPTS: "${{ matrix.jvm-opts }}"
+    
+    - name: Upload JVM test results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: jvm-test-results-java${{ matrix.java }}-${{ hashFiles(matrix.jvm-opts) }}
+        path: |
+          opamp-client/build/reports/
+          opamp-client/build/test-results/
+        retention-days: 7
