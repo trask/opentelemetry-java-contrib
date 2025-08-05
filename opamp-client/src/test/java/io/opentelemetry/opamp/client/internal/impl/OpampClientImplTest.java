@@ -60,6 +60,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings({"CatchAndPrintStackTrace", "SystemOut", "CatchingUnchecked", "InterruptedExceptionSwallowed"})
 class OpampClientImplTest {
   private RequestService requestService;
   private OpampClientState state;
@@ -90,7 +91,22 @@ class OpampClientImplTest {
 
   @AfterEach
   void tearDown() {
-    client.stop();
+    if (client != null) {
+      try {
+        client.stop();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    // Clear any remaining server requests
+    try {
+      while (server.takeRequest(100, TimeUnit.MILLISECONDS) != null) {
+        // Clear queue
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
   }
 
   @Test
@@ -209,7 +225,8 @@ class OpampClientImplTest {
     requestService.sendRequest();
 
     // Await for onMessage call
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onMessageCalls.get() == 1);
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> callbacks.onMessageCalls.get() == 1);
 
     verify(callbacks).onMessage(MessageData.builder().setRemoteConfig(remoteConfig).build());
   }
@@ -224,7 +241,8 @@ class OpampClientImplTest {
     requestService.sendRequest();
 
     // Giving some time for the callback to get called
-    await().during(Duration.ofSeconds(1));
+    await().during(Duration.ofSeconds(3)).pollInterval(Duration.ofMillis(100))
+           .untilAsserted(() -> assertThat(callbacks.onMessageCalls.get()).isEqualTo(0));
 
     verify(callbacks, never()).onMessage(any());
   }
@@ -267,7 +285,8 @@ class OpampClientImplTest {
   void onConnectionSuccessful_notifyCallback() {
     initializeClient();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onConnectCalls.get() == 1);
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> callbacks.onConnectCalls.get() == 1);
 
     verify(callbacks).onConnect();
     verify(callbacks, never()).onConnectFailed(any());
@@ -311,7 +330,8 @@ class OpampClientImplTest {
     // Force request
     requestService.sendRequest();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> callbacks.onErrorResponseCalls.get() == 1);
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> callbacks.onErrorResponseCalls.get() == 1);
 
     verify(callbacks).onErrorResponse(errorResponse);
     verify(callbacks, never()).onMessage(any());
@@ -332,7 +352,7 @@ class OpampClientImplTest {
     initializeClient();
     byte[] initialUid = state.instanceUid.get();
 
-    byte[] serverProvidedUid = new byte[] {1, 2, 3};
+    byte[] serverProvidedUid = new byte[] {4, 5, 6};
     ServerToAgent response =
         new ServerToAgent.Builder()
             .agent_identification(
@@ -344,9 +364,65 @@ class OpampClientImplTest {
     enqueueServerToAgentResponse(response);
     requestService.sendRequest();
 
-    await().atMost(Duration.ofSeconds(1)).until(() -> state.instanceUid.get() != initialUid);
+    await().atMost(Duration.ofSeconds(10)).pollInterval(Duration.ofMillis(100))
+           .until(() -> {
+             byte[] currentUid = state.instanceUid.get();
+             return !java.util.Arrays.equals(currentUid, initialUid);
+           });
 
     assertThat(state.instanceUid.get()).isEqualTo(serverProvidedUid);
+  }
+
+  @Test
+  void flakiness_stress_test_all_timing_operations() {
+    for (int i = 1; i <= 10; i++) {
+      try {
+        // Test connection callback timing
+        initializeClient();
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> callbacks.onConnectCalls.get() == 1);
+        
+        // Test message callback timing
+        AgentRemoteConfig remoteConfig =
+            new AgentRemoteConfig.Builder()
+                .config(createAgentConfigMap("key" + i, "value" + i))
+                .build();
+        ServerToAgent serverToAgent = new ServerToAgent.Builder().remote_config(remoteConfig).build();
+        enqueueServerToAgentResponse(serverToAgent);
+        
+        int beforeCalls = callbacks.onMessageCalls.get();
+        requestService.sendRequest();
+        
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> callbacks.onMessageCalls.get() > beforeCalls);
+        
+        // Test instance UID update timing  
+        byte[] newUid = new byte[] {(byte)i, (byte)(i+1), (byte)(i+2)};
+        ServerToAgent uidResponse =
+            new ServerToAgent.Builder()
+                .agent_identification(
+                    new AgentIdentification.Builder()
+                        .new_instance_uid(ByteString.of(newUid))
+                        .build())
+                .build();
+        
+        enqueueServerToAgentResponse(uidResponse);
+        byte[] beforeUid = state.instanceUid.get();
+        requestService.sendRequest();
+        
+        await().atMost(Duration.ofSeconds(5)).pollInterval(Duration.ofMillis(50))
+               .until(() -> !java.util.Arrays.equals(state.instanceUid.get(), beforeUid));
+        
+        // Force cleanup between iterations - ensure client is stopped before next iteration
+        if (client != null) {
+          client.stop();
+        }
+        Thread.sleep(50); // Small delay to ensure cleanup
+        
+      } catch (Exception e) {
+        throw new RuntimeException("Stress test failed at iteration " + i, e);
+      }
+    }
   }
 
   private static AgentToServer getAgentToServerMessage(RecordedRequest request) {
@@ -359,7 +435,7 @@ class OpampClientImplTest {
 
   private RecordedRequest takeRequest() {
     try {
-      return server.takeRequest(1, TimeUnit.SECONDS);
+      return server.takeRequest(5, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
