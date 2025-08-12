@@ -176,5 +176,14 @@
         'npx (?<depName>[^@]+)@(?<currentValue>[^\\s]+)',
       ],
     },
+    {
+      customType: 'regex',
+      datasourceTemplate: 'java-version',
+      fileMatch: ['\.github/workflows/.*'],
+      matchStrings: [
+        '- (?<currentValue>\\d+) # renovate: datasource=java-version',
+      ],
+      depNameTemplate: 'java',
+    },
   ],
 }
