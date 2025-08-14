@@ -22,10 +22,7 @@ dependencies {
   runtimeOnly("io.opentelemetry:opentelemetry-exporter-logging")
 
   // for jmxmp protocol support
-  // Skip this dependency during integration tests since they don't use JMXMP
-  if (!(gradle.startParameter.taskNames.any { it.contains("integrationTest") })) {
-    runtimeOnly("org.terracotta:jmxremote_optional-tc:1.0.8")
-  }
+  runtimeOnly("org.terracotta:jmxremote_optional-tc:1.0.8")
 
   implementation("io.opentelemetry.instrumentation:opentelemetry-jmx-metrics")
 
