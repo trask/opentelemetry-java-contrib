@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -62,35 +63,74 @@ public class JmxScraper {
       Properties argsConfig = argsToConfig(effectiveArgs);
       propagateToSystemProperties(argsConfig);
 
-      // auto-configure and register SDK
-      PropertiesCustomizer configCustomizer = new PropertiesCustomizer();
-      AutoConfiguredOpenTelemetrySdk.builder()
-          .addPropertiesSupplier(new PropertiesSupplier(argsConfig))
-          .addPropertiesCustomizer(configCustomizer)
-          .setResultAsGlobal()
-          .build();
-
-      JmxScraperConfig scraperConfig = configCustomizer.getScraperConfig();
-
-      long exportSeconds = scraperConfig.getSamplingInterval().toMillis() / 1000;
-      logger.log(Level.INFO, "metrics export interval (seconds) =  " + exportSeconds);
-
-      JmxMetricInsight service =
-          JmxMetricInsight.createService(
-              GlobalOpenTelemetry.get(), scraperConfig.getSamplingInterval().toMillis());
-      JmxConnectorBuilder connectorBuilder =
-          JmxConnectorBuilder.createNew(scraperConfig.getServiceUrl());
-
-      Optional.ofNullable(scraperConfig.getUsername()).ifPresent(connectorBuilder::withUser);
-      Optional.ofNullable(scraperConfig.getPassword()).ifPresent(connectorBuilder::withPassword);
-
-      if (scraperConfig.isRegistrySsl()) {
-        connectorBuilder.withSslRegistry();
-      }
-
       if (testMode) {
-        System.exit(testConnection(connectorBuilder) ? 0 : 1);
+        // In test mode, we only need basic configuration for JMX connection testing
+        // Skip OpenTelemetry SDK initialization to avoid configuration validation issues
+        try {
+          PropertiesSupplier propertiesSupplier = new PropertiesSupplier(argsConfig);
+          Map<String, String> configMap = propertiesSupplier.get();
+          
+          // In test mode, we need to manually include system properties and environment variables 
+          // since we bypass the OpenTelemetry SDK which normally handles this automatically
+          System.getProperties().forEach((key, value) -> {
+            String keyStr = key.toString();
+            if (keyStr.startsWith("otel.")) {
+              configMap.put(keyStr, value.toString());
+            }
+          });
+          
+          // Also include environment variables with OTEL_ prefix, converted to lowercase properties
+          System.getenv().forEach((key, value) -> {
+            if (key.startsWith("OTEL_")) {
+              String propertyKey = key.toLowerCase(Locale.ROOT).replace("_", ".");
+              configMap.put(propertyKey, value);
+            }
+          });
+          
+          JmxScraperConfig scraperConfig = JmxScraperConfig.fromConfig(
+              io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties.createFromMap(configMap));
+          
+          JmxConnectorBuilder connectorBuilder =
+              JmxConnectorBuilder.createNew(scraperConfig.getServiceUrl());
+          Optional.ofNullable(scraperConfig.getUsername()).ifPresent(connectorBuilder::withUser);
+          Optional.ofNullable(scraperConfig.getPassword()).ifPresent(connectorBuilder::withPassword);
+          
+          if (scraperConfig.isRegistrySsl()) {
+            connectorBuilder.withSslRegistry();
+          }
+          
+          System.exit(testConnection(connectorBuilder) ? 0 : 1);
+        } catch (ConfigurationException e) {
+          logger.log(Level.SEVERE, "test mode configuration error", e);
+          throw e;
+        }
       } else {
+        // Full initialization for normal operation
+        PropertiesCustomizer configCustomizer = new PropertiesCustomizer();
+        AutoConfiguredOpenTelemetrySdk.builder()
+            .addPropertiesSupplier(new PropertiesSupplier(argsConfig))
+            .addPropertiesCustomizer(configCustomizer)
+            .setResultAsGlobal()
+            .build();
+
+        JmxScraperConfig scraperConfig = configCustomizer.getScraperConfig();
+
+        long exportSeconds = scraperConfig.getSamplingInterval().toMillis() / 1000;
+        logger.log(Level.INFO, "metrics export interval (seconds) =  " + exportSeconds);
+
+        JmxMetricInsight service =
+            JmxMetricInsight.createService(
+                GlobalOpenTelemetry.get(), scraperConfig.getSamplingInterval().toMillis());
+        JmxConnectorBuilder connectorBuilder =
+            JmxConnectorBuilder.createNew(scraperConfig.getServiceUrl());
+
+        Optional.ofNullable(scraperConfig.getUsername()).ifPresent(connectorBuilder::withUser);
+        Optional.ofNullable(scraperConfig.getPassword()).ifPresent(connectorBuilder::withPassword);
+
+        if (scraperConfig.isRegistrySsl()) {
+          connectorBuilder.withSslRegistry();
+        }
+        
         JmxScraper jmxScraper = new JmxScraper(connectorBuilder, service, scraperConfig);
         jmxScraper.start();
       }
