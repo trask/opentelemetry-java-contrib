@@ -12,7 +12,7 @@ import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderS
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
 import javax.annotation.Nullable;
 
-final class MicrometerMeterBuilder implements MeterBuilder {
+class MicrometerMeterBuilder implements MeterBuilder {
   private final MeterProviderSharedState meterProviderSharedState;
   private final String instrumentationScopeName;
   @Nullable private String instrumentationScopeVersion;
