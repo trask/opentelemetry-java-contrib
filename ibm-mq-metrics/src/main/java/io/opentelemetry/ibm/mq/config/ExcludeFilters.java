@@ -5,14 +5,15 @@
 
 package io.opentelemetry.ibm.mq.config;
 
+import static java.util.Collections.unmodifiableSet;
+
 import io.opentelemetry.ibm.mq.metricscollector.FilterType;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /** A jackson databind class used for config. */
-public class ExcludeFilters {
+public final class ExcludeFilters {
 
   private String type = "UNKNOWN";
   private Set<String> values = new HashSet<>();
@@ -26,7 +27,7 @@ public class ExcludeFilters {
   }
 
   public Set<String> getValues() {
-    return Collections.unmodifiableSet(values);
+    return unmodifiableSet(values);
   }
 
   public void setValues(Set<String> values) {

@@ -5,6 +5,7 @@
 
 package io.opentelemetry.ibm.mq.metricscollector;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 import com.ibm.mq.MQQueueManager;
@@ -15,7 +16,6 @@ import io.opentelemetry.ibm.mq.config.ExcludeFilters;
 import io.opentelemetry.ibm.mq.config.QueueManager;
 import io.opentelemetry.ibm.mq.metrics.MetricsConfig;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.concurrent.Immutable;
@@ -80,7 +80,7 @@ public final class MetricsCollectorContext {
   @NotNull
   List<PCFMessage> send(PCFMessage request) throws IOException, MQDataException {
     PCFMessage[] result = agent.send(request);
-    return result == null ? emptyList() : Arrays.asList(result);
+    return result == null ? emptyList() : asList(result);
   }
 
   String getQueueManagerName() {
