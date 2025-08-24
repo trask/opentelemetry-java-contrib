@@ -6,7 +6,6 @@
 package io.opentelemetry.contrib.stacktrace;
 
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
-import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -100,7 +99,7 @@ class StackTraceSpanProcessorTest {
         YesPredicate.class,
         minDurationString,
         spanDurationNanos,
-        identity(),
+        Function.identity(),
         (stackTrace) ->
             assertThat(stackTrace)
                 .describedAs("span stack trace should contain caller class name")
@@ -115,7 +114,7 @@ class StackTraceSpanProcessorTest {
         predicateClass,
         minDurationString,
         spanDurationNanos,
-        identity(),
+        Function.identity(),
         (stackTrace) -> assertThat(stackTrace).describedAs("no stack trace expected").isNull());
   }
 
