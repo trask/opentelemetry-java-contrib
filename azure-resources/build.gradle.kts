@@ -5,8 +5,8 @@ plugins {
   id("maven-publish")
 }
 
-description = "OpenTelemetry GCP Resources Support"
-otelJava.moduleName.set("io.opentelemetry.contrib.gcp.resource")
+description = "OpenTelemetry Azure Resources Support"
+otelJava.moduleName.set("io.opentelemetry.contrib.azure.resource")
 
 // enable publishing to maven local
 java {
@@ -22,6 +22,9 @@ dependencies {
 
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
 
+  annotationProcessor("com.google.auto.service:auto-service")
+  compileOnly("com.google.auto.service:auto-service-annotations")
+
   implementation("com.fasterxml.jackson.core:jackson-core")
   implementation("com.squareup.okhttp3:okhttp")
 
@@ -29,6 +32,8 @@ dependencies {
   testImplementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
   testImplementation("io.opentelemetry:opentelemetry-api-incubator")
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing")
+
+  testImplementation("com.google.auto.service:auto-service")
 
 //  testImplementation("org.mockito:mockito-core")
   testImplementation("com.google.guava:guava")
