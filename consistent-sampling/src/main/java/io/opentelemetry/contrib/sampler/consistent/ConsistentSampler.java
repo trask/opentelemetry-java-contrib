@@ -160,6 +160,8 @@ public abstract class ConsistentSampler implements Sampler {
         nanoTimeSupplier);
   }
 
+  private final RValueGenerator rValueGenerator;
+
   /**
    * Returns a {@link ConsistentSampler} that samples a span if both this and the other given
    * consistent sampler would sample the span.
@@ -205,8 +207,6 @@ public abstract class ConsistentSampler implements Sampler {
     return new ConsistentComposedOrSampler(
         this, otherConsistentSampler, RValueGenerators.getDefault());
   }
-
-  private final RValueGenerator rValueGenerator;
 
   protected ConsistentSampler(RValueGenerator rValueGenerator) {
     this.rValueGenerator = requireNonNull(rValueGenerator);
