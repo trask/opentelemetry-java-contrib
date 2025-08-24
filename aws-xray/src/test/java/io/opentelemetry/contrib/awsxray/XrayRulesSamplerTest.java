@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.api.common.AttributeKey;
@@ -22,7 +25,6 @@ import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +39,7 @@ class XrayRulesSamplerTest {
   void updateTargets() {
     SamplingRule rule1 =
         SamplingRule.create(
-            Collections.singletonMap("test", "cat-service"),
+            singletonMap("test", "cat-service"),
             1.0,
             "*",
             "*",
@@ -52,7 +54,7 @@ class XrayRulesSamplerTest {
             1);
     SamplingRule rule2 =
         SamplingRule.create(
-            Collections.singletonMap("test", "dog-service"),
+            singletonMap("test", "dog-service"),
             0.0,
             "*",
             "*",
@@ -67,7 +69,7 @@ class XrayRulesSamplerTest {
             1);
     SamplingRule rule3 =
         SamplingRule.create(
-            Collections.singletonMap("test", "*-service"),
+            singletonMap("test", "*-service"),
             1.0,
             "*",
             "*",
@@ -82,19 +84,7 @@ class XrayRulesSamplerTest {
             1);
     SamplingRule rule4 =
         SamplingRule.create(
-            Collections.emptyMap(),
-            0.0,
-            "*",
-            "*",
-            4,
-            0,
-            "*",
-            "*",
-            "default-rule",
-            "*",
-            "*",
-            "*",
-            1);
+            emptyMap(), 0.0, "*", "*", 4, 0, "*", "*", "default-rule", "*", "*", "*", 1);
 
     TestClock clock = TestClock.create();
     XrayRulesSampler sampler =
@@ -176,6 +166,6 @@ class XrayRulesSamplerTest {
         name,
         SpanKind.CLIENT,
         Attributes.of(AttributeKey.stringKey("test"), name),
-        Collections.emptyList());
+        emptyList());
   }
 }

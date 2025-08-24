@@ -5,11 +5,12 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.sdk.trace.IdGenerator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Generates tracing ids compatible with the AWS X-Ray tracing service. In the X-Ray system the
@@ -43,7 +44,7 @@ public final class AwsXrayIdGenerator implements IdGenerator {
     // Since we include timestamp, impossible to be invalid.
 
     Random random = ThreadLocalRandom.current();
-    long timestampSecs = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+    long timestampSecs = MILLISECONDS.toSeconds(System.currentTimeMillis());
     long hiRandom = random.nextInt() & 0xFFFFFFFFL;
 
     long lowRandom = random.nextLong();

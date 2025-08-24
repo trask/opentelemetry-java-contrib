@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,7 +21,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +71,7 @@ class AlwaysRecordSamplerTest {
             "name",
             SpanKind.CLIENT,
             Attributes.empty(),
-            Collections.emptyList());
+            emptyList());
 
     if (rootDecision.equals(expectedDecision)) {
       assertThat(actualResult).isEqualTo(rootResult);
