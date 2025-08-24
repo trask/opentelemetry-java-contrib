@@ -5,7 +5,11 @@
 
 package io.opentelemetry.contrib.cloudfoundry.resources;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.SchemaUrls;
@@ -14,12 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CloudFoundryResourceTest {
@@ -34,20 +34,18 @@ class CloudFoundryResourceTest {
     try (InputStream is =
         CloudFoundryResourceTest.class.getClassLoader().getResourceAsStream(filename)) {
       if (is != null) {
-        return new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
-            .lines()
-            .collect(Collectors.joining());
+        return new BufferedReader(new InputStreamReader(is, UTF_8)).lines().collect(joining());
       }
-      Assertions.fail("Cannot load resource " + filename);
+      fail("Cannot load resource " + filename);
     } catch (IOException e) {
-      Assertions.fail("Error reading " + filename);
+      fail("Error reading " + filename);
     }
     return "";
   }
 
   @Test
   void noVcapApplication() {
-    Map<String, String> env = Collections.emptyMap();
+    Map<String, String> env = emptyMap();
     Resource resource = CloudFoundryResource.buildResource(env::get);
     assertThat(resource).isEqualTo(Resource.empty());
   }
