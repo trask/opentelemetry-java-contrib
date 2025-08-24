@@ -11,6 +11,9 @@ import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CONTAIN
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CloudPlatformIncubatingValues.AWS_EKS;
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CloudProviderIncubatingValues.AWS;
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.K8S_CLUSTER_NAME;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.WARNING;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -21,12 +24,10 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.SchemaUrls;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -91,7 +92,7 @@ public final class EksResource {
   private static boolean isEks(
       String k8sTokenPath, String k8sKeystorePath, SimpleHttpClient httpClient) {
     if (!isK8s(k8sTokenPath, k8sKeystorePath)) {
-      logger.log(Level.FINE, "Not running on k8s.");
+      logger.log(FINE, "Not running on k8s.");
       return false;
     }
 
@@ -145,18 +146,17 @@ public final class EksResource {
         }
       }
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Can't get cluster name on EKS.", e);
+      logger.log(WARNING, "Can't get cluster name on EKS.", e);
     }
     return "";
   }
 
   private static String getK8sCredHeader() {
     try {
-      String content =
-          new String(Files.readAllBytes(Paths.get(K8S_TOKEN_PATH)), StandardCharsets.UTF_8);
+      String content = new String(Files.readAllBytes(Paths.get(K8S_TOKEN_PATH)), UTF_8);
       return "Bearer " + content;
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Unable to load K8s client token.", e);
+      logger.log(WARNING, "Unable to load K8s client token.", e);
     }
     return "";
   }
