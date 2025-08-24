@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.annotation.Nullable;
 
-class TomcatAppServer implements AppServer {
+final class TomcatAppServer implements AppServer {
 
   private static final String SERVER_CLASS_NAME = "org.apache.catalina.startup.Bootstrap";
   private final ResourceLocator locator;

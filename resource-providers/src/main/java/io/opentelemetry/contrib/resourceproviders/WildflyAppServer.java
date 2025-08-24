@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-class WildflyAppServer implements AppServer {
+final class WildflyAppServer implements AppServer {
 
   private static final Logger logger = Logger.getLogger(WildflyAppServer.class.getName());
   private static final String SERVICE_CLASS_NAME = "org.jboss.modules.Main";
