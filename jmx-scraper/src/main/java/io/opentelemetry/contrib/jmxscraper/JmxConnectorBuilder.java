@@ -33,7 +33,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.RealmCallback;
 
-public class JmxConnectorBuilder {
+public final class JmxConnectorBuilder {
 
   private static final Logger logger = Logger.getLogger(JmxConnectorBuilder.class.getName());
 
@@ -158,7 +158,7 @@ public class JmxConnectorBuilder {
     return JMXConnectorFactory.connect(url, env);
   }
 
-  public JMXConnector doConnectSslRegistry(JMXServiceURL url, Map<String, Object> env) {
+  private static JMXConnector doConnectSslRegistry(JMXServiceURL url, Map<String, Object> env) {
 
     logger.info("Connecting with SSL protected RMI registry to " + url);
     String hostName;

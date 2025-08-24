@@ -10,8 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
 
-/** Configuration supplier for java properties */
-public class PropertiesSupplier implements Supplier<Map<String, String>> {
+public final class PropertiesSupplier implements Supplier<Map<String, String>> {
 
   private final Properties properties;
 

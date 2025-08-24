@@ -15,8 +15,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-/** Customizer of default SDK configuration and provider of effective scraper config */
-public class PropertiesCustomizer implements Function<ConfigProperties, Map<String, String>> {
+public final class PropertiesCustomizer implements Function<ConfigProperties, Map<String, String>> {
 
   private static final Logger logger = Logger.getLogger(PropertiesCustomizer.class.getName());
 
