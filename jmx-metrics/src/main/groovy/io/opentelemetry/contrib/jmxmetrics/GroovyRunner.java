@@ -29,22 +29,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.groovy.control.CompilationFailedException;
 
-public class GroovyRunner {
+public final class GroovyRunner {
   private static final Logger logger = Logger.getLogger(GroovyRunner.class.getName());
 
   private final List<Script> scripts;
   private final GroovyMetricEnvironment groovyMetricEnvironment;
 
   GroovyRunner(
-      final JmxConfig config,
-      final JmxClient jmxClient,
-      final GroovyMetricEnvironment groovyMetricEnvironment) {
+      JmxConfig config,
+      JmxClient jmxClient,
+      GroovyMetricEnvironment groovyMetricEnvironment) {
     this.groovyMetricEnvironment = groovyMetricEnvironment;
 
     List<String> scriptSources = new ArrayList<>();
     try {
       if (config.targetSystems.size() != 0) {
-        for (final String target : config.targetSystems) {
+        for (String target : config.targetSystems) {
           String systemResourcePath = "target-systems/" + target + ".groovy";
           scriptSources.add(getTargetSystemResourceAsString(systemResourcePath));
         }
@@ -59,7 +59,7 @@ public class GroovyRunner {
 
     this.scripts = new ArrayList<>();
     try {
-      for (final String source : scriptSources) {
+      for (String source : scriptSources) {
         this.scripts.add(new GroovyShell().parse(source));
       }
     } catch (CompilationFailedException e) {

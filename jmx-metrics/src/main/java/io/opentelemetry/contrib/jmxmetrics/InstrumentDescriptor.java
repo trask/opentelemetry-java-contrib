@@ -10,7 +10,7 @@ import io.opentelemetry.sdk.metrics.InstrumentType;
 import io.opentelemetry.sdk.metrics.InstrumentValueType;
 
 @AutoValue
-abstract class InstrumentDescriptor {
+abstract final class InstrumentDescriptor {
 
   static InstrumentDescriptor create(
       String name,
