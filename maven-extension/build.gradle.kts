@@ -27,7 +27,9 @@ dependencies {
   implementation("io.opentelemetry.semconv:opentelemetry-semconv")
   implementation("io.opentelemetry.semconv:opentelemetry-semconv-incubating")
 
+  annotationProcessor("com.google.auto.service:auto-service")
   annotationProcessor("com.google.auto.value:auto-value")
+  compileOnly("com.google.auto.service:auto-service")
   compileOnly("com.google.auto.value:auto-value-annotations")
 
   compileOnly("org.apache.maven:maven-core:3.5.0") // do not auto-update, support older mvn versions
@@ -36,6 +38,7 @@ dependencies {
   testImplementation("io.opentelemetry:opentelemetry-api-incubator")
   testImplementation("org.apache.maven:maven-core:3.5.0")
   testImplementation("org.slf4j:slf4j-simple")
+  testImplementation("com.google.auto.service:auto-service")
 }
 
 // The jar dependencies bundled in the uber-jar by the shadow plugin are wrongly added as

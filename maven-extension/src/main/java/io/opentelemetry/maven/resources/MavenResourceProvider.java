@@ -5,6 +5,7 @@
 
 package io.opentelemetry.maven.resources;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.maven.semconv.MavenOtelSemanticAttributes;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
@@ -17,6 +18,7 @@ import org.apache.maven.Maven;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@AutoService(ResourceProvider.class)
 public class MavenResourceProvider implements ResourceProvider {
 
   private static final Logger logger = LoggerFactory.getLogger(MavenResourceProvider.class);
