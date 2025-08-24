@@ -7,6 +7,8 @@ package io.opentelemetry.contrib.inferredspans.internal;
 
 import static java.nio.file.StandardOpenOption.READ;
 import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.Collections.sort;
+import static java.util.Objects.requireNonNull;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventPoller;
@@ -33,11 +35,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -514,7 +514,7 @@ public class SamplingProfiler implements Runnable {
       backupDiagnosticFiles(eof);
     }
     try {
-      Objects.requireNonNull(jfrFile);
+      requireNonNull(jfrFile);
       jfrParser.parse(jfrFile, excludedClasses, includedClasses);
       List<StackTraceEvent> stackTraceEvents = getSortedStackTraceEvents(jfrParser);
       if (logger.isLoggable(Level.FINE)) {
@@ -612,7 +612,7 @@ public class SamplingProfiler implements Runnable {
             stackTraceEvents.add(new StackTraceEvent(nanoTime, stackTraceId, threadId));
           }
         });
-    Collections.sort(stackTraceEvents);
+    sort(stackTraceEvents);
     return stackTraceEvents;
   }
 

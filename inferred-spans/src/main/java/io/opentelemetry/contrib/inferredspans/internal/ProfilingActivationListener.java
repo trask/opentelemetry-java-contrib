@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.inferredspans.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
+
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.ContextStorage;
@@ -12,7 +15,6 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.contrib.inferredspans.internal.util.ThreadUtils;
 import java.io.Closeable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -37,8 +39,7 @@ public class ProfilingActivationListener implements Closeable {
   // (e.g. after SDK shutdown). However, in theory nothing prevents users from starting
   // two SDKs at the same time, so it is safest to use a List here.
   @SuppressWarnings("NonFinalStaticField")
-  private static volatile List<ProfilingActivationListener> activeListeners =
-      Collections.emptyList();
+  private static volatile List<ProfilingActivationListener> activeListeners = emptyList();
 
   private static class ContextStorageWrapper implements ContextStorage {
 
@@ -100,7 +101,7 @@ public class ProfilingActivationListener implements Closeable {
     synchronized (ProfilingActivationListener.class) {
       List<ProfilingActivationListener> listenersList = new ArrayList<>(activeListeners);
       listenersList.add(result);
-      activeListeners = Collections.unmodifiableList(listenersList);
+      activeListeners = unmodifiableList(listenersList);
     }
     return result;
   }
@@ -110,7 +111,7 @@ public class ProfilingActivationListener implements Closeable {
     synchronized (ProfilingActivationListener.class) {
       List<ProfilingActivationListener> listenersList = new ArrayList<>(activeListeners);
       listenersList.remove(this);
-      activeListeners = Collections.unmodifiableList(listenersList);
+      activeListeners = unmodifiableList(listenersList);
     }
   }
 

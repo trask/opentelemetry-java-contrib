@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.inferredspans.internal;
 
 import static io.opentelemetry.contrib.inferredspans.internal.semconv.Attributes.LINK_IS_CHILD;
 import static io.opentelemetry.contrib.inferredspans.internal.semconv.Attributes.SPAN_IS_INFERRED;
+import static java.util.Arrays.fill;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
@@ -923,7 +924,7 @@ public class CallTree implements Recyclable {
       rootContext.resetState();
       activeSpan = null;
       activationTimestamp = -1;
-      Arrays.fill(activeSpanSerialized, (byte) 0);
+      fill(activeSpanSerialized, (byte) 0);
       previousTopOfStack = null;
       topOfStack = null;
       activeSet.clear();
