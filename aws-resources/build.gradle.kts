@@ -20,6 +20,9 @@ dependencies {
   implementation("com.fasterxml.jackson.core:jackson-core")
   implementation("com.squareup.okhttp3:okhttp")
 
+  annotationProcessor("com.google.auto.service:auto-service")
+  compileOnly("com.google.auto.service:auto-service")
+
   testImplementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
   testImplementation("io.opentelemetry:opentelemetry-api-incubator")
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing")
