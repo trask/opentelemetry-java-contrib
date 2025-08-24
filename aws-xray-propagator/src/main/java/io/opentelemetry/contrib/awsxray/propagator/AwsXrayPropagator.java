@@ -6,21 +6,23 @@
 package io.opentelemetry.contrib.awsxray.propagator;
 
 import static io.opentelemetry.api.internal.OtelEncodingUtils.isValidBase16String;
+import static io.opentelemetry.api.trace.SpanId.getInvalid;
+import static io.opentelemetry.api.trace.TraceFlags.getDefault;
+import static io.opentelemetry.api.trace.TraceFlags.getSampled;
+import static io.opentelemetry.api.trace.TraceId.getLength;
+import static java.util.Collections.singletonList;
 
 import io.opentelemetry.api.baggage.Baggage;
 import io.opentelemetry.api.baggage.BaggageBuilder;
 import io.opentelemetry.api.internal.StringUtils;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
-import io.opentelemetry.api.trace.SpanId;
-import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.propagation.TextMapGetter;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.context.propagation.TextMapSetter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -80,7 +82,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
   private static final String INVALID_LINEAGE = "-1:11111111:0";
   private static final int NUM_OF_LINEAGE_DELIMITERS = 2;
 
-  private static final List<String> FIELDS = Collections.singletonList(TRACE_HEADER_KEY);
+  private static final List<String> FIELDS = singletonList(TRACE_HEADER_KEY);
 
   private static final AwsXrayPropagator INSTANCE = new AwsXrayPropagator();
 
@@ -179,7 +181,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
     }
 
     String traceId = TraceId.getInvalid();
-    String spanId = SpanId.getInvalid();
+    String spanId = getInvalid();
     String lineageHeader;
     Boolean isSampled = false;
 
@@ -247,9 +249,9 @@ public final class AwsXrayPropagator implements TextMapPropagator {
 
     SpanContext spanContext =
         SpanContext.createFromRemoteParent(
-            StringUtils.padLeft(traceId, TraceId.getLength()),
+            StringUtils.padLeft(traceId, getLength()),
             spanId,
-            isSampled ? TraceFlags.getSampled() : TraceFlags.getDefault(),
+            isSampled ? getSampled() : getDefault(),
             TraceState.getDefault());
 
     if (spanContext.isValid()) {
@@ -323,7 +325,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
 
   private static String parseSpanId(String xrayParentId) {
     if (xrayParentId.length() != PARENT_ID_LENGTH) {
-      return SpanId.getInvalid();
+      return getInvalid();
     }
 
     return xrayParentId;
