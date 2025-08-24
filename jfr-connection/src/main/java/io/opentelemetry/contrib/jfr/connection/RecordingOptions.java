@@ -41,7 +41,7 @@ import javax.annotation.Nonnull;
  * it does mean that the Builder needs to validate the args and potentially throw
  * IllegalArgumentException. String makes the overall code so much simpler.
  */
-public class RecordingOptions {
+public final class RecordingOptions {
 
   private static final String NO_LIMIT = "0";
 
