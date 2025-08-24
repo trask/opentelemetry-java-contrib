@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.resourceproviders;
 
 import static java.util.logging.Level.FINE;
+import static java.util.stream.Collectors.toList;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
@@ -81,7 +81,7 @@ class WebSphereServiceNameDetector implements ServiceNameDetector {
       logger.log(FINE, "Looking for deployments in {0}.", cellApplications);
 
       try (Stream<Path> stream = Files.list(cellApplications)) {
-        for (Path path : stream.collect(Collectors.toList())) {
+        for (Path path : stream.collect(toList())) {
           String fullName = path.getFileName().toString();
           // websphere deploys all applications as ear
           if (!fullName.endsWith(".ear") || !appServer.isValidAppName(path)) {
@@ -99,7 +99,7 @@ class WebSphereServiceNameDetector implements ServiceNameDetector {
             wars =
                 warStream
                     .filter(p -> p.getFileName().toString().endsWith(".war"))
-                    .collect(Collectors.toList());
+                    .collect(toList());
           }
           boolean maybeWarDeployment =
               wars.size() == 1 && wars.get(0).getFileName().toString().equals(name + ".war");
