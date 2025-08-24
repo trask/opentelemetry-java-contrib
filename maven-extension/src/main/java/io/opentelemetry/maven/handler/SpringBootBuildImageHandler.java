@@ -5,6 +5,8 @@
 
 package io.opentelemetry.maven.handler;
 
+import static java.util.Collections.singletonList;
+
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -13,7 +15,6 @@ import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import org.apache.maven.execution.ExecutionEvent;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -37,7 +38,7 @@ final class SpringBootBuildImageHandler implements MojoGoalExecutionHandler {
 
   @Override
   public List<MavenGoal> getSupportedGoals() {
-    return Collections.singletonList(
+    return singletonList(
         MavenGoal.create("org.springframework.boot", "spring-boot-maven-plugin", "build-image"));
   }
 
@@ -83,8 +84,7 @@ final class SpringBootBuildImageHandler implements MojoGoalExecutionHandler {
     spanBuilder.setAttribute(
         MavenOtelSemanticAttributes.MAVEN_BUILD_CONTAINER_IMAGE_NAME, imageName);
     spanBuilder.setAttribute(
-        MavenOtelSemanticAttributes.MAVEN_BUILD_CONTAINER_IMAGE_TAGS,
-        Collections.singletonList(imageTag));
+        MavenOtelSemanticAttributes.MAVEN_BUILD_CONTAINER_IMAGE_TAGS, singletonList(imageTag));
 
     Xpp3Dom publishNode = pluginNode == null ? null : pluginNode.getChild("publish");
     if (publishNode != null && Boolean.parseBoolean(publishNode.getValue())) {

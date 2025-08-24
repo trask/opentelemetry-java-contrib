@@ -18,7 +18,7 @@ import org.eclipse.aether.transfer.TransferEvent;
  *
  * @see io.opentelemetry.api.common.Attributes
  */
-public class MavenOtelSemanticAttributes {
+public final class MavenOtelSemanticAttributes {
 
   /**
    * See {@code
@@ -56,22 +56,20 @@ public class MavenOtelSemanticAttributes {
       stringKey("maven.project.version");
 
   /** See {@link TransferEvent.RequestType}. */
-  public static final AttributeKey<String> MAVEN_TRANSFER_TYPE =
-      AttributeKey.stringKey("maven.transfer.type");
+  public static final AttributeKey<String> MAVEN_TRANSFER_TYPE = stringKey("maven.transfer.type");
 
   /** See {@link org.eclipse.aether.transfer.TransferResource}. */
-  public static final AttributeKey<String> MAVEN_RESOURCE_NAME =
-      AttributeKey.stringKey("maven.resource.name");
+  public static final AttributeKey<String> MAVEN_RESOURCE_NAME = stringKey("maven.resource.name");
 
   public static final String SERVICE_NAME_VALUE = "maven";
 
   // inlined incubating attribute to prevent direct dependency on incubating semconv
-  public static final AttributeKey<String> PEER_SERVICE = AttributeKey.stringKey("peer.service");
-  public static final AttributeKey<String> RPC_METHOD = AttributeKey.stringKey("rpc.method");
+  public static final AttributeKey<String> PEER_SERVICE = stringKey("peer.service");
+  public static final AttributeKey<String> RPC_METHOD = stringKey("rpc.method");
   public static final AttributeKey<String> TELEMETRY_DISTRO_NAME =
-      AttributeKey.stringKey("telemetry.distro.name");
+      stringKey("telemetry.distro.name");
   public static final AttributeKey<String> TELEMETRY_DISTRO_VERSION =
-      AttributeKey.stringKey("telemetry.distro.version");
+      stringKey("telemetry.distro.version");
 
   public static final String TELEMETRY_DISTRO_NAME_VALUE = "opentelemetry-maven-extension";
 

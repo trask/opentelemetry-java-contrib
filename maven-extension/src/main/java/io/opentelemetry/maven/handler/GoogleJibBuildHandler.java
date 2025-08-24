@@ -5,6 +5,8 @@
 
 package io.opentelemetry.maven.handler;
 
+import static java.util.Collections.singletonList;
+
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -13,7 +15,6 @@ import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.apache.maven.execution.ExecutionEvent;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -26,8 +27,7 @@ final class GoogleJibBuildHandler implements MojoGoalExecutionHandler {
 
   @Override
   public List<MavenGoal> getSupportedGoals() {
-    return Collections.singletonList(
-        MavenGoal.create("com.google.cloud.tools", "jib-maven-plugin", "build"));
+    return singletonList(MavenGoal.create("com.google.cloud.tools", "jib-maven-plugin", "build"));
   }
 
   @Override

@@ -5,11 +5,12 @@
 
 package io.opentelemetry.maven;
 
+import static java.util.stream.Collectors.joining;
+
 import com.google.auto.value.AutoValue;
 import io.opentelemetry.api.trace.Span;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -93,7 +94,7 @@ public final class SpanRegistry {
           "Remaining children spans: "
               + this.mojoExecutionKeySpanMap.keySet().stream()
                   .map(MojoExecutionKey::toString)
-                  .collect(Collectors.joining(", ")));
+                  .collect(joining(", ")));
     }
     this.rootSpan = null;
     return rootSpan;

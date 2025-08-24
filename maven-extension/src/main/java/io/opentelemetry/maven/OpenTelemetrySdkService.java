@@ -5,6 +5,8 @@
 
 package io.opentelemetry.maven;
 
+import static java.util.Collections.emptyMap;
+
 import com.google.common.annotations.VisibleForTesting;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
@@ -18,7 +20,6 @@ import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.resources.Resource;
 import java.io.Closeable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public final class OpenTelemetrySdkService implements Closeable {
     this.openTelemetrySdk = autoConfiguredOpenTelemetrySdk.getOpenTelemetrySdk();
     this.configProperties =
         Optional.ofNullable(AutoConfigureUtil.getConfig(autoConfiguredOpenTelemetrySdk))
-            .orElseGet(() -> DefaultConfigProperties.createFromMap(Collections.emptyMap()));
+            .orElseGet(() -> DefaultConfigProperties.createFromMap(emptyMap()));
 
     this.resource = AutoConfigureUtil2.getResource(autoConfiguredOpenTelemetrySdk);
     // Display resource attributes in debug logs for troubleshooting when traces are not found in

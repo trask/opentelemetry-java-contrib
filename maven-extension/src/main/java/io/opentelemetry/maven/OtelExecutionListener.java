@@ -5,6 +5,8 @@
 
 package io.opentelemetry.maven;
 
+import static java.util.stream.Collectors.joining;
+
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
@@ -19,7 +21,6 @@ import io.opentelemetry.maven.handler.MojoGoalExecutionHandlerConfiguration;
 import io.opentelemetry.maven.semconv.MavenOtelSemanticAttributes;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.apache.maven.execution.AbstractExecutionListener;
 import org.apache.maven.execution.ExecutionEvent;
 import org.apache.maven.execution.ExecutionListener;
@@ -68,7 +69,7 @@ public final class OtelExecutionListener extends AbstractExecutionListener {
           "OpenTelemetry: mojoGoalExecutionHandlers: "
               + mojoGoalExecutionHandlers.entrySet().stream()
                   .map(entry -> entry.getKey().toString() + ": " + entry.getValue().toString())
-                  .collect(Collectors.joining(", ")));
+                  .collect(joining(", ")));
 
       // help debugging class loader issues when the OTel APIs used in
       // Maven plugin mojos are mistakenly not loaded by the OTel Maven extension

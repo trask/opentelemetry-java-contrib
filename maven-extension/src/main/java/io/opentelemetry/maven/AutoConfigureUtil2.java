@@ -11,9 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /** Utility class to use the {@link AutoConfiguredOpenTelemetrySdk}. */
-public class AutoConfigureUtil2 {
-
-  private AutoConfigureUtil2() {}
+public final class AutoConfigureUtil2 {
 
   /**
    * Returns the {@link Resource} that was autoconfigured.
@@ -32,4 +30,6 @@ public class AutoConfigureUtil2 {
           "Error calling getResource on AutoConfiguredOpenTelemetrySdk", e);
     }
   }
+
+  private AutoConfigureUtil2() {}
 }

@@ -5,13 +5,14 @@
 
 package io.opentelemetry.maven.handler;
 
+import static java.util.Collections.singletonList;
+
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
 import io.opentelemetry.maven.semconv.MavenOtelSemanticAttributes;
 import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
-import java.util.Collections;
 import java.util.List;
 import org.apache.maven.execution.ExecutionEvent;
 
@@ -34,6 +35,6 @@ final class SnykTestHandler implements MojoGoalExecutionHandler {
 
   @Override
   public List<MavenGoal> getSupportedGoals() {
-    return Collections.singletonList(MavenGoal.create("io.snyk", "snyk-maven-plugin", "test"));
+    return singletonList(MavenGoal.create("io.snyk", "snyk-maven-plugin", "test"));
   }
 }
