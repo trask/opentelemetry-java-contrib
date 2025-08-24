@@ -6,6 +6,8 @@
 package io.opentelemetry.contrib.awsxray;
 
 import static io.opentelemetry.semconv.ServiceAttributes.SERVICE_NAME;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
 
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -23,7 +25,6 @@ import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.ServerAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +72,7 @@ final class SamplingRuleApplier {
     xrayCloudPlatform.put(AWS_EKS, "AWS::EKS::Container");
     xrayCloudPlatform.put(AWS_ELASTIC_BEANSTALK, "AWS::ElasticBeanstalk::Environment");
     xrayCloudPlatform.put(AWS_LAMBDA, "AWS::Lambda::Function");
-    XRAY_CLOUD_PLATFORM = Collections.unmodifiableMap(xrayCloudPlatform);
+    XRAY_CLOUD_PLATFORM = unmodifiableMap(xrayCloudPlatform);
   }
 
   private final String clientId;
@@ -127,7 +128,7 @@ final class SamplingRuleApplier {
     fixedRateSampler = createFixedRate(rule.getFixedRate());
 
     if (rule.getAttributes().isEmpty()) {
-      attributeMatchers = Collections.emptyMap();
+      attributeMatchers = emptyMap();
     } else {
       attributeMatchers =
           rule.getAttributes().entrySet().stream()

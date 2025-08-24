@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * Unit tests for {@link ResourceHolder}. Note that there isn't a great way to test the "default"
  * fallback logic, as when the test suite is run, the customize logic appears to be invoked.
  */
-public class ResourceHolderTest {
+class ResourceHolderTest {
 
   @Test
   @SuppressWarnings("unchecked")
