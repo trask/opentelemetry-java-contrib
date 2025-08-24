@@ -6,7 +6,6 @@
 package io.opentelemetry.contrib.awsxray.propagator;
 
 import static io.opentelemetry.api.internal.OtelEncodingUtils.isValidBase16String;
-import static io.opentelemetry.api.trace.SpanId.getInvalid;
 import static io.opentelemetry.api.trace.TraceFlags.getDefault;
 import static io.opentelemetry.api.trace.TraceFlags.getSampled;
 import static io.opentelemetry.api.trace.TraceId.getLength;
@@ -17,6 +16,7 @@ import io.opentelemetry.api.baggage.BaggageBuilder;
 import io.opentelemetry.api.internal.StringUtils;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanId;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.context.Context;
@@ -181,7 +181,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
     }
 
     String traceId = TraceId.getInvalid();
-    String spanId = getInvalid();
+    String spanId = SpanId.getInvalid();
     String lineageHeader;
     Boolean isSampled = false;
 
@@ -325,7 +325,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
 
   private static String parseSpanId(String xrayParentId) {
     if (xrayParentId.length() != PARENT_ID_LENGTH) {
-      return getInvalid();
+      return SpanId.getInvalid();
     }
 
     return xrayParentId;
