@@ -50,6 +50,7 @@ import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.HOST_NA
 import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.HOST_TYPE;
 import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.K8S_CLUSTER_NAME;
 
+import com.google.auto.service.AutoService;
 import com.google.cloud.opentelemetry.detection.DetectedPlatform;
 import com.google.cloud.opentelemetry.detection.GCPPlatformDetector;
 import io.opentelemetry.api.common.Attributes;
@@ -61,8 +62,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@AutoService(ConditionalResourceProvider.class)
 @SuppressWarnings("MemberName")
-public class GCPResourceProvider implements ConditionalResourceProvider {
+public final class GCPResourceProvider implements ConditionalResourceProvider {
 
   private static final Logger LOGGER = Logger.getLogger(GCPResourceProvider.class.getSimpleName());
   private final GCPPlatformDetector detector;
