@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.kafka;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -14,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 @ThreadSafe
 @SuppressWarnings("FutureReturnValueIgnored")
-public class KafkaSpanExporter implements SpanExporter {
+public final class KafkaSpanExporter implements SpanExporter {
   private static final Logger logger = LoggerFactory.getLogger(KafkaSpanExporter.class);
   private final String topicName;
   private final Producer<String, Collection<SpanData>> producer;
@@ -99,7 +100,7 @@ public class KafkaSpanExporter implements SpanExporter {
   private CompletableResultCode shutdownExecutorService() {
     try {
       executorService.shutdown();
-      boolean terminated = executorService.awaitTermination(timeoutInSeconds, TimeUnit.SECONDS);
+      boolean terminated = executorService.awaitTermination(timeoutInSeconds, SECONDS);
       if (!terminated) {
         List<Runnable> interrupted = executorService.shutdownNow();
         if (!interrupted.isEmpty()) {
