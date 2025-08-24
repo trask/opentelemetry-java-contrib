@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.azure.resource;
 
+import static java.util.Objects.requireNonNull;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -19,7 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AzureMetadataService {
+public final class AzureMetadataService {
   static final JsonFactory JSON_FACTORY = new JsonFactory();
   private static final URL METADATA_URL;
 
@@ -66,7 +67,7 @@ public class AzureMetadataService {
         return Optional.empty();
       }
 
-      return Optional.of(Objects.requireNonNull(response.body()).string());
+      return Optional.of(requireNonNull(response.body()).string());
     } catch (IOException e) {
       logger.log(Level.FINE, "Failed to fetch Azure VM metadata", e);
       return Optional.empty();
