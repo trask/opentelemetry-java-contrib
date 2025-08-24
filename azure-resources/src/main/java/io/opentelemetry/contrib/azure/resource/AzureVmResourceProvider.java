@@ -19,9 +19,11 @@ import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.OS_VE
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,7 +36,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jetbrains.annotations.NotNull;
 
-public class AzureVmResourceProvider extends CloudResourceProvider {
+@AutoService(ResourceProvider.class)
+public final class AzureVmResourceProvider extends CloudResourceProvider {
 
   static class Entry {
     final AttributeKey<String> key;
