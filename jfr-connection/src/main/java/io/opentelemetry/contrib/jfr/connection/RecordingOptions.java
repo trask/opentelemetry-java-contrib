@@ -5,15 +5,15 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Collections.unmodifiableMap;
+
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 
 /**
  * Options for the recording that control maximum recording size, age and duration, and whether to
@@ -41,7 +41,7 @@ import javax.annotation.Nonnull;
  * it does mean that the Builder needs to validate the args and potentially throw
  * IllegalArgumentException. String makes the overall code so much simpler.
  */
-public class RecordingOptions {
+public final class RecordingOptions {
 
   private static final String NO_LIMIT = "0";
 
@@ -55,7 +55,7 @@ public class RecordingOptions {
     DISK("disk", "false"),
     DURATION("duration", NO_LIMIT);
 
-    Option(String name, @Nonnull String defaultValue) {
+    Option(String name, String defaultValue) {
       this.name = name;
       this.defaultValue = defaultValue;
     }
@@ -266,7 +266,7 @@ public class RecordingOptions {
    * @param recordingOptions The normalized options from the builder.
    */
   private RecordingOptions(Map<String, String> recordingOptions) {
-    this.recordingOptions = Collections.unmodifiableMap(recordingOptions);
+    this.recordingOptions = unmodifiableMap(recordingOptions);
   }
 
   /**

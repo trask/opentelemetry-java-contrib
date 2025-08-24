@@ -5,7 +5,6 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -37,7 +36,7 @@ import javax.annotation.Nullable;
  *       This cause indicates a bug in the io.opentelemetry.contrib.jfr.connection package code.
  * </dl>
  */
-public class JfrConnectionException extends Exception {
+public final class JfrConnectionException extends Exception {
 
   private static final long serialVersionUID = 7394612902107510439L;
 
@@ -69,7 +68,7 @@ public class JfrConnectionException extends Exception {
    * @return A JfrConnectionException with a canonical message.
    */
   static JfrConnectionException canonicalJfrConnectionException(
-      @Nonnull Class<?> clazz, @Nonnull String methodName, @Nonnull Exception cause) {
+      Class<?> clazz, String methodName, Exception cause) {
     String canonicalMessage =
         String.format("%1s.%2s caught: %3s", clazz.getSimpleName(), methodName, cause.getMessage());
     return new JfrConnectionException(canonicalMessage, cause);

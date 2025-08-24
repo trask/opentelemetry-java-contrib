@@ -21,15 +21,13 @@ public interface RecordingConfiguration {
    * Convenience for selecting the pre-defined 'default' configuration that is standard with the
    * JDK. The default configuration is suitable for continuous recordings.
    */
-  public static final RecordingConfiguration DEFAULT_CONFIGURATION =
-      new PredefinedConfiguration("default");
+  RecordingConfiguration DEFAULT_CONFIGURATION = new PredefinedConfiguration("default");
 
   /**
    * Convenience for referencing the 'profile' configuration that is standard with the JDK. The
    * profile configuration collects more events and is suitable for profiling an application.
    */
-  public static final RecordingConfiguration PROFILE_CONFIGURATION =
-      new PredefinedConfiguration("profile");
+  RecordingConfiguration PROFILE_CONFIGURATION = new PredefinedConfiguration("profile");
 
   /**
    * Call the appropriate method on the FlightRecorderMXBean to set the configuration.
