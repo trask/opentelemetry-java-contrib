@@ -20,7 +20,7 @@ import javax.management.remote.rmi.RMIConnector;
 import javax.management.remote.rmi.RMIServer;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
-public class JmxConnectorHelper {
+public final class JmxConnectorHelper {
 
   private static final Logger logger = Logger.getLogger(JmxConnectorHelper.class.getName());
 

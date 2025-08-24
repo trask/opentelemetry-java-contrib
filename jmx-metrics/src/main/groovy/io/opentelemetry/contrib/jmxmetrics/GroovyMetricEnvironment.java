@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.jmxmetrics;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toCollection;
+
 import groovy.lang.Closure;
 import groovy.lang.Tuple2;
 import io.opentelemetry.api.common.Attributes;
@@ -30,14 +33,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-public class GroovyMetricEnvironment {
+public final class GroovyMetricEnvironment {
   private final SdkMeterProvider meterProvider;
   private final Meter meter;
 
@@ -128,7 +129,7 @@ public class GroovyMetricEnvironment {
 
   /** Will collect all metrics from OpenTelemetrySdk and export via configured exporter. */
   public void flush() {
-    meterProvider.forceFlush().join(10, TimeUnit.SECONDS);
+    meterProvider.forceFlush().join(10, SECONDS);
   }
 
   protected static Attributes mapToAttributes(@Nullable final Map<String, String> labelMap) {
@@ -473,7 +474,7 @@ public class GroovyMetricEnvironment {
     // collect the set of instruments into a set so we can compare to what's previously been
     // registered
     Set<ObservableMeasurement> instrumentSet =
-        Arrays.stream(additional).collect(Collectors.toCollection(HashSet::new));
+        Arrays.stream(additional).collect(toCollection(HashSet::new));
     instrumentSet.add(measurement);
 
     Tuple2<BatchCallback, Set<ObservableMeasurement>> existingCallback =

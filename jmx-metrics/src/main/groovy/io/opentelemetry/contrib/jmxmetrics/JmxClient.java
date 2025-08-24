@@ -5,12 +5,14 @@
 
 package io.opentelemetry.contrib.jmxmetrics;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.sort;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,16 +88,16 @@ public class JmxClient {
   public List<ObjectName> query(final ObjectName objectName) {
     MBeanServerConnection mbsc = getConnection();
     if (mbsc == null) {
-      return Collections.emptyList();
+      return emptyList();
     }
 
     try {
       List<ObjectName> objectNames = new ArrayList<>(mbsc.queryNames(objectName, null));
-      Collections.sort(objectNames);
+      sort(objectNames);
       return objectNames;
     } catch (IOException e) {
       logger.log(Level.WARNING, "Could not query remote JMX server: ", e);
-      return Collections.emptyList();
+      return emptyList();
     }
   }
 }

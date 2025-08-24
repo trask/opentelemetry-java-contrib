@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.jmxmetrics;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Collections.emptyMap;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -22,14 +23,13 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.groovy.control.CompilationFailedException;
 
-public class GroovyRunner {
+public final class GroovyRunner {
   private static final Logger logger = Logger.getLogger(GroovyRunner.class.getName());
 
   private final List<Script> scripts;
@@ -104,7 +104,7 @@ public class GroovyRunner {
           "Invalid path for target system resource from jar: " + res.toString());
     }
 
-    final Map<String, String> env = Collections.emptyMap();
+    final Map<String, String> env = emptyMap();
     try {
       try (final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0]), env)) {
         Path path = fs.getPath(array[1]);
