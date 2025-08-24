@@ -23,12 +23,10 @@ import javax.rmi.ssl.SslRMIClientSocketFactory;
 public final class JmxConnectorHelper {
 
   private static final Logger logger = Logger.getLogger(JmxConnectorHelper.class.getName());
-
-  private static RMIServer stub = null;
   private static final SslRMIClientSocketFactory sslRMIClientSocketFactory =
       new SslRMIClientSocketFactory();
 
-  private JmxConnectorHelper() {}
+  private static RMIServer stub = null;
 
   /**
    * To use SSL, the {@link RMIServer} stub used by the {@link RMIConnector} must be built
@@ -74,4 +72,6 @@ public final class JmxConnectorHelper {
       throw new IOException(nbe);
     }
   }
+
+  private JmxConnectorHelper() {}
 }
