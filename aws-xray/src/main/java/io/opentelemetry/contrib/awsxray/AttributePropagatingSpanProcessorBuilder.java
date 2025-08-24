@@ -5,12 +5,12 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.opentelemetry.api.common.AttributeKey;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +43,7 @@ public class AttributePropagatingSpanProcessorBuilder {
   public AttributePropagatingSpanProcessorBuilder setAttributesKeysToPropagate(
       List<AttributeKey<String>> attributesKeysToPropagate) {
     requireNonNull(attributesKeysToPropagate, "attributesKeysToPropagate");
-    this.attributesKeysToPropagate = Collections.unmodifiableList(attributesKeysToPropagate);
+    this.attributesKeysToPropagate = unmodifiableList(attributesKeysToPropagate);
     return this;
   }
 
