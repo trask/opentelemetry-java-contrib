@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.awsxray;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.logging.FINE;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -149,7 +150,7 @@ public final class AwsXrayRemoteSampler implements Sampler, Closeable {
             executor.schedule(this::fetchTargets, DEFAULT_TARGET_INTERVAL_NANOS, NANOSECONDS);
       }
     } catch (Throwable t) {
-      logger.log(Level.FINE, "Failed to update sampler", t);
+      logger.log(FINE, "Failed to update sampler", t);
     }
     scheduleSamplerUpdate();
   }

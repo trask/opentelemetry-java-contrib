@@ -5,9 +5,9 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.TraceId;
@@ -175,7 +175,7 @@ class XrayRulesSamplerTest {
         TraceId.fromLongs(1, 2),
         name,
         SpanKind.CLIENT,
-        Attributes.of(AttributeKey.stringKey("test"), name),
+        Attributes.of(stringKey("test"), name),
         Collections.emptyList());
   }
 }

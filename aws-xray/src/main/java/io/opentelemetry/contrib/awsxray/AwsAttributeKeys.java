@@ -12,8 +12,6 @@ import io.opentelemetry.api.common.AttributeKey;
 /** Utility class holding attribute keys with special meaning to AWS components */
 final class AwsAttributeKeys {
 
-  private AwsAttributeKeys() {}
-
   static final AttributeKey<String> AWS_SPAN_KIND = stringKey("aws.span.kind");
 
   static final AttributeKey<String> AWS_LOCAL_SERVICE = stringKey("aws.local.service");
@@ -35,4 +33,6 @@ final class AwsAttributeKeys {
   static final AttributeKey<String> AWS_QUEUE_NAME = stringKey("aws.queue.name");
   static final AttributeKey<String> AWS_STREAM_NAME = stringKey("aws.stream.name");
   static final AttributeKey<String> AWS_TABLE_NAME = stringKey("aws.table.name");
+
+  private AwsAttributeKeys() {}
 }
