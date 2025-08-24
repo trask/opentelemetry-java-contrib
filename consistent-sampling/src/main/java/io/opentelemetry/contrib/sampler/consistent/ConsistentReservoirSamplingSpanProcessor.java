@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.sampler.consistent;
 
 import static io.opentelemetry.api.internal.Utils.checkArgument;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import io.opentelemetry.api.trace.SpanContext;
@@ -21,7 +22,6 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -544,7 +544,7 @@ public final class ConsistentReservoirSamplingSpanProcessor implements SpanProce
       }
 
       try {
-        CompletableResultCode result = spanExporter.export(Collections.unmodifiableList(batch));
+        CompletableResultCode result = spanExporter.export(unmodifiableList(batch));
         result.join(exporterTimeoutNanos, TimeUnit.NANOSECONDS);
         if (!result.isSuccess()) {
           logger.log(Level.FINE, "Exporter failed");

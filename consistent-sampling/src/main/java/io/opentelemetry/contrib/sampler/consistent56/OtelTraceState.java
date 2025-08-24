@@ -5,8 +5,9 @@
 
 package io.opentelemetry.contrib.sampler.consistent56;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -33,7 +34,7 @@ final class OtelTraceState {
     this(
         ConsistentSamplingUtil.getInvalidRandomValue(),
         ConsistentSamplingUtil.getInvalidThreshold(),
-        Collections.emptyList());
+        emptyList());
   }
 
   public long getRandomValue() {
@@ -249,8 +250,6 @@ final class OtelTraceState {
     }
 
     return new OtelTraceState(
-        randomValue,
-        threshold,
-        (otherKeyValuePairs != null) ? otherKeyValuePairs : Collections.emptyList());
+        randomValue, threshold, (otherKeyValuePairs != null) ? otherKeyValuePairs : emptyList());
   }
 }

@@ -5,8 +5,9 @@
 
 package io.opentelemetry.contrib.sampler.consistent;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -34,7 +35,7 @@ final class OtelTraceState {
   }
 
   private OtelTraceState() {
-    this(INVALID_R, INVALID_P, Collections.emptyList());
+    this(INVALID_R, INVALID_P, emptyList());
   }
 
   public boolean hasValidR() {
@@ -232,7 +233,7 @@ final class OtelTraceState {
     }
 
     return new OtelTraceState(
-        r, p, (otherKeyValuePairs != null) ? otherKeyValuePairs : Collections.emptyList());
+        r, p, (otherKeyValuePairs != null) ? otherKeyValuePairs : emptyList());
   }
 
   public int getR() {
