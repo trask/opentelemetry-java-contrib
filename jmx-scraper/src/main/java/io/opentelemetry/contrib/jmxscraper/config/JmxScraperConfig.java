@@ -5,12 +5,16 @@
 
 package io.opentelemetry.contrib.jmxscraper.config;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableSet;
+
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -19,7 +23,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 /** This class keeps application settings */
-public class JmxScraperConfig {
+public final class JmxScraperConfig {
 
   private static final Logger logger = Logger.getLogger(JmxScraperConfig.class.getName());
 
@@ -49,9 +53,9 @@ public class JmxScraperConfig {
 
   private String serviceUrl = "";
 
-  private List<String> jmxConfig = Collections.emptyList();
+  private List<String> jmxConfig = emptyList();
 
-  private Set<String> targetSystems = Collections.emptySet();
+  private Set<String> targetSystems = emptySet();
 
   private TargetSystemSource targetSystemSource = TargetSystemSource.AUTO;
 
@@ -217,8 +221,8 @@ public class JmxScraperConfig {
           "at least one of '" + JMX_TARGET_SYSTEM + "' or '" + JMX_CONFIG + "' must be set");
     }
 
-    scraperConfig.jmxConfig = Collections.unmodifiableList(jmxConfig);
-    scraperConfig.targetSystems = Collections.unmodifiableSet(new HashSet<>(targetSystem));
+    scraperConfig.jmxConfig = unmodifiableList(jmxConfig);
+    scraperConfig.targetSystems = unmodifiableSet(new HashSet<>(targetSystem));
 
     scraperConfig.username = config.getString("otel.jmx.username");
     scraperConfig.password = config.getString("otel.jmx.password");
