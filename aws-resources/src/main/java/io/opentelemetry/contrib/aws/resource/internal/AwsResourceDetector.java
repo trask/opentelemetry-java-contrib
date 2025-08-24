@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.aws.resource.internal;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.incubator.config.DeclarativeConfigProperties;
 import io.opentelemetry.contrib.aws.resource.BeanstalkResource;
 import io.opentelemetry.contrib.aws.resource.Ec2Resource;
@@ -15,7 +16,9 @@ import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceBuilder;
 
-public class AwsResourceDetector implements ComponentProvider<Resource> {
+@AutoService(ComponentProvider.class)
+@SuppressWarnings("rawtypes")
+public final class AwsResourceDetector implements ComponentProvider<Resource> {
 
   @Override
   public Class<Resource> getType() {
