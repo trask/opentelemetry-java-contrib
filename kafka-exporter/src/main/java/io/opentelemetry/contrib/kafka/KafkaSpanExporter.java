@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.kafka;
 
+import static java.util.Objects.requireNonNull;
+
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 @ThreadSafe
 @SuppressWarnings("FutureReturnValueIgnored")
-public class KafkaSpanExporter implements SpanExporter {
+public final class KafkaSpanExporter implements SpanExporter {
   private static final Logger logger = LoggerFactory.getLogger(KafkaSpanExporter.class);
   private final String topicName;
   private final Producer<String, Collection<SpanData>> producer;
@@ -43,9 +45,9 @@ public class KafkaSpanExporter implements SpanExporter {
       Producer<String, Collection<SpanData>> producer,
       ExecutorService executorService,
       long timeoutInSeconds) {
-    this.topicName = topicName;
-    this.producer = producer;
-    this.executorService = executorService;
+    this.topicName = requireNonNull(topicName, "topicName");
+    this.producer = requireNonNull(producer, "producer");
+    this.executorService = requireNonNull(executorService, "executorService");
     this.timeoutInSeconds = timeoutInSeconds;
   }
 

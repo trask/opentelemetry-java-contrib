@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.kafka;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 import io.opentelemetry.exporter.internal.otlp.traces.ResourceSpansMarshaler;
@@ -16,16 +17,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
 
-public class SpanDataSerializer implements Serializer<Collection<SpanData>> {
+public final class SpanDataSerializer implements Serializer<Collection<SpanData>> {
   @Override
   public byte[] serialize(String topic, Collection<SpanData> data) {
-    if (Objects.isNull(data)) {
-      throw new SerializationException("Cannot serialize null");
-    }
+    requireNonNull(data, "data");
     return convertSpansToRequest(data).toByteArray();
   }
 
