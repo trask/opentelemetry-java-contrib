@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.metrics.prometheus.clientbridge;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
@@ -26,7 +27,6 @@ import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.common.TextFormat;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +84,7 @@ class PrometheusCollectorTest {
             ImmutableSumData.create(
                 /* isMonotonic= */ true,
                 AggregationTemporality.CUMULATIVE,
-                Collections.singletonList(
+                singletonList(
                     ImmutableLongPointData.create(
                         1633947011000000000L,
                         1633950672000000000L,
@@ -99,7 +99,7 @@ class PrometheusCollectorTest {
             ImmutableSumData.create(
                 /* isMonotonic= */ true,
                 AggregationTemporality.CUMULATIVE,
-                Collections.singletonList(
+                singletonList(
                     ImmutableDoublePointData.create(
                         1633947011000000000L,
                         1633950672000000000L,
