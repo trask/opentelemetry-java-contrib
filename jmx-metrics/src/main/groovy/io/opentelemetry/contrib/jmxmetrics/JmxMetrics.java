@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.jmxmetrics;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.logging.Level.SEVERE;
+
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,8 +16,6 @@ import java.net.MalformedURLException;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class JmxMetrics {
@@ -24,7 +25,7 @@ class JmxMetrics {
   private final GroovyRunner runner;
   private final JmxConfig config;
 
-  JmxMetrics(final JmxConfig config) {
+  JmxMetrics(JmxConfig config) {
     this.config = config;
 
     JmxClient jmxClient;
@@ -45,13 +46,13 @@ class JmxMetrics {
             try {
               runner.run();
             } catch (Throwable e) {
-              logger.log(Level.SEVERE, "Error gathering JMX metrics", e);
+              logger.log(SEVERE, "Error gathering JMX metrics", e);
             }
           }
         },
         0,
         config.intervalMilliseconds,
-        TimeUnit.MILLISECONDS);
+        MILLISECONDS);
     logger.info("Started GroovyRunner.");
   }
 
@@ -60,7 +61,7 @@ class JmxMetrics {
     exec.shutdown();
   }
 
-  private static JmxConfig getConfigFromArgs(final String[] args) {
+  private static JmxConfig getConfigFromArgs(String[] args) {
     if (args.length != 0 && (args.length != 2 || !args[0].equalsIgnoreCase("-config"))) {
       System.out.println(
           "Usage: java io.opentelemetry.contrib.jmxmetrics.JmxMetrics "
@@ -105,11 +106,11 @@ class JmxMetrics {
    *
    * @param args - must be of the form "-config {jmx_config_path,'-'}"
    */
-  public static void main(final String[] args) {
+  public static void main(String[] args) {
     JmxConfig config = getConfigFromArgs(args);
     config.validate();
 
-    final JmxMetrics jmxMetrics = new JmxMetrics(config);
+    JmxMetrics jmxMetrics = new JmxMetrics(config);
     jmxMetrics.start();
 
     Runtime.getRuntime()
