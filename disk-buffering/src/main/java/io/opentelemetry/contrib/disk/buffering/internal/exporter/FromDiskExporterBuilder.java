@@ -14,7 +14,6 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.function.Function;
-import org.jetbrains.annotations.NotNull;
 
 public class FromDiskExporterBuilder<T> {
 
@@ -31,7 +30,6 @@ public class FromDiskExporterBuilder<T> {
     this.storage = storage;
   }
 
-  @NotNull
   private static <T> SignalDeserializer<T> noopDeserializer() {
     return x -> emptyList();
   }

@@ -62,7 +62,6 @@ import io.opentelemetry.sdk.metrics.internal.data.ImmutableValueAtQuantile;
 import io.opentelemetry.sdk.resources.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
 public final class MetricDataMapper {
 
@@ -556,7 +555,6 @@ public final class MetricDataMapper {
         exemplarListToDoubleExemplarDataList(source.exemplars));
   }
 
-  @NotNull
   private static DoubleExemplarData exemplarToDoubleExemplarData(Exemplar source) {
     return ImmutableDoubleExemplarData.create(
         protoToAttributes(source.filtered_attributes),
@@ -565,7 +563,6 @@ public final class MetricDataMapper {
         source.as_double);
   }
 
-  @NotNull
   private static LongExemplarData exemplarToLongExemplarData(Exemplar source) {
     return ImmutableLongExemplarData.create(
         protoToAttributes(source.filtered_attributes),
@@ -574,7 +571,6 @@ public final class MetricDataMapper {
         source.as_int);
   }
 
-  @NotNull
   private static SpanContext createSpanContext(Exemplar value) {
     return SpanContext.create(
         ByteStringMapper.getInstance().protoToString(value.trace_id),

@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import javax.annotation.Nullable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Reads from a file and updates it in parallel in order to avoid re-reading the same items later.
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>More information on the overall storage process in the CONTRIBUTING.md file.
  */
 public final class ReadableFile implements FileOperations {
-  @NotNull private final File file;
+  private final File file;
   private final FileStream fileStream;
   private final StreamReader reader;
   private final Clock clock;
@@ -52,7 +51,7 @@ public final class ReadableFile implements FileOperations {
   }
 
   public ReadableFile(
-      @NotNull File file,
+      File file,
       long createdTimeMillis,
       Clock clock,
       StorageConfiguration configuration,
@@ -123,7 +122,6 @@ public final class ReadableFile implements FileOperations {
     return isClosed.get();
   }
 
-  @NotNull
   @Override
   public File getFile() {
     return file;

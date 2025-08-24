@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.disk.buffering.internal.storage;
 
 import static io.opentelemetry.contrib.disk.buffering.internal.storage.util.ClockBuddy.nowMillis;
+import static java.util.Objects.requireNonNull;
 
 import io.opentelemetry.contrib.disk.buffering.config.StorageConfiguration;
 import io.opentelemetry.contrib.disk.buffering.internal.storage.files.ReadableFile;
@@ -14,9 +15,7 @@ import io.opentelemetry.sdk.common.Clock;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import javax.annotation.Nullable;
-import org.jetbrains.annotations.NotNull;
 
 public final class FolderManager implements Closeable {
   private final File folder;
@@ -54,7 +53,6 @@ public final class FolderManager implements Closeable {
     return null;
   }
 
-  @NotNull
   public synchronized WritableFile createWritableFile() throws IOException {
     long systemCurrentTimeMillis = nowMillis(clock);
     File[] existingFiles = folder.listFiles();
@@ -133,7 +131,7 @@ public final class FolderManager implements Closeable {
         oldest = existingFile;
       }
     }
-    return Objects.requireNonNull(oldest);
+    return requireNonNull(oldest);
   }
 
   private boolean isNeededToClearSpaceForNewFile(File[] existingFiles) {

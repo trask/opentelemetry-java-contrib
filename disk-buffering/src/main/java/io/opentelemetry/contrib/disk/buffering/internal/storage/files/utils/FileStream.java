@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
-import org.jetbrains.annotations.NotNull;
 
 public class FileStream extends InputStream {
   private final RandomAccessFile file;
@@ -34,12 +33,12 @@ public class FileStream extends InputStream {
   }
 
   @Override
-  public int read(@NotNull byte[] bytes) throws IOException {
+  public int read(byte[] bytes) throws IOException {
     return file.read(bytes);
   }
 
   @Override
-  public int read(@NotNull byte[] b, int off, int len) throws IOException {
+  public int read(byte[] b, int off, int len) throws IOException {
     return file.read(b, off, len);
   }
 
