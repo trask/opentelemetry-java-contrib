@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.jfrevent;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
@@ -27,6 +27,10 @@ class JfrSpanProcessorTest {
 
   private static final String OPERATION_NAME = "Test Span";
 
+  static {
+    ContextStorage.addWrapper(JfrContextStorageWrapper::new);
+  }
+
   private SdkTracerProvider sdkTracerProvider;
   private Tracer tracer;
 
@@ -42,17 +46,13 @@ class JfrSpanProcessorTest {
     sdkTracerProvider.shutdown();
   }
 
-  static {
-    ContextStorage.addWrapper(JfrContextStorageWrapper::new);
-  }
-
   /**
    * Test basic single span.
    *
    * @throws java.io.IOException on io error
    */
   @Test
-  public void basicSpan() throws IOException {
+  void basicSpan() throws IOException {
     Path output = Files.createTempFile("test-basic-span", ".jfr");
 
     try {
@@ -89,7 +89,7 @@ class JfrSpanProcessorTest {
    * @throws java.lang.InterruptedException interrupted sleep
    */
   @Test
-  public void basicSpanWithScope() throws IOException, InterruptedException {
+  void basicSpanWithScope() throws IOException, InterruptedException {
     Path output = Files.createTempFile("test-basic-span-with-scope", ".jfr");
 
     try {
