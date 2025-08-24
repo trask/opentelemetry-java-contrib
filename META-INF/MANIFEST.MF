@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Created-By: Maven JAR Plugin 3.4.2
+Build-Jdk-Spec: 1.5
+Build-Tool-Jdk-Spec: 21
+Automatic-Module-Name: org.jacoco.agent.rt
+Implementation-Title: JaCoCo Java Agent
+Implementation-Vendor: Mountainminds GmbH & Co. KG
+Implementation-Version: 0.8.13
+Premain-Class: org.jacoco.agent.rt.internal_0e20598.PreMain
+

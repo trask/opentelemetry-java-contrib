@@ -14,6 +14,8 @@ dependencies {
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
 
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
+  compileOnly("com.google.auto.service:auto-service-annotations")
+  annotationProcessor("com.google.auto.service:auto-service")
 
   implementation("com.fasterxml.jackson.core:jackson-core")
   implementation("io.opentelemetry.semconv:opentelemetry-semconv")
