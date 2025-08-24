@@ -5,10 +5,10 @@
 
 package io.opentelemetry.contrib.resourceproviders;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.logging.Level.FINE;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
@@ -21,7 +21,7 @@ final class DelegatingServiceNameDetector implements ServiceNameDetector {
   private final List<ServiceNameDetector> delegates;
 
   DelegatingServiceNameDetector(List<ServiceNameDetector> delegates) {
-    this.delegates = Collections.unmodifiableList(new ArrayList<>(delegates));
+    this.delegates = unmodifiableList(new ArrayList<>(delegates));
   }
 
   @Override
