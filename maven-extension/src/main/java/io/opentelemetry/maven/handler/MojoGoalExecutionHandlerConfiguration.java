@@ -5,23 +5,24 @@
 
 package io.opentelemetry.maven.handler;
 
+import static java.util.Arrays.asList;
+
 import io.opentelemetry.maven.MavenGoal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public class MojoGoalExecutionHandlerConfiguration {
+public final class MojoGoalExecutionHandlerConfiguration {
 
   public static Map<MavenGoal, MojoGoalExecutionHandler> loadMojoGoalExecutionHandler(
       ClassLoader classLoader) {
 
     // built-in handlers
     List<MojoGoalExecutionHandler> builtInHandlers =
-        Arrays.asList(
+        asList(
             new GoogleJibBuildHandler(),
             new MavenDeployHandler(),
             new SnykMonitorHandler(),
