@@ -5,13 +5,13 @@
 
 package io.opentelemetry.contrib.baggage.processor;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.ImmutableMap;
 import io.opentelemetry.api.baggage.Baggage;
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.common.ComponentLoader;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
@@ -191,7 +191,7 @@ class BaggageProcessorCustomizerTest {
             Collections.singletonList("*"))) {
       try (Scope ignore = Baggage.current().toBuilder().put("key", "value").build().makeCurrent()) {
         processor.onEmit(Context.current(), logRecord);
-        verify(logRecord).setAttribute(AttributeKey.stringKey("key"), "value");
+        verify(logRecord).setAttribute(stringKey("key"), "value");
       }
     }
   }
@@ -209,8 +209,8 @@ class BaggageProcessorCustomizerTest {
               .build()
               .makeCurrent()) {
         processor.onEmit(Context.current(), logRecord);
-        verify(logRecord).setAttribute(AttributeKey.stringKey("key"), "value");
-        verify(logRecord, Mockito.never()).setAttribute(AttributeKey.stringKey("other"), "value");
+        verify(logRecord).setAttribute(stringKey("key"), "value");
+        verify(logRecord, Mockito.never()).setAttribute(stringKey("other"), "value");
       }
     }
   }
