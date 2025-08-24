@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.metrics.micrometer;
 
+import static java.util.Objects.requireNonNull;
+
 import io.micrometer.core.instrument.MeterRegistry;
 import io.opentelemetry.api.metrics.MeterBuilder;
 import io.opentelemetry.api.metrics.MeterProvider;
 import io.opentelemetry.contrib.metrics.micrometer.internal.MemoizingSupplier;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -21,6 +22,24 @@ public final class MicrometerMeterProvider implements MeterProvider, AutoCloseab
 
   private final MeterProviderSharedState meterProviderSharedState;
   private final CallbackRegistrar callbackRegistrar;
+
+  /** Returns a new builder instance for this provider with the specified {@link MeterRegistry}. */
+  public static MicrometerMeterProviderBuilder builder(MeterRegistry meterRegistry) {
+    requireNonNull(meterRegistry, "meterRegistry");
+    return new MicrometerMeterProviderBuilder(() -> meterRegistry);
+  }
+
+  /**
+   * Returns a new builder instance for this provider with a {@link Supplier} for a {@link
+   * MeterRegistry}.
+   *
+   * <p>This method should be used when the {@link MeterRegistry} must be lazily initialized.
+   */
+  public static MicrometerMeterProviderBuilder builder(
+      Supplier<MeterRegistry> meterRegistrySupplier) {
+    requireNonNull(meterRegistrySupplier, "meterRegistrySupplier");
+    return new MicrometerMeterProviderBuilder(new MemoizingSupplier<>(meterRegistrySupplier));
+  }
 
   /**
    * Creates a new instance of {@link MicrometerMeterProvider} for the provided {@link
@@ -35,34 +54,16 @@ public final class MicrometerMeterProvider implements MeterProvider, AutoCloseab
         new MeterProviderSharedState(meterRegistrySupplier, callbackRegistrar);
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public MeterBuilder meterBuilder(String instrumentationScopeName) {
+    requireNonNull(instrumentationScopeName, "instrumentationScopeName");
+    return new MicrometerMeterBuilder(meterProviderSharedState, instrumentationScopeName);
+  }
+
   /** Closes the current provider. */
   @Override
   public void close() {
     callbackRegistrar.close();
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public MeterBuilder meterBuilder(String instrumentationScopeName) {
-    Objects.requireNonNull(instrumentationScopeName, "instrumentationScopeName");
-    return new MicrometerMeterBuilder(meterProviderSharedState, instrumentationScopeName);
-  }
-
-  /** Returns a new builder instance for this provider with the specified {@link MeterRegistry}. */
-  public static MicrometerMeterProviderBuilder builder(MeterRegistry meterRegistry) {
-    Objects.requireNonNull(meterRegistry, "meterRegistry");
-    return new MicrometerMeterProviderBuilder(() -> meterRegistry);
-  }
-
-  /**
-   * Returns a new builder instance for this provider with a {@link Supplier} for a {@link
-   * MeterRegistry}.
-   *
-   * <p>This method should be used when the {@link MeterRegistry} must be lazily initialized.
-   */
-  public static MicrometerMeterProviderBuilder builder(
-      Supplier<MeterRegistry> meterRegistrySupplier) {
-    Objects.requireNonNull(meterRegistrySupplier, "meterRegistrySupplier");
-    return new MicrometerMeterProviderBuilder(new MemoizingSupplier<>(meterRegistrySupplier));
   }
 }
