@@ -52,7 +52,7 @@ class JfrSpanProcessorTest {
    * @throws java.io.IOException on io error
    */
   @Test
-  public void basicSpan() throws IOException {
+  void basicSpan() throws IOException {
     Path output = Files.createTempFile("test-basic-span", ".jfr");
 
     try {
@@ -89,7 +89,7 @@ class JfrSpanProcessorTest {
    * @throws java.lang.InterruptedException interrupted sleep
    */
   @Test
-  public void basicSpanWithScope() throws IOException, InterruptedException {
+  void basicSpanWithScope() throws IOException, InterruptedException {
     Path output = Files.createTempFile("test-basic-span-with-scope", ".jfr");
 
     try {
