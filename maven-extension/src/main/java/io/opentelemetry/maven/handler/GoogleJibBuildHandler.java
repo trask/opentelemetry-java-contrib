@@ -5,6 +5,7 @@
 
 package io.opentelemetry.maven.handler;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -21,7 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** See https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin */
-final class GoogleJibBuildHandler implements MojoGoalExecutionHandler {
+@AutoService(MojoGoalExecutionHandler.class)
+public final class GoogleJibBuildHandler implements MojoGoalExecutionHandler {
   private static final Logger logger = LoggerFactory.getLogger(GoogleJibBuildHandler.class);
 
   @Override

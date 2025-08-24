@@ -5,6 +5,7 @@
 
 package io.opentelemetry.maven.handler;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -26,7 +27,8 @@ import org.slf4j.LoggerFactory;
  * achieve this instrumenting the <a
  * href="https://projects.eclipse.org/projects/technology.aether">Aether library</a>
  */
-final class MavenDeployHandler implements MojoGoalExecutionHandler {
+@AutoService(MojoGoalExecutionHandler.class)
+public final class MavenDeployHandler implements MojoGoalExecutionHandler {
   private static final Logger logger = LoggerFactory.getLogger(MavenDeployHandler.class);
 
   @Override

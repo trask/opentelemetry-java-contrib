@@ -5,6 +5,7 @@
 
 package io.opentelemetry.maven.handler;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -32,7 +33,8 @@ import org.slf4j.LoggerFactory;
  *       : spring-boot/spring-boot-project/spring-boot-tools/spring-boot-maven-plugin/</a>
  * </ul>
  */
-final class SpringBootBuildImageHandler implements MojoGoalExecutionHandler {
+@AutoService(MojoGoalExecutionHandler.class)
+public final class SpringBootBuildImageHandler implements MojoGoalExecutionHandler {
   private static final Logger logger = LoggerFactory.getLogger(SpringBootBuildImageHandler.class);
 
   @Override

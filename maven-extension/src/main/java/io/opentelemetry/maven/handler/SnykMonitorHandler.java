@@ -5,6 +5,7 @@
 
 package io.opentelemetry.maven.handler;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.maven.MavenGoal;
@@ -16,7 +17,8 @@ import java.util.List;
 import org.apache.maven.execution.ExecutionEvent;
 
 /** See https://github.com/snyk/snyk-maven-plugin */
-final class SnykMonitorHandler implements MojoGoalExecutionHandler {
+@AutoService(MojoGoalExecutionHandler.class)
+public final class SnykMonitorHandler implements MojoGoalExecutionHandler {
 
   /**
    * Snyk command "reversed engineered" invoking the Snyk CLI on a Maven project with the `-d` debug

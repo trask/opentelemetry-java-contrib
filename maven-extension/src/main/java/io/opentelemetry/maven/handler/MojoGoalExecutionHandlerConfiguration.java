@@ -20,13 +20,7 @@ public class MojoGoalExecutionHandlerConfiguration {
       ClassLoader classLoader) {
 
     // built-in handlers
-    List<MojoGoalExecutionHandler> builtInHandlers =
-        Arrays.asList(
-            new GoogleJibBuildHandler(),
-            new MavenDeployHandler(),
-            new SnykMonitorHandler(),
-            new SnykTestHandler(),
-            new SpringBootBuildImageHandler());
+    List<MojoGoalExecutionHandler> builtInHandlers = Arrays.asList();
 
     List<MojoGoalExecutionHandler> spiHandlers = new ArrayList<>();
     // Must use the classloader of the class rather the default ThreadContextClassloader to prevent
