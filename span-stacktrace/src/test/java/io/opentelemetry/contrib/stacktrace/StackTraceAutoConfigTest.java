@@ -5,21 +5,22 @@
 
 package io.opentelemetry.contrib.stacktrace;
 
+import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
+import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.trace.ReadableSpan;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
-public class StackTraceAutoConfigTest {
+class StackTraceAutoConfigTest {
 
   @Test
   void defaultConfig() {
-    DefaultConfigProperties config = DefaultConfigProperties.createFromMap(Collections.emptyMap());
+    DefaultConfigProperties config = DefaultConfigProperties.createFromMap(emptyMap());
     assertThat(StackTraceAutoConfig.getMinDuration(config)).isEqualTo(5000000L);
     Predicate<ReadableSpan> filterPredicate = StackTraceAutoConfig.getFilterPredicate(config);
     assertThat(filterPredicate).isNotNull();
