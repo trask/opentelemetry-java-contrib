@@ -6,6 +6,8 @@
 package io.opentelemetry.contrib.sampler.consistent56;
 
 import static io.opentelemetry.contrib.sampler.consistent56.TestUtil.generateRandomTraceId;
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.api.common.AttributeKey;
@@ -23,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.SplittableRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +75,7 @@ class ConsistentRateLimitingSamplerTest {
         ConsistentSampler.rateLimited(
             delegate, targetSpansPerSecondLimit, adaptationTimeSeconds, nanoTimeSupplier);
 
-    long nanosBetweenSpans = TimeUnit.MICROSECONDS.toNanos(100);
+    long nanosBetweenSpans = MICROSECONDS.toNanos(100);
     int numSpans = 1000000;
 
     List<Long> spanSampledNanos = new ArrayList<>();
@@ -96,7 +97,7 @@ class ConsistentRateLimitingSamplerTest {
 
     long numSampledSpansInLast5Seconds =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(95) && x <= TimeUnit.SECONDS.toNanos(100))
+            .filter(x -> x > SECONDS.toNanos(95) && x <= SECONDS.toNanos(100))
             .count();
 
     assertThat(numSampledSpansInLast5Seconds / 5.)
@@ -115,7 +116,7 @@ class ConsistentRateLimitingSamplerTest {
         ConsistentSampler.rateLimited(
             delegate, targetSpansPerSecondLimit, adaptationTimeSeconds, lowResolutionTimeSupplier);
 
-    long nanosBetweenSpans = TimeUnit.MICROSECONDS.toNanos(100);
+    long nanosBetweenSpans = MICROSECONDS.toNanos(100);
     int numSpans = 1000000;
 
     List<Long> spanSampledNanos = new ArrayList<>();
@@ -137,7 +138,7 @@ class ConsistentRateLimitingSamplerTest {
 
     long numSampledSpansInLast5Seconds =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(95) && x <= TimeUnit.SECONDS.toNanos(100))
+            .filter(x -> x > SECONDS.toNanos(95) && x <= SECONDS.toNanos(100))
             .count();
 
     assertThat(numSampledSpansInLast5Seconds / 5.)
@@ -154,8 +155,8 @@ class ConsistentRateLimitingSamplerTest {
         ConsistentSampler.rateLimited(
             targetSpansPerSecondLimit, adaptationTimeSeconds, nanoTimeSupplier);
 
-    long nanosBetweenSpans1 = TimeUnit.MICROSECONDS.toNanos(100);
-    long nanosBetweenSpans2 = TimeUnit.MICROSECONDS.toNanos(10);
+    long nanosBetweenSpans1 = MICROSECONDS.toNanos(100);
+    long nanosBetweenSpans2 = MICROSECONDS.toNanos(10);
     int numSpans1 = 500000;
     int numSpans2 = 5000000;
 
@@ -192,15 +193,15 @@ class ConsistentRateLimitingSamplerTest {
 
     long numSampledSpansWithin5SecondsBeforeChange =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(45) && x <= TimeUnit.SECONDS.toNanos(50))
+            .filter(x -> x > SECONDS.toNanos(45) && x <= SECONDS.toNanos(50))
             .count();
     long numSampledSpansWithin5SecondsAfterChange =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(50) && x <= TimeUnit.SECONDS.toNanos(55))
+            .filter(x -> x > SECONDS.toNanos(50) && x <= SECONDS.toNanos(55))
             .count();
     long numSampledSpansInLast5Seconds =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(95) && x <= TimeUnit.SECONDS.toNanos(100))
+            .filter(x -> x > SECONDS.toNanos(95) && x <= SECONDS.toNanos(100))
             .count();
 
     assertThat(numSampledSpansWithin5SecondsBeforeChange / 5.)
@@ -221,8 +222,8 @@ class ConsistentRateLimitingSamplerTest {
         ConsistentSampler.rateLimited(
             targetSpansPerSecondLimit, adaptationTimeSeconds, nanoTimeSupplier);
 
-    long nanosBetweenSpans1 = TimeUnit.MICROSECONDS.toNanos(10);
-    long nanosBetweenSpans2 = TimeUnit.MICROSECONDS.toNanos(100);
+    long nanosBetweenSpans1 = MICROSECONDS.toNanos(10);
+    long nanosBetweenSpans2 = MICROSECONDS.toNanos(100);
     int numSpans1 = 5000000;
     int numSpans2 = 500000;
 
@@ -259,15 +260,15 @@ class ConsistentRateLimitingSamplerTest {
 
     long numSampledSpansWithin5SecondsBeforeChange =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(45) && x <= TimeUnit.SECONDS.toNanos(50))
+            .filter(x -> x > SECONDS.toNanos(45) && x <= SECONDS.toNanos(50))
             .count();
     long numSampledSpansWithin5SecondsAfterChange =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(50) && x <= TimeUnit.SECONDS.toNanos(55))
+            .filter(x -> x > SECONDS.toNanos(50) && x <= SECONDS.toNanos(55))
             .count();
     long numSampledSpansInLast5Seconds =
         spanSampledNanos.stream()
-            .filter(x -> x > TimeUnit.SECONDS.toNanos(95) && x <= TimeUnit.SECONDS.toNanos(100))
+            .filter(x -> x > SECONDS.toNanos(95) && x <= SECONDS.toNanos(100))
             .count();
 
     assertThat(numSampledSpansWithin5SecondsBeforeChange / 5.)
