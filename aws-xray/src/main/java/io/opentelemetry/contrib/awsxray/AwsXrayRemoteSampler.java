@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.context.Context;
@@ -29,7 +32,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +41,7 @@ import javax.annotation.Nullable;
 /** Remote sampler that gets sampling configuration from AWS X-Ray. */
 public final class AwsXrayRemoteSampler implements Sampler, Closeable {
 
-  static final long DEFAULT_TARGET_INTERVAL_NANOS = TimeUnit.SECONDS.toNanos(10);
+  static final long DEFAULT_TARGET_INTERVAL_NANOS = SECONDS.toNanos(10);
 
   private static final Logger logger = Logger.getLogger(AwsXrayRemoteSampler.class.getName());
 
@@ -142,8 +144,7 @@ public final class AwsXrayRemoteSampler implements Sampler, Closeable {
           existingFetchTargetsFuture.cancel(false);
         }
         fetchTargetsFuture =
-            executor.schedule(
-                this::fetchTargets, DEFAULT_TARGET_INTERVAL_NANOS, TimeUnit.NANOSECONDS);
+            executor.schedule(this::fetchTargets, DEFAULT_TARGET_INTERVAL_NANOS, NANOSECONDS);
       }
     } catch (Throwable t) {
       logger.log(Level.FINE, "Failed to update sampler", t);
@@ -153,7 +154,7 @@ public final class AwsXrayRemoteSampler implements Sampler, Closeable {
 
   private void scheduleSamplerUpdate() {
     long delay = pollingIntervalNanos + jitterNanos.next();
-    pollFuture = executor.schedule(this::getAndUpdateSampler, delay, TimeUnit.NANOSECONDS);
+    pollFuture = executor.schedule(this::getAndUpdateSampler, delay, NANOSECONDS);
   }
 
   /**
@@ -168,7 +169,7 @@ public final class AwsXrayRemoteSampler implements Sampler, Closeable {
     if (pollFuture == null) {
       return null;
     }
-    return Duration.ofNanos(pollFuture.getDelay(TimeUnit.NANOSECONDS));
+    return Duration.ofNanos(pollFuture.getDelay(NANOSECONDS));
   }
 
   private void fetchTargets() {
@@ -194,15 +195,14 @@ public final class AwsXrayRemoteSampler implements Sampler, Closeable {
     } catch (Throwable t) {
       // Might be a transient API failure, try again after a default interval.
       fetchTargetsFuture =
-          executor.schedule(
-              this::fetchTargets, DEFAULT_TARGET_INTERVAL_NANOS, TimeUnit.NANOSECONDS);
+          executor.schedule(this::fetchTargets, DEFAULT_TARGET_INTERVAL_NANOS, NANOSECONDS);
       return;
     }
 
     long nextTargetFetchIntervalNanos =
         xrayRulesSampler.nextTargetFetchTimeNanos() - clock.nanoTime();
     fetchTargetsFuture =
-        executor.schedule(this::fetchTargets, nextTargetFetchIntervalNanos, TimeUnit.NANOSECONDS);
+        executor.schedule(this::fetchTargets, nextTargetFetchIntervalNanos, NANOSECONDS);
   }
 
   @Override
