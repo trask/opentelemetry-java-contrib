@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -14,7 +15,6 @@ import io.opentelemetry.contrib.disk.buffering.internal.exporter.ToDiskExporter;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ class SpanToDiskExporterTest {
   void delegateExport() {
     SpanData span1 = mock();
     SpanData span2 = mock();
-    List<SpanData> spans = Arrays.asList(span1, span2);
+    List<SpanData> spans = asList(span1, span2);
 
     SpanToDiskExporter testClass = new SpanToDiskExporter(delegate);
     testClass.export(spans);
