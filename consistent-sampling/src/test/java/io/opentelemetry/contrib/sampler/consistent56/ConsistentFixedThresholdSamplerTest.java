@@ -25,7 +25,7 @@ import org.hipparchus.stat.inference.BinomialTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ConsistentFixedThresholdSamplerTest {
+class ConsistentFixedThresholdSamplerTest {
 
   private Context parentContext;
   private String name;

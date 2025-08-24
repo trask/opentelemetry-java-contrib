@@ -5,6 +5,9 @@
 
 package io.opentelemetry.contrib.inferredspans.internal.util;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.TracerProvider;
@@ -12,9 +15,7 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.platform.commons.support.HierarchyTraversalMode;
 import org.junit.platform.commons.support.ReflectionSupport;
 
@@ -53,12 +54,12 @@ public class OtelReflectionUtils {
       if (recurse) {
         return childProcessors.stream()
             .flatMap(proc -> flattenCompositeProcessor(proc, /* recurse= */ true).stream())
-            .collect(Collectors.toList());
+            .collect(toList());
       } else {
         return childProcessors;
       }
     } else {
-      return Collections.singletonList(active);
+      return singletonList(active);
     }
   }
 

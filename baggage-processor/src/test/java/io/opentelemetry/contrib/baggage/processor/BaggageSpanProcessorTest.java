@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class BaggageSpanProcessorTest {
+class BaggageSpanProcessorTest {
 
   @Test
   public void test_baggageSpanProcessor_adds_attributes_to_spans(@Mock ReadWriteSpan span) {
