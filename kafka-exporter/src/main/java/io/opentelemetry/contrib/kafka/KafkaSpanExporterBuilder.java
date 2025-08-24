@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.kafka;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
@@ -16,15 +17,16 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.Nullable;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.common.serialization.Serializer;
 
-public class KafkaSpanExporterBuilder {
+public final class KafkaSpanExporterBuilder {
   private static final long DEFAULT_TIMEOUT_IN_SECONDS = 5L;
-  private String topicName;
-  private Producer<String, Collection<SpanData>> producer;
-  private ExecutorService executorService;
+  @Nullable private String topicName;
+  @Nullable private Producer<String, Collection<SpanData>> producer;
+  @Nullable private ExecutorService executorService;
   private long timeoutInSeconds = DEFAULT_TIMEOUT_IN_SECONDS;
 
   @SuppressWarnings(value = {"NullAway"})
@@ -32,19 +34,19 @@ public class KafkaSpanExporterBuilder {
 
   @CanIgnoreReturnValue
   public KafkaSpanExporterBuilder setTopicName(String topicName) {
-    this.topicName = topicName;
+    this.topicName = requireNonNull(topicName, "topicName");
     return this;
   }
 
   @CanIgnoreReturnValue
   public KafkaSpanExporterBuilder setProducer(Producer<String, Collection<SpanData>> producer) {
-    this.producer = producer;
+    this.producer = requireNonNull(producer, "producer");
     return this;
   }
 
   @CanIgnoreReturnValue
   public KafkaSpanExporterBuilder setExecutorService(ExecutorService executorService) {
-    this.executorService = executorService;
+    this.executorService = requireNonNull(executorService, "executorService");
     return this;
   }
 
@@ -67,10 +69,10 @@ public class KafkaSpanExporterBuilder {
     return new KafkaSpanExporter(topicName, producer, executorService, timeoutInSeconds);
   }
 
-  public static class ProducerBuilder {
-    private Map<String, Object> config;
-    private Serializer<String> keySerializer;
-    private Serializer<Collection<SpanData>> valueSerializer;
+  public static final class ProducerBuilder {
+    @Nullable private Map<String, Object> config;
+    @Nullable private Serializer<String> keySerializer;
+    @Nullable private Serializer<Collection<SpanData>> valueSerializer;
 
     public static ProducerBuilder newInstance() {
       return new ProducerBuilder();
@@ -81,19 +83,19 @@ public class KafkaSpanExporterBuilder {
 
     @CanIgnoreReturnValue
     public ProducerBuilder setConfig(Map<String, Object> config) {
-      this.config = config;
+      this.config = requireNonNull(config, "config");
       return this;
     }
 
     @CanIgnoreReturnValue
     public ProducerBuilder setKeySerializer(Serializer<String> keySerializer) {
-      this.keySerializer = keySerializer;
+      this.keySerializer = requireNonNull(keySerializer, "keySerializer");
       return this;
     }
 
     @CanIgnoreReturnValue
     public ProducerBuilder setValueSerializer(Serializer<Collection<SpanData>> valueSerializer) {
-      this.valueSerializer = valueSerializer;
+      this.valueSerializer = requireNonNull(valueSerializer, "valueSerializer");
       return this;
     }
 
