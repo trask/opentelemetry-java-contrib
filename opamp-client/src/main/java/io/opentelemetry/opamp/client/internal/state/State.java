@@ -5,8 +5,9 @@
 
 package io.opentelemetry.opamp.client.internal.state;
 
+import static java.util.Objects.requireNonNull;
+
 import io.opentelemetry.opamp.client.internal.request.Field;
-import java.util.Objects;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
@@ -24,7 +25,7 @@ public interface State<T> extends Supplier<T> {
 
   @Nonnull
   default T mustGet() {
-    return Objects.requireNonNull(get());
+    return requireNonNull(get());
   }
 
   final class InstanceUid extends InMemoryState<byte[]> {

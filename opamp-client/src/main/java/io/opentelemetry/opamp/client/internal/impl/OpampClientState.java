@@ -5,16 +5,17 @@
 
 package io.opentelemetry.opamp.client.internal.impl;
 
+import static java.util.Collections.unmodifiableList;
+
 import io.opentelemetry.opamp.client.internal.state.State;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * This class is internal and is hence not for public use. Its APIs are unstable and can change at
  * any time.
  */
-public final class OpampClientState {
+public class OpampClientState {
   public final State.RemoteConfigStatus remoteConfigStatus;
   public final State.SequenceNum sequenceNum;
   public final State.AgentDescription agentDescription;
@@ -49,7 +50,7 @@ public final class OpampClientState {
     providedItems.add(flags);
     providedItems.add(effectiveConfig);
 
-    items = Collections.unmodifiableList(providedItems);
+    items = unmodifiableList(providedItems);
   }
 
   public List<State<?>> getAll() {
