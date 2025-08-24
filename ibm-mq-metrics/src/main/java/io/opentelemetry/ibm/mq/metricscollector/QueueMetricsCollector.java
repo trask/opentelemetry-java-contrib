@@ -5,13 +5,14 @@
 
 package io.opentelemetry.ibm.mq.metricscollector;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.ibm.mq.opentelemetry.ConfigWrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public final class QueueMetricsCollector implements Consumer<MetricsCollectorCon
 
     try {
       int timeout = this.config.getInt("queueMetricsCollectionTimeoutInSeconds", 20);
-      threadPool.invokeAll(taskJobs, timeout, TimeUnit.SECONDS);
+      threadPool.invokeAll(taskJobs, timeout, SECONDS);
     } catch (InterruptedException e) {
       logger.error("The thread was interrupted ", e);
     }
