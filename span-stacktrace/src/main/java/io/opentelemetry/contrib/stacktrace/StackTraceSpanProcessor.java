@@ -5,27 +5,29 @@
 
 package io.opentelemetry.contrib.stacktrace;
 
+import static io.opentelemetry.semconv.CodeAttributes.CODE_STACKTRACE;
+
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.internal.ExtendedSpanProcessor;
-import io.opentelemetry.semconv.CodeAttributes;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.function.Predicate;
+import javax.annotation.Nullable;
 
-public class StackTraceSpanProcessor implements ExtendedSpanProcessor {
+public final class StackTraceSpanProcessor implements ExtendedSpanProcessor {
 
   private final long minSpanDurationNanos;
 
-  private final Predicate<ReadableSpan> filterPredicate;
+  @Nullable private final Predicate<ReadableSpan> filterPredicate;
 
   /**
    * @param minSpanDurationNanos minimum span duration in ns for stacktrace capture
    * @param filterPredicate extra filter function to exclude spans if needed
    */
   public StackTraceSpanProcessor(
-      long minSpanDurationNanos, Predicate<ReadableSpan> filterPredicate) {
+      long minSpanDurationNanos, @Nullable Predicate<ReadableSpan> filterPredicate) {
     if (minSpanDurationNanos < 0) {
       throw new IllegalArgumentException("minimal span duration must be positive or zero");
     }
@@ -52,14 +54,14 @@ public class StackTraceSpanProcessor implements ExtendedSpanProcessor {
     if (span.getLatencyNanos() < minSpanDurationNanos) {
       return;
     }
-    if (span.getAttribute(CodeAttributes.CODE_STACKTRACE) != null) {
+    if (span.getAttribute(CODE_STACKTRACE) != null) {
       // Span already has a stacktrace, do not override
       return;
     }
-    if (!filterPredicate.test(span)) {
+    if (filterPredicate != null && !filterPredicate.test(span)) {
       return;
     }
-    span.setAttribute(CodeAttributes.CODE_STACKTRACE, generateSpanEndStacktrace());
+    span.setAttribute(CODE_STACKTRACE, generateSpanEndStacktrace());
   }
 
   @Override
