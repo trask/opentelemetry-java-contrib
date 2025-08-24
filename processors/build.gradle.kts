@@ -11,8 +11,14 @@ java {
   targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+// AutoService plugin is applied by otel.java-conventions, but we need to declare the dependency
+// to use @AutoService annotation
+
 dependencies {
+  annotationProcessor("com.google.auto.service:auto-service")
+
   api("io.opentelemetry:opentelemetry-sdk")
+  compileOnly("com.google.auto.service:auto-service")
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
   compileOnly("io.opentelemetry:opentelemetry-api-incubator")
 
