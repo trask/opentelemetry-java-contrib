@@ -1,6 +1,7 @@
 plugins {
   id("otel.java-conventions")
   id("otel.publish-conventions")
+  id("otel.errorprone-conventions")
 }
 
 description = "Prometheus client bridge"

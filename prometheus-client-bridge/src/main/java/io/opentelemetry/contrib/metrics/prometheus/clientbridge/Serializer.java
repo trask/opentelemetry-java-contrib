@@ -31,7 +31,7 @@ import java.util.List;
 /** Serializes metrics into Prometheus exposition formats. */
 // Adapted from
 // https://github.com/prometheus/client_java/blob/master/simpleclient_common/src/main/java/io/prometheus/client/exporter/common/TextFormat.java
-class Serializer {
+final class Serializer {
 
   /**
    * Returns the lower bound of a bucket (all values would have been greater than).
