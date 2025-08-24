@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
-public class InferredSpansConfiguration {
+public final class InferredSpansConfiguration {
 
   private final boolean profilerLoggingEnabled;
   private final boolean backupDiagnosticFiles;
