@@ -22,11 +22,12 @@ import io.opentelemetry.opamp.client.internal.request.Request;
 import io.opentelemetry.opamp.client.internal.request.service.RequestService;
 import io.opentelemetry.opamp.client.internal.response.MessageData;
 import io.opentelemetry.opamp.client.internal.response.OpampServerResponseException;
+import static java.util.Collections.unmodifiableList;
+
 import io.opentelemetry.opamp.client.internal.response.Response;
 import io.opentelemetry.opamp.client.internal.state.ObservableState;
 import io.opentelemetry.opamp.client.internal.state.State;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -71,14 +72,14 @@ public final class OpampClientImpl
     constantFields.add(Field.INSTANCE_UID);
     constantFields.add(Field.SEQUENCE_NUM);
     constantFields.add(Field.CAPABILITIES);
-    REQUIRED_FIELDS = Collections.unmodifiableList(constantFields);
+    REQUIRED_FIELDS = unmodifiableList(constantFields);
 
     // Compressable fields init
     List<Field> compressableFields = new ArrayList<>();
     compressableFields.add(Field.AGENT_DESCRIPTION);
     compressableFields.add(Field.EFFECTIVE_CONFIG);
     compressableFields.add(Field.REMOTE_CONFIG_STATUS);
-    COMPRESSABLE_FIELDS = Collections.unmodifiableList(compressableFields);
+    COMPRESSABLE_FIELDS = unmodifiableList(compressableFields);
   }
 
   public static OpampClientImpl create(
