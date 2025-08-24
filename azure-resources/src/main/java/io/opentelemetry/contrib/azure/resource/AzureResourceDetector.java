@@ -5,13 +5,15 @@
 
 package io.opentelemetry.contrib.azure.resource;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.incubator.config.DeclarativeConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceBuilder;
 
-public class AzureResourceDetector implements ComponentProvider<Resource> {
+@AutoService(ComponentProvider.class)
+public final class AzureResourceDetector implements ComponentProvider<Resource> {
 
   @Override
   public Class<Resource> getType() {
