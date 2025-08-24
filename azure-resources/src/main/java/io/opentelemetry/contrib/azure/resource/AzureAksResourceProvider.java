@@ -14,8 +14,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class AzureAksResourceProvider extends CloudResourceProvider {
+public final class AzureAksResourceProvider extends CloudResourceProvider {
 
+  // Environment variable that is set when running on Kubernetes
+  static final String KUBERNETES_SERVICE_HOST = "KUBERNETES_SERVICE_HOST";
   private static final Map<String, AzureVmResourceProvider.Entry> COMPUTE_MAPPING = new HashMap<>();
 
   static {
@@ -36,8 +38,6 @@ public class AzureAksResourceProvider extends CloudResourceProvider {
     return resourceGroup;
   }
 
-  // Environment variable that is set when running on Kubernetes
-  static final String KUBERNETES_SERVICE_HOST = "KUBERNETES_SERVICE_HOST";
   private final Supplier<Optional<String>> client;
   private final Map<String, String> environment;
 

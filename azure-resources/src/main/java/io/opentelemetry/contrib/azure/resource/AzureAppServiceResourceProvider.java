@@ -13,29 +13,31 @@ import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.HOST_
 import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.SERVICE_INSTANCE_ID;
 import static io.opentelemetry.semconv.ServiceAttributes.SERVICE_NAME;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.internal.StringUtils;
+import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
-public class AzureAppServiceResourceProvider extends CloudResourceProvider {
+@AutoService(ResourceProvider.class)
+public final class AzureAppServiceResourceProvider extends CloudResourceProvider {
 
   static final AttributeKey<String> AZURE_APP_SERVICE_STAMP_RESOURCE_ATTRIBUTE =
       AttributeKey.stringKey("azure.app.service.stamp");
   static final String REGION_NAME = "REGION_NAME";
+  static final String WEBSITE_INSTANCE_ID = "WEBSITE_INSTANCE_ID";
+  static final String WEBSITE_SITE_NAME = "WEBSITE_SITE_NAME";
   private static final String WEBSITE_HOME_STAMPNAME = "WEBSITE_HOME_STAMPNAME";
   private static final String WEBSITE_HOSTNAME = "WEBSITE_HOSTNAME";
-  static final String WEBSITE_INSTANCE_ID = "WEBSITE_INSTANCE_ID";
   private static final String WEBSITE_OWNER_NAME = "WEBSITE_OWNER_NAME";
   private static final String WEBSITE_RESOURCE_GROUP = "WEBSITE_RESOURCE_GROUP";
-  static final String WEBSITE_SITE_NAME = "WEBSITE_SITE_NAME";
   private static final String WEBSITE_SLOT_NAME = "WEBSITE_SLOT_NAME";
-
   private static final Map<AttributeKey<String>, String> ENV_VAR_MAPPING = new HashMap<>();
 
   static {

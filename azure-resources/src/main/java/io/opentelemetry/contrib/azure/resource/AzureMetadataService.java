@@ -19,9 +19,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AzureMetadataService {
+public final class AzureMetadataService {
+
   static final JsonFactory JSON_FACTORY = new JsonFactory();
   private static final URL METADATA_URL;
+  private static final Duration TIMEOUT = Duration.ofSeconds(5);
+  private static final Logger logger = Logger.getLogger(AzureMetadataService.class.getName());
 
   static {
     try {
@@ -32,10 +35,6 @@ public class AzureMetadataService {
   }
 
   private AzureMetadataService() {}
-
-  private static final Duration TIMEOUT = Duration.ofSeconds(5);
-
-  private static final Logger logger = Logger.getLogger(AzureMetadataService.class.getName());
 
   static Supplier<Optional<String>> defaultClient() {
     return () -> fetchMetadata(METADATA_URL);

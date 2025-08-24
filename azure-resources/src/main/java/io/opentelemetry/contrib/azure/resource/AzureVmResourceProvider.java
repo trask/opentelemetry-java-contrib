@@ -19,9 +19,11 @@ import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.OS_VE
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,9 +36,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jetbrains.annotations.NotNull;
 
-public class AzureVmResourceProvider extends CloudResourceProvider {
+@AutoService(ResourceProvider.class)
+public final class AzureVmResourceProvider extends CloudResourceProvider {
 
-  static class Entry {
+  static final class Entry {
     final AttributeKey<String> key;
     final Function<String, String> transform;
 
@@ -51,6 +54,7 @@ public class AzureVmResourceProvider extends CloudResourceProvider {
   }
 
   private static final Map<String, Entry> COMPUTE_MAPPING = new HashMap<>();
+  private static final Logger logger = Logger.getLogger(AzureVmResourceProvider.class.getName());
 
   static {
     COMPUTE_MAPPING.put("location", new Entry(CLOUD_REGION));
@@ -64,8 +68,6 @@ public class AzureVmResourceProvider extends CloudResourceProvider {
         "vmScaleSetName", new Entry(AttributeKey.stringKey("azure.vm.scaleset.name")));
     COMPUTE_MAPPING.put("sku", new Entry(AttributeKey.stringKey("azure.vm.sku")));
   }
-
-  private static final Logger logger = Logger.getLogger(AzureVmResourceProvider.class.getName());
 
   private final Supplier<Optional<String>> client;
 

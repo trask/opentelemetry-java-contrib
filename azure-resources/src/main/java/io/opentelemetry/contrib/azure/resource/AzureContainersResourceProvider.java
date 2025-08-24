@@ -16,13 +16,11 @@ import io.opentelemetry.sdk.resources.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AzureContainersResourceProvider extends CloudResourceProvider {
+public final class AzureContainersResourceProvider extends CloudResourceProvider {
 
   static final String CONTAINER_APP_NAME = "CONTAINER_APP_NAME";
-
   private static final String CONTAINER_APP_REPLICA_NAME = "CONTAINER_APP_REPLICA_NAME";
   private static final String CONTAINER_APP_REVISION = "CONTAINER_APP_REVISION";
-
   private static final Map<AttributeKey<String>, String> ENV_VAR_MAPPING = new HashMap<>();
 
   static {
