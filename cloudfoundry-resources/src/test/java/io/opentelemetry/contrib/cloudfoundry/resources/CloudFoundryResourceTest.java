@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.cloudfoundry.resources;
 
+import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.sdk.resources.Resource;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,7 +47,7 @@ class CloudFoundryResourceTest {
 
   @Test
   void noVcapApplication() {
-    Map<String, String> env = Collections.emptyMap();
+    Map<String, String> env = emptyMap();
     Resource resource = CloudFoundryResource.buildResource(env::get);
     assertThat(resource).isEqualTo(Resource.empty());
   }
