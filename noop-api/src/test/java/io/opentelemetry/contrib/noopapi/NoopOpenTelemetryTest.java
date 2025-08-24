@@ -5,9 +5,10 @@
 
 package io.opentelemetry.contrib.noopapi;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.concurrent.TimeUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
@@ -17,7 +18,6 @@ import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 class NoopOpenTelemetryTest {
@@ -59,9 +59,9 @@ class NoopOpenTelemetryTest {
     span1.setAttribute("key", 1L);
     span1.setAttribute("key", 1.0);
     span1.setAttribute("key", true);
-    span1.setAttribute(AttributeKey.stringKey("key"), "value");
+    span1.setAttribute(stringKey("key"), "value");
     span1.setSpanKind(SpanKind.CLIENT);
-    span1.setStartTimestamp(1, TimeUnit.DAYS);
+    span1.setStartTimestamp(1, DAYS);
 
     // No allocations
     assertThat(span1.startSpan()).isSameAs(Span.getInvalid());
