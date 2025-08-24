@@ -11,7 +11,7 @@ import io.opentelemetry.api.common.AttributeKey;
  * Inlines incubating attributes until they are stable, doing this prevents having a direct
  * dependency on incubating artifact which can conflict with another incubating version.
  */
-final class IncubatingAttributes {
+class IncubatingAttributes {
 
   private IncubatingAttributes() {}
 

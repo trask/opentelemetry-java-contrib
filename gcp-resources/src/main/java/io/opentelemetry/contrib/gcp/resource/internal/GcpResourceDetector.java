@@ -12,8 +12,8 @@ import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceBuilder;
 
-@AutoService(ComponentProvider.class)
 @SuppressWarnings("rawtypes")
+@AutoService(ComponentProvider.class)
 public final class GcpResourceDetector implements ComponentProvider<Resource> {
 
   @Override
