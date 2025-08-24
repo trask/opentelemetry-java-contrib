@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.inferredspans;
 
+import static java.util.Arrays.stream;
+
 import com.google.auto.service.AutoService;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
@@ -12,7 +14,6 @@ import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class InferredSpansAutoConfig implements AutoConfigurationCustomizerProvider {
+public final class InferredSpansAutoConfig implements AutoConfigurationCustomizerProvider {
 
   private static final Logger log = Logger.getLogger(InferredSpansAutoConfig.class.getName());
 
@@ -114,7 +115,7 @@ public class InferredSpansAutoConfig implements AutoConfigurationCustomizerProvi
       String wildcardListString = properties.getString(configKey);
       if (wildcardListString != null && !wildcardListString.isEmpty()) {
         List<WildcardMatcher> values =
-            Arrays.stream(wildcardListString.split(","))
+            stream(wildcardListString.split(","))
                 .filter(str -> !str.isEmpty())
                 .map(WildcardMatcher::valueOf)
                 .collect(Collectors.toList());

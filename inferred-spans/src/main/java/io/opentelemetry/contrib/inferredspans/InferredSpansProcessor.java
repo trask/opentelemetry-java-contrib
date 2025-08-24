@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-public class InferredSpansProcessor implements SpanProcessor {
+public final class InferredSpansProcessor implements SpanProcessor {
 
   private static final Logger logger = Logger.getLogger(InferredSpansProcessor.class.getName());
 
