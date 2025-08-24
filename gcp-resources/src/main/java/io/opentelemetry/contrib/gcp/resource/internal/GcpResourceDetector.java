@@ -5,12 +5,14 @@
 
 package io.opentelemetry.contrib.gcp.resource.internal;
 
+import com.google.auto.service.AutoService;
 import io.opentelemetry.api.incubator.config.DeclarativeConfigProperties;
 import io.opentelemetry.contrib.gcp.resource.GCPResourceProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceBuilder;
 
+@AutoService(ComponentProvider.class)
 public class GcpResourceDetector implements ComponentProvider<Resource> {
 
   @Override
