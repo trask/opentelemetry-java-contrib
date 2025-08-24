@@ -5,6 +5,8 @@
 
 package io.opentelemetry.ibm.mq.opentelemetry;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.ibm.mq.WmqMonitor;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -13,7 +15,6 @@ import io.opentelemetry.sdk.resources.Resource;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,6 @@ public final class Main {
             monitor::run,
             config.getTaskInitialDelaySeconds(),
             config.getTaskDelaySeconds(),
-            TimeUnit.SECONDS);
+            SECONDS);
   }
 }
