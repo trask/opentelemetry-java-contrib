@@ -26,6 +26,7 @@ import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CONTAIN
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CONTAINER_NAME;
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CloudPlatformIncubatingValues.AWS_ECS;
 import static io.opentelemetry.contrib.aws.resource.IncubatingAttributes.CloudProviderIncubatingValues.AWS;
+import static java.util.logging.Level.WARNING;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,7 +40,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,7 +114,7 @@ public final class EcsResource {
                 attrBuilders.put(AWS_LOG_STREAM_ARNS, Collections.singletonList(logStreamArn));
               });
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Can't get ECS metadata", e);
+      logger.log(WARNING, "Can't get ECS metadata", e);
     }
   }
 
@@ -123,17 +124,6 @@ public final class EcsResource {
 
   private static Optional<String> getRegion(@Nullable String arn) {
     return getArnPart(arn, ArnPart.REGION);
-  }
-
-  private static enum ArnPart {
-    REGION(3),
-    ACCOUNT(4);
-
-    final int partIndex;
-
-    private ArnPart(int partIndex) {
-      this.partIndex = partIndex;
-    }
   }
 
   private static Optional<String> getArnPart(@Nullable String arn, ArnPart arnPart) {
@@ -156,7 +146,7 @@ public final class EcsResource {
       JsonParser parser, AttributesBuilder attrBuilders, LogArnBuilder logArnBuilder)
       throws IOException {
     if (!parser.isExpectedStartObjectToken()) {
-      logger.log(Level.WARNING, "Couldn't parse ECS metadata, invalid JSON");
+      logger.log(WARNING, "Couldn't parse ECS metadata, invalid JSON");
       return;
     }
 
@@ -339,7 +329,7 @@ public final class EcsResource {
       }
       Matcher matcher = imagePattern.matcher(image);
       if (!matcher.matches()) {
-        logger.log(Level.WARNING, "Couldn't parse image '" + image + "'");
+        logger.log(WARNING, "Couldn't parse image '" + image + "'");
         return null;
       }
       String repository = matcher.group("repository");
@@ -348,6 +338,17 @@ public final class EcsResource {
         tag = "latest";
       }
       return new DockerImage(repository, tag);
+    }
+  }
+
+  private static enum ArnPart {
+    REGION(3),
+    ACCOUNT(4);
+
+    final int partIndex;
+
+    private ArnPart(int partIndex) {
+      this.partIndex = partIndex;
     }
   }
 }
