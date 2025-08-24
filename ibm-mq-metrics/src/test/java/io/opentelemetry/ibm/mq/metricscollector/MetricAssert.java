@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.opentelemetry.sdk.metrics.data.LongPointData;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 
-final class MetricAssert {
+class MetricAssert {
 
   private final MetricData metric;
   private final int pointOffset;
