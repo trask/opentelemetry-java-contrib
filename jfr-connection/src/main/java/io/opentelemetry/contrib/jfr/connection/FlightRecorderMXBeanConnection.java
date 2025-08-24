@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
 import javax.management.MBeanServerConnection;
@@ -29,7 +30,7 @@ import javax.management.openmbean.TabularData;
  * @see FlightRecorderConnection#connectToFlightRecorderMXBean(MBeanServerConnection)
  */
 @SuppressWarnings("MemberName")
-final class FlightRecorderMXBeanConnection implements FlightRecorderConnection {
+class FlightRecorderMXBeanConnection implements FlightRecorderConnection {
 
   private static final String JFR_OBJECT_NAME = "jdk.management.jfr:type=FlightRecorder";
 
@@ -46,7 +47,7 @@ final class FlightRecorderMXBeanConnection implements FlightRecorderConnection {
    */
   static FlightRecorderConnection connect(MBeanServerConnection mBeanServerConnection)
       throws IOException, JfrConnectionException {
-    Objects.requireNonNull(mBeanServerConnection);
+    requireNonNull(mBeanServerConnection);
     try {
       ObjectName objectName = new ObjectName(JFR_OBJECT_NAME);
       ObjectInstance objectInstance = mBeanServerConnection.getObjectInstance(objectName);

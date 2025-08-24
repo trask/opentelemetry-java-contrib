@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nullable;
 
@@ -21,7 +22,7 @@ import javax.annotation.Nullable;
  * @see <a
  *     href="https://docs.oracle.com/en/java/javase/11/docs/api/jdk.jfr/jdk/jfr/Recording.html">jdk.jfr.Recording</a>
  */
-public class Recording implements AutoCloseable {
+public final class Recording implements AutoCloseable {
 
   /**
    * A {@code Recording} may be in one of these states. Note that a {@code Recording} is no longer
@@ -165,7 +166,7 @@ public class Recording implements AutoCloseable {
    * @throws NullPointerException If the {@code outputFile} argument is null.
    */
   public void dump(String outputFile) throws IOException, JfrConnectionException {
-    Objects.requireNonNull(outputFile, "outputFile may not be null");
+    requireNonNull(outputFile, "outputFile may not be null");
     State currentState = state.get();
     if (currentState == State.RECORDING || currentState == State.STOPPED) {
       connection.dumpRecording(id, outputFile);
@@ -263,7 +264,7 @@ public class Recording implements AutoCloseable {
 
   /** {@inheritDoc} */
   @Override
-  public void close() throws IOException, JfrConnectionException {
+  public void close() {
     // state transitions:  any -> CLOSED
     State oldState = state.getAndSet(State.CLOSED);
     if (oldState == State.RECORDING) {

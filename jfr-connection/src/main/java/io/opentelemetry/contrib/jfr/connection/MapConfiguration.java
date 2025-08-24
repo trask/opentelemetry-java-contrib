@@ -16,7 +16,7 @@ import javax.management.openmbean.OpenDataException;
 import javax.management.openmbean.TabularData;
 
 /** A {@code RecordingConfiguration} defined from a map. */
-public class MapConfiguration implements RecordingConfiguration {
+public final class MapConfiguration implements RecordingConfiguration {
 
   private final Map<String, String> configuration;
 

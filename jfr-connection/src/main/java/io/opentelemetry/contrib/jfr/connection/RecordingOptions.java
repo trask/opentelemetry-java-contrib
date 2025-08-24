@@ -5,8 +5,9 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Collections.unmodifiableMap;
+
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -41,7 +42,7 @@ import javax.annotation.Nonnull;
  * it does mean that the Builder needs to validate the args and potentially throw
  * IllegalArgumentException. String makes the overall code so much simpler.
  */
-public class RecordingOptions {
+public final class RecordingOptions {
 
   private static final String NO_LIMIT = "0";
 
@@ -266,7 +267,7 @@ public class RecordingOptions {
    * @param recordingOptions The normalized options from the builder.
    */
   private RecordingOptions(Map<String, String> recordingOptions) {
-    this.recordingOptions = Collections.unmodifiableMap(recordingOptions);
+    this.recordingOptions = unmodifiableMap(recordingOptions);
   }
 
   /**

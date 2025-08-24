@@ -107,7 +107,7 @@ class RecordingTest {
     try (Recording recording = flightRecorderConnection.newRecording(null, null)) {
       assertThat(recording.getState()).isEqualTo(Recording.State.NEW);
       assertThat(recording.getId()).isEqualTo(-1);
-    } catch (IOException | IllegalStateException | JfrConnectionException exception) {
+    } catch (IllegalStateException exception) {
       fail("assertNewRecordingInitialValues caught exception", exception);
     }
   }
