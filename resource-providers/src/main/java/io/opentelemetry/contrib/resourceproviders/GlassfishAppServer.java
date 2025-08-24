@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.annotation.Nullable;
 
-class GlassfishAppServer implements AppServer {
+final class GlassfishAppServer implements AppServer {
 
   private static final String SERVICE_CLASS_NAME = "com.sun.enterprise.glassfish.bootstrap.ASMain";
   private final ResourceLocator locator;

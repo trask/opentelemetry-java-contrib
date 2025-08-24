@@ -8,7 +8,7 @@ package io.opentelemetry.contrib.resourceproviders;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 
-class WebSphereAppServer implements AppServer {
+final class WebSphereAppServer implements AppServer {
 
   private static final String SERVER_CLASS_NAME = "com.ibm.wsspi.bootstrap.WSPreLauncher";
   private final ResourceLocator locator;

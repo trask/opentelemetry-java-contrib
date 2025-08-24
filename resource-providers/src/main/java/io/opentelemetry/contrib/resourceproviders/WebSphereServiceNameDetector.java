@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
-class WebSphereServiceNameDetector implements ServiceNameDetector {
+final class WebSphereServiceNameDetector implements ServiceNameDetector {
 
   private static final Pattern COMMANDLINE_PARSE_PATTERN =
       Pattern.compile(

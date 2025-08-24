@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-class LibertyAppService implements AppServer {
+final class LibertyAppService implements AppServer {
 
   private static final String SERVICE_CLASS_NAME = "com.ibm.ws.kernel.boot.cmdline.EnvCheck";
 

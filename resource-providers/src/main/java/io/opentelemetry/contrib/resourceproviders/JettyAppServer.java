@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-class JettyAppServer implements AppServer {
+final class JettyAppServer implements AppServer {
 
   private static final Logger logger = Logger.getLogger(JettyAppServer.class.getName());
   private static final String SERVER_CLASS_NAME = "org.eclipse.jetty.start.Main";
