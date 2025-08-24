@@ -3,6 +3,7 @@ plugins {
   id("com.gradleup.shadow")
 
   id("otel.java-conventions")
+  id("otel.errorprone-conventions")
 
   id("otel.publish-conventions")
 }
