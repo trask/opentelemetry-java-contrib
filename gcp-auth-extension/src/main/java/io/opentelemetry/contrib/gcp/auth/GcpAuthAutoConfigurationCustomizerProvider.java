@@ -97,7 +97,7 @@ public final class GcpAuthAutoConfigurationCustomizerProvider
    *     not configured through environment variables or system properties.
    */
   @Override
-  public final void customize(@Nonnull AutoConfigurationCustomizer autoConfiguration) {
+  public void customize(@Nonnull AutoConfigurationCustomizer autoConfiguration) {
     GoogleCredentials credentials;
     try {
       credentials = GoogleCredentials.getApplicationDefault();
@@ -115,7 +115,7 @@ public final class GcpAuthAutoConfigurationCustomizerProvider
   }
 
   @Override
-  public final int order() {
+  public int order() {
     return Integer.MAX_VALUE - 1;
   }
 
