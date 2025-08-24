@@ -12,8 +12,12 @@ dependencies {
   api("io.opentelemetry:opentelemetry-sdk")
   implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
 
+  annotationProcessor("com.google.auto.service:auto-service")
+  compileOnly("com.google.auto.service:auto-service-annotations")
+
   testImplementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing")
+  testImplementation("com.google.auto.service:auto-service")
   testImplementation("org.mockito:mockito-inline")
   testImplementation("com.google.guava:guava")
   testImplementation("org.awaitility:awaitility")
