@@ -37,8 +37,9 @@ public final class AwsXrayLambdaPropagator implements TextMapPropagator {
 
   private static final String AWS_TRACE_HEADER_ENV_KEY = "_X_AMZN_TRACE_ID";
   private static final String AWS_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
-  private final AwsXrayPropagator xrayPropagator = AwsXrayPropagator.getInstance();
   private static final AwsXrayLambdaPropagator INSTANCE = new AwsXrayLambdaPropagator();
+
+  private final AwsXrayPropagator xrayPropagator = AwsXrayPropagator.getInstance();
 
   private AwsXrayLambdaPropagator() {
     // singleton
