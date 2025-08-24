@@ -5,9 +5,11 @@
 
 package io.opentelemetry.contrib.gcp.auth;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.logging.Level.WARNING;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auto.service.AutoService;
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.contrib.gcp.auth.GoogleAuthException.Reason;
 import io.opentelemetry.exporter.otlp.http.metrics.OtlpHttpMetricExporter;
@@ -30,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -49,7 +50,7 @@ import javax.annotation.Nonnull;
  * @see GoogleCredentials
  */
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class GcpAuthAutoConfigurationCustomizerProvider
+public final class GcpAuthAutoConfigurationCustomizerProvider
     implements AutoConfigurationCustomizerProvider {
 
   private static final Logger logger =
@@ -124,7 +125,7 @@ public class GcpAuthAutoConfigurationCustomizerProvider
     } else {
       String[] params = {SIGNAL_TYPE_TRACES, SIGNAL_TARGET_WARNING_FIX_SUGGESTION};
       logger.log(
-          Level.WARNING,
+          WARNING,
           "GCP Authentication Extension is not configured for signal type: {0}. {1}",
           params);
     }
@@ -138,7 +139,7 @@ public class GcpAuthAutoConfigurationCustomizerProvider
     } else {
       String[] params = {SIGNAL_TYPE_METRICS, SIGNAL_TARGET_WARNING_FIX_SUGGESTION};
       logger.log(
-          Level.WARNING,
+          WARNING,
           "GCP Authentication Extension is not configured for signal type: {0}. {1}",
           params);
     }
@@ -230,9 +231,7 @@ public class GcpAuthAutoConfigurationCustomizerProvider
   private static Resource customizeResource(Resource resource, ConfigProperties configProperties) {
     String gcpProjectId =
         ConfigurableOption.GOOGLE_CLOUD_PROJECT.getConfiguredValue(configProperties);
-    Resource res =
-        Resource.create(
-            Attributes.of(AttributeKey.stringKey(GCP_USER_PROJECT_ID_KEY), gcpProjectId));
+    Resource res = Resource.create(Attributes.of(stringKey(GCP_USER_PROJECT_ID_KEY), gcpProjectId));
     return resource.merge(res);
   }
 }
