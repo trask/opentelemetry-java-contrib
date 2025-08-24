@@ -18,6 +18,7 @@ dependencies {
   testImplementation("io.opentelemetry.semconv:opentelemetry-semconv-incubating")
 
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
+  compileOnly("com.google.auto.service:auto-service-annotations")
 
   implementation("com.fasterxml.jackson.core:jackson-core")
 
@@ -29,4 +30,6 @@ dependencies {
   testImplementation("com.google.guava:guava")
 
   testImplementation("org.junit.jupiter:junit-jupiter-api")
+
+  annotationProcessor("com.google.auto.service:auto-service")
 }
