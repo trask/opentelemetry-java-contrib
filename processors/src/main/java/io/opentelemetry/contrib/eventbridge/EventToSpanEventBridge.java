@@ -5,6 +5,10 @@
 
 package io.opentelemetry.contrib.eventbridge;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static java.util.logging.Level.WARNING;
+
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
@@ -20,9 +24,6 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.logs.data.internal.ExtendedLogRecordData;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -98,7 +99,7 @@ public final class EventToSpanEventBridge implements LogRecordProcessor {
         eventName,
         toSpanEventAttributes(logRecordData),
         logRecordData.getTimestampEpochNanos(),
-        TimeUnit.NANOSECONDS);
+        NANOSECONDS);
   }
 
   private static Attributes toSpanEventAttributes(LogRecordData logRecord) {
@@ -116,9 +117,9 @@ public final class EventToSpanEventBridge implements LogRecordProcessor {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       try {
         marshaler.writeJsonTo(out);
-        builder.put(LOG_RECORD_BODY, out.toString(StandardCharsets.UTF_8.name()));
+        builder.put(LOG_RECORD_BODY, out.toString(UTF_8.name()));
       } catch (IOException e) {
-        logger.log(Level.WARNING, "Error converting log record body to JSON", e);
+        logger.log(WARNING, "Error converting log record body to JSON", e);
       }
     }
 
