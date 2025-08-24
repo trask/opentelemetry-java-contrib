@@ -5,6 +5,8 @@
 
 package io.opentelemetry.opamp.client.internal.request.service;
 
+import static java.util.Objects.requireNonNull;
+
 import com.squareup.wire.ProtoAdapter;
 import io.opentelemetry.opamp.client.internal.connectivity.websocket.WebSocket;
 import io.opentelemetry.opamp.client.internal.request.Request;
@@ -16,7 +18,6 @@ import io.opentelemetry.opamp.client.internal.response.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -134,7 +135,7 @@ public class WebSocketRequestService implements RequestService, WebSocket.Listen
 
   @Nonnull
   private Request getRequest() {
-    return Objects.requireNonNull(requestSupplier).get();
+    return requireNonNull(requestSupplier).get();
   }
 
   @Override
@@ -228,7 +229,7 @@ public class WebSocketRequestService implements RequestService, WebSocket.Listen
 
   @Nonnull
   private Callback getCallback() {
-    return Objects.requireNonNull(callback);
+    return requireNonNull(callback);
   }
 
   private class ConnectionStatus {

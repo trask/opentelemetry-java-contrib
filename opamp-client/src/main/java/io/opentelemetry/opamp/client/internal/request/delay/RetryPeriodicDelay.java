@@ -5,8 +5,9 @@
 
 package io.opentelemetry.opamp.client.internal.request.delay;
 
+import static java.util.Objects.requireNonNull;
+
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /** Defaults to an exponential backoff strategy, unless a delay is suggested. */
@@ -30,7 +31,7 @@ public class RetryPeriodicDelay implements PeriodicDelay, AcceptsDelaySuggestion
 
   @Override
   public Duration getNextDelay() {
-    return Objects.requireNonNull(currentDelay.get()).getNextDelay();
+    return requireNonNull(currentDelay.get()).getNextDelay();
   }
 
   @Override
