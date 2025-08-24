@@ -21,17 +21,18 @@
 
 package io.opentelemetry.contrib.metrics.prometheus.clientbridge;
 
+import static java.util.Collections.emptyList;
+
 import io.opentelemetry.sdk.metrics.data.HistogramPointData;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.data.PointData;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /** Serializes metrics into Prometheus exposition formats. */
 // Adapted from
 // https://github.com/prometheus/client_java/blob/master/simpleclient_common/src/main/java/io/prometheus/client/exporter/common/TextFormat.java
-class Serializer {
+final class Serializer {
 
   /**
    * Returns the lower bound of a bucket (all values would have been greater than).
@@ -71,7 +72,7 @@ class Serializer {
       case EXPONENTIAL_HISTOGRAM:
         return metricData.getExponentialHistogramData().getPoints();
     }
-    return Collections.emptyList();
+    return emptyList();
   }
 
   private Serializer() {}

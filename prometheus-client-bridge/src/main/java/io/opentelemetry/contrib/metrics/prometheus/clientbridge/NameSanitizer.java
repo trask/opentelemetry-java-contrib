@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /** Sanitizes a metric or label name. */
-class NameSanitizer implements Function<String, String> {
+final class NameSanitizer implements Function<String, String> {
 
   private static final Pattern SANITIZE_PREFIX_PATTERN = Pattern.compile("^[^a-zA-Z_:]");
   private static final Pattern SANITIZE_BODY_PATTERN = Pattern.compile("[^a-zA-Z0-9_:]");

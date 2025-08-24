@@ -6,6 +6,8 @@
 package io.opentelemetry.contrib.metrics.prometheus.clientbridge;
 
 import static io.prometheus.client.Collector.doubleToGoString;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanContext;
@@ -28,7 +30,6 @@ import io.prometheus.client.Collector.MetricFamilySamples.Sample;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
@@ -291,7 +292,7 @@ final class MetricAdapter {
           labelValues,
           value,
           toPrometheusExemplar(exemplar),
-          TimeUnit.MILLISECONDS.convert(timestampNanos, TimeUnit.NANOSECONDS));
+          MILLISECONDS.convert(timestampNanos, NANOSECONDS));
     }
     return new Sample(
         name,
@@ -299,7 +300,7 @@ final class MetricAdapter {
         labelValues,
         value,
         null,
-        TimeUnit.MILLISECONDS.convert(timestampNanos, TimeUnit.NANOSECONDS));
+        MILLISECONDS.convert(timestampNanos, NANOSECONDS));
   }
 
   private static io.prometheus.client.exemplars.Exemplar toPrometheusExemplar(
@@ -309,7 +310,7 @@ final class MetricAdapter {
       return new io.prometheus.client.exemplars.Exemplar(
           getExemplarValue(exemplar),
           // Convert to ms for prometheus, truncate nanosecond precision.
-          TimeUnit.NANOSECONDS.toMillis(exemplar.getEpochNanos()),
+          NANOSECONDS.toMillis(exemplar.getEpochNanos()),
           "trace_id",
           spanContext.getTraceId(),
           "span_id",
