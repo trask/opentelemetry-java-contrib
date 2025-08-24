@@ -50,17 +50,20 @@ import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.HOST_NA
 import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.HOST_TYPE;
 import static io.opentelemetry.contrib.gcp.resource.IncubatingAttributes.K8S_CLUSTER_NAME;
 
+import com.google.auto.service.AutoService;
 import com.google.cloud.opentelemetry.detection.DetectedPlatform;
 import com.google.cloud.opentelemetry.detection.GCPPlatformDetector;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.ResourceProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.ConditionalResourceProvider;
 import io.opentelemetry.sdk.resources.Resource;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@AutoService(ResourceProvider.class)
 @SuppressWarnings("MemberName")
 public final class GCPResourceProvider implements ConditionalResourceProvider {
 

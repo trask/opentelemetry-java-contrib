@@ -8,8 +8,11 @@ description = "OpenTelemetry GCP Resources Support"
 otelJava.moduleName.set("io.opentelemetry.contrib.gcp.resource")
 
 dependencies {
+  annotationProcessor("com.google.auto.service:auto-service")
+
   api("io.opentelemetry:opentelemetry-api")
   compileOnly("io.opentelemetry:opentelemetry-api-incubator")
+  compileOnly("com.google.auto.service:auto-service")
   api("io.opentelemetry:opentelemetry-sdk")
 
   // Provides GCP resource detection support
@@ -21,6 +24,7 @@ dependencies {
 
   implementation("com.fasterxml.jackson.core:jackson-core")
 
+  testImplementation("com.google.auto.service:auto-service")
   testImplementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
   testImplementation("io.opentelemetry:opentelemetry-api-incubator")
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing")
