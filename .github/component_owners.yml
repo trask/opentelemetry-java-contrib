@@ -32,6 +32,9 @@ components:
   consistent-sampling:
     - oertl
     - PeterF778
+  dependencyManagement:
+    - jack-berg
+    - trask
   disk-buffering:
     - LikeTheSalad
     - zeitlinger
