@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.jfrevent;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
@@ -27,6 +27,10 @@ class JfrSpanProcessorTest {
 
   private static final String OPERATION_NAME = "Test Span";
 
+  static {
+    ContextStorage.addWrapper(JfrContextStorageWrapper::new);
+  }
+
   private SdkTracerProvider sdkTracerProvider;
   private Tracer tracer;
 
@@ -40,10 +44,6 @@ class JfrSpanProcessorTest {
   @AfterEach
   void tearDown() {
     sdkTracerProvider.shutdown();
-  }
-
-  static {
-    ContextStorage.addWrapper(JfrContextStorageWrapper::new);
   }
 
   /**
