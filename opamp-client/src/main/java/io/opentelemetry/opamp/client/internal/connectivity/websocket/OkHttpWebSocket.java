@@ -15,7 +15,7 @@ import okhttp3.Response;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-public class OkHttpWebSocket implements WebSocket {
+public final class OkHttpWebSocket implements WebSocket {
   private final String url;
   private final OkHttpClient client;
   private final AtomicReference<Status> status = new AtomicReference<>(Status.NOT_RUNNING);

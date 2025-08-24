@@ -5,7 +5,7 @@
 
 package io.opentelemetry.opamp.client.internal.connectivity.http;
 
-public class HttpErrorException extends Exception {
+public final class HttpErrorException extends Exception {
   private final int errorCode;
 
   private static final long serialVersionUID = 1L;

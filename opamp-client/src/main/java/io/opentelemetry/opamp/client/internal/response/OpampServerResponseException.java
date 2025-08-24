@@ -11,7 +11,7 @@ import opamp.proto.ServerErrorResponse;
  * This class is internal and is hence not for public use. Its APIs are unstable and can change at
  * any time.
  */
-public class OpampServerResponseException extends Exception {
+public final class OpampServerResponseException extends Exception {
   private static final long serialVersionUID = 1L;
 
   public final ServerErrorResponse errorResponse;
