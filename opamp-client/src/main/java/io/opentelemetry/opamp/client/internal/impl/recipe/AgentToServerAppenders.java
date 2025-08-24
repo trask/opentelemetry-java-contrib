@@ -5,6 +5,8 @@
 
 package io.opentelemetry.opamp.client.internal.impl.recipe;
 
+import static java.util.Collections.unmodifiableMap;
+
 import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.AgentDescriptionAppender;
 import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.AgentDisconnectAppender;
 import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.AgentToServerAppender;
@@ -15,7 +17,6 @@ import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.InstanceUidA
 import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.RemoteConfigStatusAppender;
 import io.opentelemetry.opamp.client.internal.impl.recipe.appenders.SequenceNumberAppender;
 import io.opentelemetry.opamp.client.internal.request.Field;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public final class AgentToServerAppenders {
     appenders.put(Field.INSTANCE_UID, instanceUidAppender);
     appenders.put(Field.FLAGS, flagsAppender);
     appenders.put(Field.AGENT_DISCONNECT, agentDisconnectAppender);
-    allAppenders = Collections.unmodifiableMap(appenders);
+    allAppenders = unmodifiableMap(appenders);
   }
 
   public AgentToServerAppender getForField(Field type) {

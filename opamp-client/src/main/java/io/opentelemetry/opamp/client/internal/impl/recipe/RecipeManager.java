@@ -5,10 +5,12 @@
 
 package io.opentelemetry.opamp.client.internal.impl.recipe;
 
+import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableList;
+
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.opentelemetry.opamp.client.internal.request.Field;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +28,7 @@ public final class RecipeManager {
   @Nullable private RecipeBuilder builder;
 
   public static RecipeManager create(List<Field> constantFields) {
-    return new RecipeManager(Collections.unmodifiableList(constantFields));
+    return new RecipeManager(unmodifiableList(constantFields));
   }
 
   private RecipeManager(List<Field> constantFields) {
@@ -72,7 +74,7 @@ public final class RecipeManager {
 
     public RequestRecipe build() {
       synchronized (recipeLock) {
-        RequestRecipe recipe = new RequestRecipe(Collections.unmodifiableCollection(fields));
+        RequestRecipe recipe = new RequestRecipe(unmodifiableCollection(fields));
         previousRecipe = recipe;
         builder = null;
         return recipe;

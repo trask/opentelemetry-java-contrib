@@ -5,8 +5,9 @@
 
 package io.opentelemetry.opamp.client.internal.state;
 
+import static java.util.Collections.synchronizedSet;
+
 import io.opentelemetry.opamp.client.internal.request.Field;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ import java.util.Set;
  * for the next client request.
  */
 public abstract class ObservableState<T> implements State<T> {
-  private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<>());
+  private final Set<Listener> listeners = synchronizedSet(new HashSet<>());
 
   public final void addListener(Listener listener) {
     listeners.add(listener);

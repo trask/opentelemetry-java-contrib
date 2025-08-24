@@ -5,6 +5,8 @@
 
 package io.opentelemetry.opamp.client.internal.request.service;
 
+import static java.util.Objects.requireNonNull;
+
 import io.opentelemetry.opamp.client.internal.connectivity.http.HttpErrorException;
 import io.opentelemetry.opamp.client.internal.connectivity.http.HttpSender;
 import io.opentelemetry.opamp.client.internal.connectivity.http.RetryAfterParser;
@@ -16,7 +18,6 @@ import io.opentelemetry.opamp.client.internal.response.OpampServerResponseExcept
 import io.opentelemetry.opamp.client.internal.response.Response;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -145,7 +146,7 @@ public final class HttpRequestService implements RequestService {
   }
 
   private void doSendRequest() {
-    AgentToServer agentToServer = Objects.requireNonNull(requestSupplier).get().getAgentToServer();
+    AgentToServer agentToServer = requireNonNull(requestSupplier).get().getAgentToServer();
 
     byte[] data = agentToServer.encodeByteString().toByteArray();
     CompletableFuture<HttpSender.Response> future =
@@ -215,7 +216,7 @@ public final class HttpRequestService implements RequestService {
   }
 
   private Callback getCallback() {
-    return Objects.requireNonNull(callback);
+    return requireNonNull(callback);
   }
 
   // this class is only used from a single threaded ScheduledExecutorService, hence no
