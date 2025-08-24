@@ -51,7 +51,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @SpringBootTest(
     classes = {Application.class},
     webEnvironment = WebEnvironment.RANDOM_PORT)
-public class GcpAuthExtensionEndToEndTest {
+class GcpAuthExtensionEndToEndTest {
 
   @LocalServerPort private int testApplicationPort; // port at which the spring app is running
 
