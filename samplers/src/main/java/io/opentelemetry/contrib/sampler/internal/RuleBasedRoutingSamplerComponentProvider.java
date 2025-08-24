@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.sampler.internal;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.incubator.config.DeclarativeConfigException;
 import io.opentelemetry.api.incubator.config.DeclarativeConfigProperties;
@@ -75,7 +77,7 @@ public class RuleBasedRoutingSamplerComponentProvider implements ComponentProvid
         throw new DeclarativeConfigException(
             "rule_based_routing sampler .rules[].attribute is required");
       }
-      AttributeKey<String> attributeKey = AttributeKey.stringKey(attribute);
+      AttributeKey<String> attributeKey = stringKey(attribute);
       String pattern = rule.getString("pattern");
       if (pattern == null) {
         throw new DeclarativeConfigException(
