@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.jmxmetrics;
 
+import static java.util.logging.Level.WARNING;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Provider;
@@ -22,7 +24,7 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 
-public class JmxClient {
+public final class JmxClient {
   private static final Logger logger = Logger.getLogger(JmxClient.class.getName());
 
   private final JMXServiceURL url;
@@ -33,7 +35,7 @@ public class JmxClient {
   private final boolean registrySsl;
   @Nullable private JMXConnector jmxConn;
 
-  JmxClient(final JmxConfig config) throws MalformedURLException {
+  JmxClient(JmxConfig config) throws MalformedURLException {
     this.url = new JMXServiceURL(config.serviceUrl);
     this.username = config.username;
     this.password = config.password;
@@ -72,7 +74,7 @@ public class JmxClient {
       jmxConn = JmxConnectorHelper.connect(url, env, registrySsl);
       return jmxConn.getMBeanServerConnection();
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Could not connect to remote JMX server: ", e);
+      logger.log(WARNING, "Could not connect to remote JMX server: ", e);
       return null;
     }
   }
@@ -83,7 +85,7 @@ public class JmxClient {
    * @param objectName ObjectName to query
    * @return the sorted list of applicable ObjectName instances found by server
    */
-  public List<ObjectName> query(final ObjectName objectName) {
+  public List<ObjectName> query(ObjectName objectName) {
     MBeanServerConnection mbsc = getConnection();
     if (mbsc == null) {
       return Collections.emptyList();
@@ -94,7 +96,7 @@ public class JmxClient {
       Collections.sort(objectNames);
       return objectNames;
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Could not query remote JMX server: ", e);
+      logger.log(WARNING, "Could not query remote JMX server: ", e);
       return Collections.emptyList();
     }
   }
