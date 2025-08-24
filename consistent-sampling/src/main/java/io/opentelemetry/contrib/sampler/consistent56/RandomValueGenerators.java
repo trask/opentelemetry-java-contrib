@@ -9,7 +9,7 @@ import static io.opentelemetry.contrib.sampler.consistent56.ConsistentSamplingUt
 
 import java.util.concurrent.ThreadLocalRandom;
 
-final class RandomValueGenerators {
+class RandomValueGenerators {
 
   private static final RandomValueGenerator DEFAULT = createDefault();
 

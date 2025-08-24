@@ -14,7 +14,7 @@ import javax.annotation.concurrent.Immutable;
  * sampling decision is delegated to the root sampler.
  */
 @Immutable
-final class ConsistentParentBasedSampler extends ConsistentSampler {
+class ConsistentParentBasedSampler extends ConsistentSampler {
 
   private final ConsistentSampler rootSampler;
 

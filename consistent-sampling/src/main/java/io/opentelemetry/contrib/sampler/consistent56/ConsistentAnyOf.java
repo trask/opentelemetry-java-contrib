@@ -25,7 +25,7 @@ import javax.annotation.concurrent.Immutable;
  * uses the minimum threshold value received.
  */
 @Immutable
-final class ConsistentAnyOf extends ConsistentSampler {
+class ConsistentAnyOf extends ConsistentSampler {
 
   private final Composable[] delegates;
 

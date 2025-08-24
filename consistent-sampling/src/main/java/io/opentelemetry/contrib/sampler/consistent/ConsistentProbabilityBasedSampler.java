@@ -10,7 +10,7 @@ import javax.annotation.concurrent.Immutable;
 
 /** A consistent sampler that samples with a fixed probability. */
 @Immutable
-final class ConsistentProbabilityBasedSampler extends ConsistentSampler {
+class ConsistentProbabilityBasedSampler extends ConsistentSampler {
 
   private final int lowerPValue;
   private final int upperPValue;

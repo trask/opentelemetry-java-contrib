@@ -23,7 +23,7 @@ import javax.annotation.concurrent.Immutable;
  * into PredicatedSamplers.
  */
 @Immutable
-final class ConsistentRuleBasedSampler extends ConsistentSampler {
+class ConsistentRuleBasedSampler extends ConsistentSampler {
 
   @Nullable private final SpanKind spanKindToMatch;
   private final PredicatedSampler[] samplers;

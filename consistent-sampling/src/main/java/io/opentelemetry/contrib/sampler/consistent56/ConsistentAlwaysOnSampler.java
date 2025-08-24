@@ -15,7 +15,7 @@ import java.util.List;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-final class ConsistentAlwaysOnSampler extends ConsistentSampler {
+class ConsistentAlwaysOnSampler extends ConsistentSampler {
 
   private static final ConsistentAlwaysOnSampler INSTANCE = new ConsistentAlwaysOnSampler();
 

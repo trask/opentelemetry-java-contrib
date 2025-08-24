@@ -15,7 +15,7 @@ import javax.annotation.concurrent.Immutable;
  * <p>This sampler samples if both samplers would sample.
  */
 @Immutable
-final class ConsistentComposedAndSampler extends ConsistentSampler {
+class ConsistentComposedAndSampler extends ConsistentSampler {
 
   private final ConsistentSampler sampler1;
   private final ConsistentSampler sampler2;

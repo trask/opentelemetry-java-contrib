@@ -11,7 +11,7 @@ import java.util.BitSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.LongSupplier;
 
-final class RandomGenerator {
+class RandomGenerator {
 
   private final LongSupplier threadSafeRandomLongSupplier;
 

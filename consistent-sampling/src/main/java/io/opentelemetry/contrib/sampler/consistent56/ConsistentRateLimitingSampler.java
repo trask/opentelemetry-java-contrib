@@ -93,7 +93,7 @@ import javax.annotation.concurrent.Immutable;
  *
  * <p>{@code 1 / (adaptationTimeSeconds * targetSpansPerSecondLimit)}
  */
-final class ConsistentRateLimitingSampler extends ConsistentSampler {
+class ConsistentRateLimitingSampler extends ConsistentSampler {
 
   private static final double NANOS_IN_SECONDS = 1e-9;
 

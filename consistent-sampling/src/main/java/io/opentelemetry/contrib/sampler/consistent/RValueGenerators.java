@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.sampler.consistent;
 
-final class RValueGenerators {
+class RValueGenerators {
 
   private static final RValueGenerator DEFAULT = createDefault();
 

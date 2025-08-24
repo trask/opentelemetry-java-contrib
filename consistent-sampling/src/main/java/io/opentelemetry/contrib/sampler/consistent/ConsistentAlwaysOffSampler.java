@@ -8,7 +8,7 @@ package io.opentelemetry.contrib.sampler.consistent;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-final class ConsistentAlwaysOffSampler extends ConsistentSampler {
+class ConsistentAlwaysOffSampler extends ConsistentSampler {
 
   ConsistentAlwaysOffSampler(RValueGenerator rValueGenerator) {
     super(rValueGenerator);

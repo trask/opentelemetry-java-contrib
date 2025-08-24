@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
-final class OtelTraceState {
+class OtelTraceState {
 
   public static final String TRACE_STATE_KEY = "ot";
 

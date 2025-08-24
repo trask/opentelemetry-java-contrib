@@ -66,7 +66,7 @@ import javax.annotation.concurrent.Immutable;
  *   <li>{@code adaptationTimeSeconds} corresponds to {@code -1 / ln(1 - a)}
  * </ul>
  */
-final class ConsistentRateLimitingSampler extends ConsistentSampler {
+class ConsistentRateLimitingSampler extends ConsistentSampler {
 
   @Immutable
   private static final class State {

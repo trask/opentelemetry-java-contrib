@@ -7,17 +7,17 @@ package io.opentelemetry.contrib.sampler.consistent56;
 
 import static io.opentelemetry.contrib.sampler.consistent56.ConsistentSamplingUtil.calculateThreshold;
 
-public class ConsistentFixedThresholdSampler extends ConsistentThresholdSampler {
+public final class ConsistentFixedThresholdSampler extends ConsistentThresholdSampler {
 
   private final long threshold;
   private final String description;
 
-  protected ConsistentFixedThresholdSampler(long threshold) {
+  ConsistentFixedThresholdSampler(long threshold) {
     this.threshold = getThreshold(threshold);
     this.description = getThresholdDescription(threshold);
   }
 
-  protected ConsistentFixedThresholdSampler(double samplingProbability) {
+  ConsistentFixedThresholdSampler(double samplingProbability) {
     this(calculateThreshold(samplingProbability));
   }
 

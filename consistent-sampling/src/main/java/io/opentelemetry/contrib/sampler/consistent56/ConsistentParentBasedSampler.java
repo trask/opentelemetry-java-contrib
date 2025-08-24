@@ -24,7 +24,7 @@ import javax.annotation.concurrent.Immutable;
  * sampling decision is delegated to the root sampler.
  */
 @Immutable
-public class ConsistentParentBasedSampler extends ConsistentSampler {
+public final class ConsistentParentBasedSampler extends ConsistentSampler {
 
   private final Composable rootSampler;
 
@@ -36,7 +36,7 @@ public class ConsistentParentBasedSampler extends ConsistentSampler {
    *
    * @param rootSampler the root sampler
    */
-  protected ConsistentParentBasedSampler(Composable rootSampler) {
+  ConsistentParentBasedSampler(Composable rootSampler) {
     this.rootSampler = requireNonNull(rootSampler);
     this.description =
         "ConsistentParentBasedSampler{rootSampler=" + rootSampler.getDescription() + '}';
@@ -100,12 +100,12 @@ public class ConsistentParentBasedSampler extends ConsistentSampler {
     };
   }
 
-  protected Attributes getAttributesWhenParentLocal(
+  Attributes getAttributesWhenParentLocal(
       String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
     return Attributes.empty();
   }
 
-  protected Attributes getAttributesWhenParentRemote(
+  Attributes getAttributesWhenParentRemote(
       String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
     return Attributes.empty();
   }
