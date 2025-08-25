@@ -16,15 +16,7 @@ import java.util.function.Predicate;
  * This log record processor copies attributes stored in {@link Baggage} into each newly created log
  * record.
  */
-public class BaggageLogRecordProcessor implements LogRecordProcessor {
-
-  /**
-   * Creates a new {@link BaggageLogRecordProcessor} that copies all baggage entries into the newly
-   * created log record.
-   */
-  public static BaggageLogRecordProcessor allowAllBaggageKeys() {
-    return new BaggageLogRecordProcessor(baggageKey -> true);
-  }
+public final class BaggageLogRecordProcessor implements LogRecordProcessor {
 
   private final Predicate<String> baggageKeyPredicate;
 
@@ -45,5 +37,13 @@ public class BaggageLogRecordProcessor implements LogRecordProcessor {
                 logRecord.setAttribute(AttributeKey.stringKey(s), baggageEntry.getValue());
               }
             });
+  }
+
+  /**
+   * Creates a new {@link BaggageLogRecordProcessor} that copies all baggage entries into the newly
+   * created log record.
+   */
+  public static BaggageLogRecordProcessor allowAllBaggageKeys() {
+    return new BaggageLogRecordProcessor(baggageKey -> true);
   }
 }

@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.baggage.processor;
 
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.ImmutableMap;
@@ -39,7 +40,6 @@ import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -155,7 +155,7 @@ class BaggageProcessorCustomizerTest {
   }
 
   @Test
-  public void test_baggageSpanProcessor_adds_attributes_to_spans(@Mock ReadWriteSpan span) {
+  void test_baggageSpanProcessor_adds_attributes_to_spans(@Mock ReadWriteSpan span) {
     try (BaggageSpanProcessor processor =
         BaggageProcessorCustomizer.createBaggageSpanProcessor(Collections.singletonList("*"))) {
       try (Scope ignore = Baggage.current().toBuilder().put("key", "value").build().makeCurrent()) {
@@ -166,7 +166,7 @@ class BaggageProcessorCustomizerTest {
   }
 
   @Test
-  public void test_baggageSpanProcessor_adds_attributes_to_spans_when_key_filter_matches(
+  void test_baggageSpanProcessor_adds_attributes_to_spans_when_key_filter_matches(
       @Mock ReadWriteSpan span) {
     try (BaggageSpanProcessor processor =
         BaggageProcessorCustomizer.createBaggageSpanProcessor(Collections.singletonList("key"))) {
@@ -178,13 +178,13 @@ class BaggageProcessorCustomizerTest {
               .makeCurrent()) {
         processor.onStart(Context.current(), span);
         verify(span).setAttribute("key", "value");
-        verify(span, Mockito.never()).setAttribute("other", "value");
+        verify(span, never()).setAttribute("other", "value");
       }
     }
   }
 
   @Test
-  public void test_baggageLogRecordProcessor_adds_attributes_to_logRecord(
+  void test_baggageLogRecordProcessor_adds_attributes_to_logRecord(
       @Mock ReadWriteLogRecord logRecord) {
     try (BaggageLogRecordProcessor processor =
         BaggageProcessorCustomizer.createBaggageLogRecordProcessor(
@@ -197,7 +197,7 @@ class BaggageProcessorCustomizerTest {
   }
 
   @Test
-  public void test_baggageLogRecordProcessor_adds_attributes_to_spans_when_key_filter_matches(
+  void test_baggageLogRecordProcessor_adds_attributes_to_spans_when_key_filter_matches(
       @Mock ReadWriteLogRecord logRecord) {
     try (BaggageLogRecordProcessor processor =
         BaggageProcessorCustomizer.createBaggageLogRecordProcessor(
@@ -210,7 +210,7 @@ class BaggageProcessorCustomizerTest {
               .makeCurrent()) {
         processor.onEmit(Context.current(), logRecord);
         verify(logRecord).setAttribute(AttributeKey.stringKey("key"), "value");
-        verify(logRecord, Mockito.never()).setAttribute(AttributeKey.stringKey("other"), "value");
+        verify(logRecord, never()).setAttribute(AttributeKey.stringKey("other"), "value");
       }
     }
   }
