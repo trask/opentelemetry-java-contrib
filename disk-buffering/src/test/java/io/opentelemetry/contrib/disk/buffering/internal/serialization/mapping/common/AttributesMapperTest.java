@@ -5,12 +5,12 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.common;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.proto.common.v1.KeyValue;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -35,12 +35,10 @@ class AttributesMapperTest {
   void verifyArrayMapping() {
     Attributes attributes =
         Attributes.builder()
-            .put(
-                AttributeKey.stringArrayKey("someString"),
-                Arrays.asList("firstString", "secondString"))
-            .put(AttributeKey.booleanArrayKey("someBool"), Arrays.asList(true, false))
-            .put(AttributeKey.longArrayKey("someLong"), Arrays.asList(10L, 50L))
-            .put(AttributeKey.doubleArrayKey("someDouble"), Arrays.asList(10.0, 50.5))
+            .put(AttributeKey.stringArrayKey("someString"), asList("firstString", "secondString"))
+            .put(AttributeKey.booleanArrayKey("someBool"), asList(true, false))
+            .put(AttributeKey.longArrayKey("someLong"), asList(10L, 50L))
+            .put(AttributeKey.doubleArrayKey("someDouble"), asList(10.0, 50.5))
             .build();
 
     List<KeyValue> serialized = mapToProto(attributes);

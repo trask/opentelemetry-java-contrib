@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.logs;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,9 +19,7 @@ import io.opentelemetry.proto.logs.v1.LogRecord;
 import io.opentelemetry.proto.logs.v1.ResourceLogs;
 import io.opentelemetry.proto.logs.v1.ScopeLogs;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +102,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyConversionDataStructure() {
-    List<LogRecordData> signals = Collections.singletonList(LOG_RECORD);
+    List<LogRecordData> signals = singletonList(LOG_RECORD);
 
     ExportLogsServiceRequest result = mapToProto(signals);
 
@@ -116,7 +116,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyMultipleLogsWithSameResourceAndScope() {
-    List<LogRecordData> signals = Arrays.asList(LOG_RECORD, OTHER_LOG_RECORD);
+    List<LogRecordData> signals = asList(LOG_RECORD, OTHER_LOG_RECORD);
 
     ExportLogsServiceRequest proto = mapToProto(signals);
 
@@ -136,8 +136,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyMultipleLogsWithSameResourceDifferentScope() {
-    List<LogRecordData> signals =
-        Arrays.asList(LOG_RECORD, LOG_RECORD_WITH_DIFFERENT_SCOPE_SAME_RESOURCE);
+    List<LogRecordData> signals = asList(LOG_RECORD, LOG_RECORD_WITH_DIFFERENT_SCOPE_SAME_RESOURCE);
 
     ExportLogsServiceRequest proto = mapToProto(signals);
 
@@ -157,7 +156,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyMultipleLogsWithDifferentResource() {
-    List<LogRecordData> signals = Arrays.asList(LOG_RECORD, LOG_RECORD_WITH_DIFFERENT_RESOURCE);
+    List<LogRecordData> signals = asList(LOG_RECORD, LOG_RECORD_WITH_DIFFERENT_RESOURCE);
 
     ExportLogsServiceRequest proto = mapToProto(signals);
 
@@ -181,7 +180,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyLogWithEventName() {
-    List<LogRecordData> signals = Collections.singletonList(LOG_RECORD_WITH_EVENT_NAME);
+    List<LogRecordData> signals = singletonList(LOG_RECORD_WITH_EVENT_NAME);
 
     ExportLogsServiceRequest result = mapToProto(signals);
 
