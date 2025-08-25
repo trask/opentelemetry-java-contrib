@@ -5,6 +5,10 @@
 
 package io.opentelemetry.contrib.gcp.auth;
 
+import static java.util.logging.Level.WARNING;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auto.service.AutoService;
 import io.opentelemetry.api.common.AttributeKey;
@@ -30,9 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 /**
@@ -49,7 +51,7 @@ import javax.annotation.Nonnull;
  * @see GoogleCredentials
  */
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class GcpAuthAutoConfigurationCustomizerProvider
+public final class GcpAuthAutoConfigurationCustomizerProvider
     implements AutoConfigurationCustomizerProvider {
 
   private static final Logger logger =
@@ -124,7 +126,7 @@ public class GcpAuthAutoConfigurationCustomizerProvider
     } else {
       String[] params = {SIGNAL_TYPE_TRACES, SIGNAL_TARGET_WARNING_FIX_SUGGESTION};
       logger.log(
-          Level.WARNING,
+          WARNING,
           "GCP Authentication Extension is not configured for signal type: {0}. {1}",
           params);
     }
@@ -138,7 +140,7 @@ public class GcpAuthAutoConfigurationCustomizerProvider
     } else {
       String[] params = {SIGNAL_TYPE_METRICS, SIGNAL_TARGET_WARNING_FIX_SUGGESTION};
       logger.log(
-          Level.WARNING,
+          WARNING,
           "GCP Authentication Extension is not configured for signal type: {0}. {1}",
           params);
     }
@@ -206,13 +208,13 @@ public class GcpAuthAutoConfigurationCustomizerProvider
     Map<String, String> flattenedHeaders =
         gcpHeaders.entrySet().stream()
             .collect(
-                Collectors.toMap(
+                toMap(
                     Map.Entry::getKey,
                     entry ->
                         entry.getValue().stream()
                             .filter(Objects::nonNull) // Filter nulls
                             .filter(s -> !s.isEmpty()) // Filter empty strings
-                            .collect(Collectors.joining(","))));
+                            .collect(joining(","))));
     // Add quota user project header if not detected by the auth library and user provided it via
     // system properties.
     if (!flattenedHeaders.containsKey(QUOTA_USER_PROJECT_HEADER)) {

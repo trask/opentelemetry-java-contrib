@@ -11,9 +11,7 @@ import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomiz
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_METRICS;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_TRACES;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -162,12 +160,12 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
 
       Mockito.verify(mockOtlpHttpSpanExporter, Mockito.times(1)).toBuilder();
       Mockito.verify(spyOtlpHttpSpanExporterBuilder, Mockito.times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
-      assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
+      assertThat(traceHeaderSupplierCaptor.getValue().get()).hasSize(2);
       assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
@@ -215,12 +213,12 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
 
       Mockito.verify(mockOtlpGrpcSpanExporter, Mockito.times(1)).toBuilder();
       Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
-      assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
+      assertThat(traceHeaderSupplierCaptor.getValue().get()).hasSize(2);
       assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
@@ -271,12 +269,12 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestMetric(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
 
       Mockito.verify(mockOtlpHttpMetricExporter, Mockito.times(1)).toBuilder();
       Mockito.verify(spyOtlpHttpMetricExporterBuilder, Mockito.times(1))
           .setHeaders(metricHeaderSupplierCaptor.capture());
-      assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
+      assertThat(metricHeaderSupplierCaptor.getValue().get()).hasSize(2);
       assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
@@ -332,12 +330,12 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestMetric(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
 
       Mockito.verify(mockOtlpGrpcMetricExporter, Mockito.times(1)).toBuilder();
       Mockito.verify(spyOtlpGrpcMetricExporterBuilder, Mockito.times(1))
           .setHeaders(metricHeaderSupplierCaptor.capture());
-      assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
+      assertThat(metricHeaderSupplierCaptor.getValue().get()).hasSize(2);
       assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
@@ -437,7 +435,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
       Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
 
@@ -506,14 +504,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
-      assertTrue(joinResult.isSuccess());
+      assertThat(joinResult.isSuccess()).isTrue();
 
       // Check Traces modification conditions
       if (testCase.getExpectedIsTraceSignalModified()) {
         // If traces signal is expected to be modified, auth headers must be present
         Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
             .setHeaders(traceHeaderSupplierCaptor.capture());
-        assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
+        assertThat(traceHeaderSupplierCaptor.getValue().get()).hasSize(2);
         assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
             .isTrue();
       } else {
@@ -527,7 +525,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         // If metrics signal is expected to be modified, auth headers must be present
         Mockito.verify(spyOtlpGrpcMetricExporterBuilder, Mockito.times(1))
             .setHeaders(metricHeaderSupplierCaptor.capture());
-        assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
+        assertThat(metricHeaderSupplierCaptor.getValue().get()).hasSize(2);
         assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
             .isTrue();
       } else {
