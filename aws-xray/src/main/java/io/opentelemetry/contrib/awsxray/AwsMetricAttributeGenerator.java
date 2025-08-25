@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  * represent "incoming" traffic, {@link SpanKind#CLIENT} and {@link SpanKind#PRODUCER} spans
  * represent "outgoing" traffic, and {@link SpanKind#INTERNAL} spans are ignored.
  */
-final class AwsMetricAttributeGenerator implements MetricAttributeGenerator {
+class AwsMetricAttributeGenerator implements MetricAttributeGenerator {
 
   private static final Logger logger =
       Logger.getLogger(AwsMetricAttributeGenerator.class.getName());

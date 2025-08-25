@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>This class is internal and is hence not for public use. Its APIs are unstable and can change
  * at any time.
  */
-final class RateLimiter {
+class RateLimiter {
   private final Clock clock;
   private final double creditsPerNanosecond;
   private final long maxBalance; // max balance in nano ticks

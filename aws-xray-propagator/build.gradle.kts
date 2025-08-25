@@ -11,6 +11,7 @@ dependencies {
   api("io.opentelemetry:opentelemetry-api")
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
   compileOnly("io.opentelemetry:opentelemetry-api-incubator")
+
   testImplementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
   testImplementation("io.opentelemetry:opentelemetry-sdk-trace")
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing")

@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-final class XrayRulesSampler implements Sampler {
+class XrayRulesSampler implements Sampler {
 
   private static final Logger logger = Logger.getLogger(XrayRulesSampler.class.getName());
 

@@ -47,7 +47,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-final class XraySamplerClient {
+class XraySamplerClient {
 
   private static final ObjectMapper OBJECT_MAPPER =
       new ObjectMapper()

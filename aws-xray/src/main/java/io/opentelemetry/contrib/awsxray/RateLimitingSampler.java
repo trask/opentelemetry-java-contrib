@@ -15,7 +15,7 @@ import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.util.List;
 
-final class RateLimitingSampler implements Sampler {
+class RateLimitingSampler implements Sampler {
 
   private final RateLimiter limiter;
   private final int numPerSecond;

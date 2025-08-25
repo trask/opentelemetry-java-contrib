@@ -8,7 +8,7 @@ package io.opentelemetry.contrib.awsxray;
 import io.opentelemetry.api.common.AttributeKey;
 
 /** Utility class holding attribute keys with special meaning to AWS components */
-final class AwsAttributeKeys {
+class AwsAttributeKeys {
 
   private AwsAttributeKeys() {}
 
