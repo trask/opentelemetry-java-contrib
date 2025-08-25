@@ -11,8 +11,8 @@ import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.contrib.awsxray.propagator.AwsXrayPropagator;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 
-@AutoService(ComponentProvider.class)
 @SuppressWarnings("rawtypes")
+@AutoService(ComponentProvider.class)
 public class AwsXrayComponentProvider implements ComponentProvider<TextMapPropagator> {
   @Override
   public Class<TextMapPropagator> getType() {
