@@ -11,9 +11,7 @@ import io.opentelemetry.api.common.AttributeKey;
  * Inlines incubating attributes until they are stable, doing this prevents having a direct
  * dependency on incubating artifact which can conflict with another incubating version.
  */
-class IncubatingAttributes {
-
-  private IncubatingAttributes() {}
+final class IncubatingAttributes {
 
   public static final AttributeKey<String> CLOUD_ACCOUNT_ID =
       AttributeKey.stringKey("cloud.account.id");
@@ -24,17 +22,6 @@ class IncubatingAttributes {
   public static final AttributeKey<String> CLOUD_PROVIDER =
       AttributeKey.stringKey("cloud.provider");
   public static final AttributeKey<String> CLOUD_REGION = AttributeKey.stringKey("cloud.region");
-
-  public static final class CloudPlatformIncubatingValues {
-    private CloudPlatformIncubatingValues() {}
-
-    public static final String GCP_COMPUTE_ENGINE = "gcp_compute_engine";
-    public static final String GCP_CLOUD_RUN = "gcp_cloud_run";
-    public static final String GCP_KUBERNETES_ENGINE = "gcp_kubernetes_engine";
-    public static final String GCP_CLOUD_FUNCTIONS = "gcp_cloud_functions";
-    public static final String GCP_APP_ENGINE = "gcp_app_engine";
-    public static final String GCP = "gcp";
-  }
 
   public static final AttributeKey<String> FAAS_INSTANCE = AttributeKey.stringKey("faas.instance");
   public static final AttributeKey<String> FAAS_NAME = AttributeKey.stringKey("faas.name");
@@ -56,4 +43,17 @@ class IncubatingAttributes {
 
   public static final AttributeKey<String> K8S_CLUSTER_NAME =
       AttributeKey.stringKey("k8s.cluster.name");
+
+  private IncubatingAttributes() {}
+
+  public static final class CloudPlatformIncubatingValues {
+    public static final String GCP_COMPUTE_ENGINE = "gcp_compute_engine";
+    public static final String GCP_CLOUD_RUN = "gcp_cloud_run";
+    public static final String GCP_KUBERNETES_ENGINE = "gcp_kubernetes_engine";
+    public static final String GCP_CLOUD_FUNCTIONS = "gcp_cloud_functions";
+    public static final String GCP_APP_ENGINE = "gcp_app_engine";
+    public static final String GCP = "gcp";
+
+    private CloudPlatformIncubatingValues() {}
+  }
 }
