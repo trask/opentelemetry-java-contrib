@@ -19,7 +19,7 @@ import java.util.List;
  * #setAttributesKeysToPropagate} are not invoked, the builder defaults to using specific {@link
  * AwsAttributeKeys} as propagation targets.
  */
-public final class AttributePropagatingSpanProcessorBuilder {
+public class AttributePropagatingSpanProcessorBuilder {
 
   private AttributeKey<String> spanNamePropagationKey = AwsAttributeKeys.AWS_LOCAL_OPERATION;
   private List<AttributeKey<String>> attributesKeysToPropagate =
