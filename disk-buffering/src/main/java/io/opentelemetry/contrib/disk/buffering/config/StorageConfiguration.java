@@ -10,7 +10,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.google.auto.value.AutoValue;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 /** Defines how the storage should be managed. */
 @AutoValue
