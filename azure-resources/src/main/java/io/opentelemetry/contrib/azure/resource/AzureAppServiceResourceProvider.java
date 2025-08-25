@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
-public class AzureAppServiceResourceProvider extends CloudResourceProvider {
+public final class AzureAppServiceResourceProvider extends CloudResourceProvider {
 
   static final AttributeKey<String> AZURE_APP_SERVICE_STAMP_RESOURCE_ATTRIBUTE =
       AttributeKey.stringKey("azure.app.service.stamp");
