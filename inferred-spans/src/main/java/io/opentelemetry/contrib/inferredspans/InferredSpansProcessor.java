@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.inferredspans;
 
+import static java.util.Objects.requireNonNull;
+
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.TracerProvider;
@@ -19,7 +21,6 @@ import io.opentelemetry.sdk.trace.SpanProcessor;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-public class InferredSpansProcessor implements SpanProcessor {
+public final class InferredSpansProcessor implements SpanProcessor {
 
   private static final Logger logger = Logger.getLogger(InferredSpansProcessor.class.getName());
 
@@ -134,7 +135,7 @@ public class InferredSpansProcessor implements SpanProcessor {
       Properties properties = new Properties();
       properties.load(is);
       String version = (String) properties.get("contrib.version");
-      Objects.requireNonNull(version);
+      requireNonNull(version);
       return version;
     } catch (IOException e) {
       throw new IllegalStateException(e);
