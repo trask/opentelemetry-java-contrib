@@ -20,8 +20,6 @@ public final class WmqUtil {
 
   private static final Logger logger = LoggerFactory.getLogger(WmqUtil.class);
 
-  private WmqUtil() {}
-
   public static PCFMessageAgent initPcfMessageAgent(
       QueueManager queueManager, MQQueueManager ibmQueueManager) {
     try {
@@ -75,4 +73,6 @@ public final class WmqUtil {
   private static boolean isNotNullOrEmpty(@Nullable String str) {
     return str != null && !str.isEmpty();
   }
+
+  private WmqUtil() {}
 }

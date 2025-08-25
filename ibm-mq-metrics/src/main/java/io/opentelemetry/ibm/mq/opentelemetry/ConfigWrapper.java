@@ -6,13 +6,13 @@
 package io.opentelemetry.ibm.mq.opentelemetry;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,7 +91,7 @@ public final class ConfigWrapper {
   public Map<String, String> getSslConnection() {
     Map<String, String> result = (Map<String, String>) config.get("sslConnection");
     if (result == null) {
-      return Collections.emptyMap();
+      return emptyMap();
     }
     return result;
   }
@@ -124,6 +124,6 @@ public final class ConfigWrapper {
     if (config.get("taskSchedule") instanceof Map) {
       return (Map<String, ?>) config.get("taskSchedule");
     }
-    return Collections.emptyMap();
+    return emptyMap();
   }
 }
