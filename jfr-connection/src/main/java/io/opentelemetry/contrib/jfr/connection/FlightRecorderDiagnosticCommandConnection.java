@@ -5,18 +5,19 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.management.InstanceNotFoundException;
 import javax.management.IntrospectionException;
 import javax.management.MBeanException;
@@ -58,7 +59,7 @@ final class FlightRecorderDiagnosticCommandConnection implements FlightRecorderC
    */
   static FlightRecorderConnection connect(MBeanServerConnection mBeanServerConnection)
       throws IOException, JfrConnectionException {
-    Objects.requireNonNull(mBeanServerConnection);
+    requireNonNull(mBeanServerConnection);
     try {
       ObjectInstance objectInstance =
           mBeanServerConnection.getObjectInstance(new ObjectName(DIAGNOSTIC_COMMAND_OBJECT_NAME));
@@ -150,7 +151,7 @@ final class FlightRecorderDiagnosticCommandConnection implements FlightRecorderC
         recordingOptions.getRecordingOptions().entrySet().stream()
             .filter(kv -> !kv.getKey().equals("disk")) // not supported on Java 8
             .map(kv -> kv.getKey() + "=" + kv.getValue())
-            .collect(Collectors.toList());
+            .collect(toList());
 
     List<String> settings = Collections.singletonList("settings=" + recordingConfiguration);
 
@@ -239,7 +240,7 @@ final class FlightRecorderDiagnosticCommandConnection implements FlightRecorderC
             new NullPointerException("Could not get MBeanInfo for " + objectName));
       }
       Optional<MBeanOperationInfo> operation =
-          Arrays.stream(mBeanInfo.getOperations())
+          stream(mBeanInfo.getOperations())
               .filter(it -> "vmUnlockCommercialFeatures".equals(it.getName()))
               .findFirst();
 

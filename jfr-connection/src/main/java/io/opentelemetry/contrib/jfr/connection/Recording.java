@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nullable;
 
@@ -165,7 +166,7 @@ public class Recording implements AutoCloseable {
    * @throws NullPointerException If the {@code outputFile} argument is null.
    */
   public void dump(String outputFile) throws IOException, JfrConnectionException {
-    Objects.requireNonNull(outputFile, "outputFile may not be null");
+    requireNonNull(outputFile, "outputFile may not be null");
     State currentState = state.get();
     if (currentState == State.RECORDING || currentState == State.STOPPED) {
       connection.dumpRecording(id, outputFile);

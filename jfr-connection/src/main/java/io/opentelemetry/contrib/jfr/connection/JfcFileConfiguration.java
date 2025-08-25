@@ -5,12 +5,13 @@
 
 package io.opentelemetry.contrib.jfr.connection;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
 import javax.management.MBeanServerConnection;
@@ -18,7 +19,7 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 /** A {@code RecordingConfiguration} that is read from a jfc file. */
-public class JfcFileConfiguration implements RecordingConfiguration {
+public final class JfcFileConfiguration implements RecordingConfiguration {
 
   private final String configuration;
 
@@ -34,9 +35,9 @@ public class JfcFileConfiguration implements RecordingConfiguration {
 
   private static String readConfigurationFile(InputStream inputStream) {
     if (inputStream != null) {
-      return new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+      return new BufferedReader(new InputStreamReader(inputStream, UTF_8))
           .lines()
-          .collect(Collectors.joining());
+          .collect(joining());
     } else {
       throw new IllegalArgumentException("Null configuration provided");
     }
