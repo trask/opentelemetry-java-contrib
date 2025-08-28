@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.metrics.micrometer.internal.instruments;
 
+import static java.util.Collections.unmodifiableList;
+
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.opentelemetry.api.common.AttributeKey;
@@ -14,7 +16,6 @@ import io.opentelemetry.api.metrics.ObservableLongMeasurement;
 import io.opentelemetry.contrib.metrics.micrometer.CallbackRegistration;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.InstrumentState;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,7 @@ abstract class AbstractInstrument {
 
     list.add(instrumentationNameTag);
     list.add(instrumentationVersionTag);
-    return Collections.unmodifiableList(list);
+    return unmodifiableList(list);
   }
 
   protected final CallbackRegistration registerLongCallback(

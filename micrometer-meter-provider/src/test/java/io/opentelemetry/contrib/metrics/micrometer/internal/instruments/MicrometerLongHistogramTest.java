@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer.internal.instruments;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.micrometer.core.instrument.DistributionSummary;
@@ -24,7 +25,6 @@ import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
 import java.util.Arrays;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +41,7 @@ public class MicrometerLongHistogramTest {
   @BeforeEach
   void setUp() {
     meterRegistry = new SimpleMeterRegistry();
-    callbackRegistrar = new TestCallbackRegistrar(Collections.emptyList());
+    callbackRegistrar = new TestCallbackRegistrar(emptyList());
     meterProviderSharedState = new MeterProviderSharedState(() -> meterRegistry, callbackRegistrar);
     meterSharedState = new MeterSharedState(meterProviderSharedState, "meter", "1.0", null);
   }

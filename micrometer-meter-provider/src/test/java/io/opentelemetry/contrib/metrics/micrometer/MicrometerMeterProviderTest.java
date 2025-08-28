@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -14,11 +15,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.metrics.MeterProvider;
 import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class MicrometerMeterProviderTest {
+class MicrometerMeterProviderTest {
   SimpleMeterRegistry meterRegistry;
 
   CallbackRegistrar callbackRegistrar;
@@ -26,7 +26,7 @@ public class MicrometerMeterProviderTest {
   @BeforeEach
   void setUp() {
     meterRegistry = new SimpleMeterRegistry();
-    callbackRegistrar = new TestCallbackRegistrar(Collections.emptyList());
+    callbackRegistrar = new TestCallbackRegistrar(emptyList());
   }
 
   @Test
