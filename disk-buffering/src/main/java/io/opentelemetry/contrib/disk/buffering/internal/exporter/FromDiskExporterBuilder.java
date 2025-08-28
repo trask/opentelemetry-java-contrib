@@ -31,11 +31,6 @@ public class FromDiskExporterBuilder<T> {
     this.storage = storage;
   }
 
-  @NotNull
-  private static <T> SignalDeserializer<T> noopDeserializer() {
-    return x -> emptyList();
-  }
-
   @CanIgnoreReturnValue
   public FromDiskExporterBuilder<T> setDeserializer(SignalDeserializer<T> serializer) {
     this.serializer = serializer;
@@ -51,5 +46,10 @@ public class FromDiskExporterBuilder<T> {
 
   public FromDiskExporterImpl<T> build() throws IOException {
     return new FromDiskExporterImpl<>(serializer, exportFunction, storage);
+  }
+
+  @NotNull
+  private static <T> SignalDeserializer<T> noopDeserializer() {
+    return x -> emptyList();
   }
 }

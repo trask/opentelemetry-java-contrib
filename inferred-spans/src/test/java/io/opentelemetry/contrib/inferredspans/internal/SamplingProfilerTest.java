@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -226,9 +225,9 @@ class SamplingProfilerTest {
             link -> {
               assertThat(link.getAttributes()).containsEntry(LINK_IS_CHILD, true);
               SpanData expectedSpan = explicitSpanB.get();
-              Assertions.assertThat(link.getSpanContext().getTraceId())
+              org.assertj.core.api.Assertions.assertThat(link.getSpanContext().getTraceId())
                   .isEqualTo(expectedSpan.getTraceId());
-              Assertions.assertThat(link.getSpanContext().getSpanId())
+              org.assertj.core.api.Assertions.assertThat(link.getSpanContext().getSpanId())
                   .isEqualTo(expectedSpan.getSpanId());
             });
 
