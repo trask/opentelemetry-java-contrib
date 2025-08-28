@@ -138,7 +138,7 @@ class JmxConfig {
     this(new Properties());
   }
 
-  private int getProperty(final String key, final int dfault) {
+  private int getProperty(String key, int dfault) {
     String propVal = properties.getProperty(key);
     if (propVal == null) {
       return dfault;
@@ -153,7 +153,7 @@ class JmxConfig {
   /**
    * Similar to getProperty(key, defaultValue) but sets the property to default if not in object.
    */
-  private String getAndSetProperty(final String key, final String defaultValue) {
+  private String getAndSetProperty(String key, String defaultValue) {
     String propVal = properties.getProperty(key, defaultValue);
     if (propVal.equals(defaultValue)) {
       properties.setProperty(key, defaultValue);
@@ -161,7 +161,7 @@ class JmxConfig {
     return propVal;
   }
 
-  private int getAndSetProperty(final String key, final int defaultValue) {
+  private int getAndSetProperty(String key, int defaultValue) {
     int propVal = getProperty(key, defaultValue);
     if (propVal == defaultValue) {
       properties.setProperty(key, String.valueOf(defaultValue));
