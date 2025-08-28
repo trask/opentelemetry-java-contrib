@@ -35,7 +35,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.io.TempDir;
 
 @DisabledOnOs(WINDOWS) // Uses async-profiler, which is not supported on Windows
-public class InferredSpansAutoConfigTest {
+class InferredSpansAutoConfigTest {
 
   @BeforeEach
   @AfterEach

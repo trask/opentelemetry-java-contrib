@@ -15,6 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -77,7 +88,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
@@ -135,25 +145,24 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         ConfigurableOption.GOOGLE_OTEL_AUTH_TARGET_SIGNALS.getSystemProperty(), SIGNAL_TYPE_TRACES);
     // Prepare mocks
     prepareMockBehaviorForGoogleCredentials();
-    OtlpHttpSpanExporter mockOtlpHttpSpanExporter = Mockito.mock(OtlpHttpSpanExporter.class);
+    OtlpHttpSpanExporter mockOtlpHttpSpanExporter = mock(OtlpHttpSpanExporter.class);
     OtlpHttpSpanExporterBuilder otlpSpanExporterBuilder = OtlpHttpSpanExporter.builder();
-    OtlpHttpSpanExporterBuilder spyOtlpHttpSpanExporterBuilder =
-        Mockito.spy(otlpSpanExporterBuilder);
-    Mockito.when(spyOtlpHttpSpanExporterBuilder.build()).thenReturn(mockOtlpHttpSpanExporter);
+    OtlpHttpSpanExporterBuilder spyOtlpHttpSpanExporterBuilder = spy(otlpSpanExporterBuilder);
+    when(spyOtlpHttpSpanExporterBuilder.build()).thenReturn(mockOtlpHttpSpanExporter);
 
-    Mockito.when(mockOtlpHttpSpanExporter.shutdown()).thenReturn(CompletableResultCode.ofSuccess());
+    when(mockOtlpHttpSpanExporter.shutdown()).thenReturn(CompletableResultCode.ofSuccess());
     List<SpanData> exportedSpans = new ArrayList<>();
-    Mockito.when(mockOtlpHttpSpanExporter.export(Mockito.anyCollection()))
+    when(mockOtlpHttpSpanExporter.export(anyCollection()))
         .thenAnswer(
             invocationOnMock -> {
               exportedSpans.addAll(invocationOnMock.getArgument(0));
               return CompletableResultCode.ofSuccess();
             });
-    Mockito.when(mockOtlpHttpSpanExporter.toBuilder()).thenReturn(spyOtlpHttpSpanExporterBuilder);
+    when(mockOtlpHttpSpanExporter.toBuilder()).thenReturn(spyOtlpHttpSpanExporterBuilder);
 
     // begin assertions
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -164,14 +173,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
       assertTrue(joinResult.isSuccess());
 
-      Mockito.verify(mockOtlpHttpSpanExporter, Mockito.times(1)).toBuilder();
-      Mockito.verify(spyOtlpHttpSpanExporterBuilder, Mockito.times(1))
+      verify(mockOtlpHttpSpanExporter, times(1)).toBuilder();
+      verify(spyOtlpHttpSpanExporterBuilder, times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
       assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
       assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
-      Mockito.verify(mockOtlpHttpSpanExporter, Mockito.atLeast(1)).export(Mockito.anyCollection());
+      verify(mockOtlpHttpSpanExporter, atLeast(1)).export(anyCollection());
 
       assertThat(exportedSpans)
           .hasSizeGreaterThan(0)
@@ -197,16 +206,16 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         ConfigurableOption.GOOGLE_OTEL_AUTH_TARGET_SIGNALS.getSystemProperty(), SIGNAL_TYPE_TRACES);
     // Prepare mocks
     prepareMockBehaviorForGoogleCredentials();
-    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = Mockito.mock(OtlpGrpcSpanExporter.class);
+    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = mock(OtlpGrpcSpanExporter.class);
     OtlpGrpcSpanExporterBuilder spyOtlpGrpcSpanExporterBuilder =
-        Mockito.spy(OtlpGrpcSpanExporter.builder());
+        spy(OtlpGrpcSpanExporter.builder());
     List<SpanData> exportedSpans = new ArrayList<>();
     configureGrpcMockSpanExporter(
         mockOtlpGrpcSpanExporter, spyOtlpGrpcSpanExporterBuilder, exportedSpans);
 
     // begin assertions
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -217,14 +226,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
       assertTrue(joinResult.isSuccess());
 
-      Mockito.verify(mockOtlpGrpcSpanExporter, Mockito.times(1)).toBuilder();
-      Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
+      verify(mockOtlpGrpcSpanExporter, times(1)).toBuilder();
+      verify(spyOtlpGrpcSpanExporterBuilder, times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
       assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
       assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
-      Mockito.verify(mockOtlpGrpcSpanExporter, Mockito.atLeast(1)).export(Mockito.anyCollection());
+      verify(mockOtlpGrpcSpanExporter, atLeast(1)).export(anyCollection());
 
       assertThat(exportedSpans)
           .hasSizeGreaterThan(0)
@@ -252,17 +261,16 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         SIGNAL_TYPE_METRICS);
     // Prepare mocks
     prepareMockBehaviorForGoogleCredentials();
-    OtlpHttpMetricExporter mockOtlpHttpMetricExporter = Mockito.mock(OtlpHttpMetricExporter.class);
+    OtlpHttpMetricExporter mockOtlpHttpMetricExporter = mock(OtlpHttpMetricExporter.class);
     OtlpHttpMetricExporterBuilder otlpMetricExporterBuilder = OtlpHttpMetricExporter.builder();
-    OtlpHttpMetricExporterBuilder spyOtlpHttpMetricExporterBuilder =
-        Mockito.spy(otlpMetricExporterBuilder);
+    OtlpHttpMetricExporterBuilder spyOtlpHttpMetricExporterBuilder = spy(otlpMetricExporterBuilder);
     List<MetricData> exportedMetrics = new ArrayList<>();
     configureHttpMockMetricExporter(
         mockOtlpHttpMetricExporter, spyOtlpHttpMetricExporterBuilder, exportedMetrics);
 
     // begin assertions
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -273,15 +281,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
       assertTrue(joinResult.isSuccess());
 
-      Mockito.verify(mockOtlpHttpMetricExporter, Mockito.times(1)).toBuilder();
-      Mockito.verify(spyOtlpHttpMetricExporterBuilder, Mockito.times(1))
+      verify(mockOtlpHttpMetricExporter, times(1)).toBuilder();
+      verify(spyOtlpHttpMetricExporterBuilder, times(1))
           .setHeaders(metricHeaderSupplierCaptor.capture());
       assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
       assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
-      Mockito.verify(mockOtlpHttpMetricExporter, Mockito.atLeast(1))
-          .export(Mockito.anyCollection());
+      verify(mockOtlpHttpMetricExporter, atLeast(1)).export(anyCollection());
 
       assertThat(exportedMetrics)
           .hasSizeGreaterThan(0)
@@ -313,17 +320,16 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         SIGNAL_TYPE_METRICS);
     // Prepare mocks
     prepareMockBehaviorForGoogleCredentials();
-    OtlpGrpcMetricExporter mockOtlpGrpcMetricExporter = Mockito.mock(OtlpGrpcMetricExporter.class);
+    OtlpGrpcMetricExporter mockOtlpGrpcMetricExporter = mock(OtlpGrpcMetricExporter.class);
     OtlpGrpcMetricExporterBuilder otlpMetricExporterBuilder = OtlpGrpcMetricExporter.builder();
-    OtlpGrpcMetricExporterBuilder spyOtlpGrpcMetricExporterBuilder =
-        Mockito.spy(otlpMetricExporterBuilder);
+    OtlpGrpcMetricExporterBuilder spyOtlpGrpcMetricExporterBuilder = spy(otlpMetricExporterBuilder);
     List<MetricData> exportedMetrics = new ArrayList<>();
     configureGrpcMockMetricExporter(
         mockOtlpGrpcMetricExporter, spyOtlpGrpcMetricExporterBuilder, exportedMetrics);
 
     // begin assertions
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -334,15 +340,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
       assertTrue(joinResult.isSuccess());
 
-      Mockito.verify(mockOtlpGrpcMetricExporter, Mockito.times(1)).toBuilder();
-      Mockito.verify(spyOtlpGrpcMetricExporterBuilder, Mockito.times(1))
+      verify(mockOtlpGrpcMetricExporter, times(1)).toBuilder();
+      verify(spyOtlpGrpcMetricExporterBuilder, times(1))
           .setHeaders(metricHeaderSupplierCaptor.capture());
       assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
       assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
           .isTrue();
 
-      Mockito.verify(mockOtlpGrpcMetricExporter, Mockito.atLeast(1))
-          .export(Mockito.anyCollection());
+      verify(mockOtlpGrpcMetricExporter, atLeast(1)).export(anyCollection());
 
       assertThat(exportedMetrics)
           .hasSizeGreaterThan(0)
@@ -368,9 +373,9 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
   public void testCustomizerFailWithMissingResourceProject() {
     System.setProperty(
         ConfigurableOption.GOOGLE_OTEL_AUTH_TARGET_SIGNALS.getSystemProperty(), SIGNAL_TYPE_ALL);
-    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = Mockito.mock(OtlpGrpcSpanExporter.class);
+    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = mock(OtlpGrpcSpanExporter.class);
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -407,7 +412,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
               "Authorization", singletonList("Bearer " + fakeAccessToken.getTokenValue()));
     }
     // mock credentials to return the prepared request metadata
-    Mockito.when(mockedGoogleCredentials.getRequestMetadata()).thenReturn(mockedRequestMetadata);
+    when(mockedGoogleCredentials.getRequestMetadata()).thenReturn(mockedRequestMetadata);
 
     // configure environment according to test case
     String quotaProjectId = testCase.getUserSpecifiedQuotaProjectId(); // maybe empty string
@@ -418,15 +423,15 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
     }
 
     // prepare mock exporter
-    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = Mockito.mock(OtlpGrpcSpanExporter.class);
+    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = mock(OtlpGrpcSpanExporter.class);
     OtlpGrpcSpanExporterBuilder spyOtlpGrpcSpanExporterBuilder =
-        Mockito.spy(OtlpGrpcSpanExporter.builder());
+        spy(OtlpGrpcSpanExporter.builder());
     List<SpanData> exportedSpans = new ArrayList<>();
     configureGrpcMockSpanExporter(
         mockOtlpGrpcSpanExporter, spyOtlpGrpcSpanExporterBuilder, exportedSpans);
 
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -437,7 +442,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       CompletableResultCode code = sdk.shutdown();
       CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
       assertTrue(joinResult.isSuccess());
-      Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
+      verify(spyOtlpGrpcSpanExporterBuilder, times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
 
       // assert that the Authorization bearer token header is present
@@ -466,9 +471,9 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
     prepareMockBehaviorForGoogleCredentials();
 
     // Prepare mocked span exporter
-    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = Mockito.mock(OtlpGrpcSpanExporter.class);
+    OtlpGrpcSpanExporter mockOtlpGrpcSpanExporter = mock(OtlpGrpcSpanExporter.class);
     OtlpGrpcSpanExporterBuilder spyOtlpGrpcSpanExporterBuilder =
-        Mockito.spy(OtlpGrpcSpanExporter.builder());
+        spy(OtlpGrpcSpanExporter.builder());
     List<SpanData> exportedSpans = new ArrayList<>();
     configureGrpcMockSpanExporter(
         mockOtlpGrpcSpanExporter, spyOtlpGrpcSpanExporterBuilder, exportedSpans);
@@ -476,10 +481,9 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
         mockOtlpGrpcSpanExporter, spyOtlpGrpcSpanExporterBuilder, exportedSpans);
 
     // Prepare mocked metrics exporter
-    OtlpGrpcMetricExporter mockOtlpGrpcMetricExporter = Mockito.mock(OtlpGrpcMetricExporter.class);
+    OtlpGrpcMetricExporter mockOtlpGrpcMetricExporter = mock(OtlpGrpcMetricExporter.class);
     OtlpGrpcMetricExporterBuilder otlpMetricExporterBuilder = OtlpGrpcMetricExporter.builder();
-    OtlpGrpcMetricExporterBuilder spyOtlpGrpcMetricExporterBuilder =
-        Mockito.spy(otlpMetricExporterBuilder);
+    OtlpGrpcMetricExporterBuilder spyOtlpGrpcMetricExporterBuilder = spy(otlpMetricExporterBuilder);
     List<MetricData> exportedMetrics = new ArrayList<>();
     configureGrpcMockMetricExporter(
         mockOtlpGrpcMetricExporter, spyOtlpGrpcMetricExporterBuilder, exportedMetrics);
@@ -491,7 +495,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
 
     // Build Autoconfigured OpenTelemetry SDK using the mocks and send signals
     try (MockedStatic<GoogleCredentials> googleCredentialsMockedStatic =
-        Mockito.mockStatic(GoogleCredentials.class)) {
+        mockStatic(GoogleCredentials.class)) {
       googleCredentialsMockedStatic
           .when(GoogleCredentials::getApplicationDefault)
           .thenReturn(mockedGoogleCredentials);
@@ -510,7 +514,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       // Check Traces modification conditions
       if (testCase.getExpectedIsTraceSignalModified()) {
         // If traces signal is expected to be modified, auth headers must be present
-        Mockito.verify(spyOtlpGrpcSpanExporterBuilder, Mockito.times(1))
+        verify(spyOtlpGrpcSpanExporterBuilder, times(1))
             .setHeaders(traceHeaderSupplierCaptor.capture());
         assertEquals(2, traceHeaderSupplierCaptor.getValue().get().size());
         assertThat(authHeadersQuotaProjectIsPresent(traceHeaderSupplierCaptor.getValue().get()))
@@ -518,13 +522,13 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       } else {
         // If traces signals is not expected to be modified then no interaction with the builder
         // should be made
-        Mockito.verifyNoInteractions(spyOtlpGrpcSpanExporterBuilder);
+        verifyNoInteractions(spyOtlpGrpcSpanExporterBuilder);
       }
 
       // Check Metric modification conditions
       if (testCase.getExpectedIsMetricsSignalModified()) {
         // If metrics signal is expected to be modified, auth headers must be present
-        Mockito.verify(spyOtlpGrpcMetricExporterBuilder, Mockito.times(1))
+        verify(spyOtlpGrpcMetricExporterBuilder, times(1))
             .setHeaders(metricHeaderSupplierCaptor.capture());
         assertEquals(2, metricHeaderSupplierCaptor.getValue().get().size());
         assertThat(authHeadersQuotaProjectIsPresent(metricHeaderSupplierCaptor.getValue().get()))
@@ -532,7 +536,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       } else {
         // If metrics signals is not expected to be modified then no interaction with the builder
         // should be made
-        Mockito.verifyNoInteractions(spyOtlpGrpcMetricExporterBuilder);
+        verifyNoInteractions(spyOtlpGrpcMetricExporterBuilder);
       }
     }
   }
@@ -742,13 +746,11 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OtlpGrpcSpanExporter mockGrpcExporter,
       OtlpGrpcSpanExporterBuilder spyGrpcExporterBuilder,
       List<SpanData> exportedSpanContainer) {
-    Mockito.lenient().when(spyGrpcExporterBuilder.build()).thenReturn(mockGrpcExporter);
-    Mockito.lenient()
-        .when(mockGrpcExporter.shutdown())
-        .thenReturn(CompletableResultCode.ofSuccess());
-    Mockito.lenient().when(mockGrpcExporter.toBuilder()).thenReturn(spyGrpcExporterBuilder);
-    Mockito.lenient()
-        .when(mockGrpcExporter.export(Mockito.anyCollection()))
+    lenient().when(spyGrpcExporterBuilder.build()).thenReturn(mockGrpcExporter);
+    lenient().when(mockGrpcExporter.shutdown()).thenReturn(CompletableResultCode.ofSuccess());
+    lenient().when(mockGrpcExporter.toBuilder()).thenReturn(spyGrpcExporterBuilder);
+    lenient()
+        .when(mockGrpcExporter.export(anyCollection()))
         .thenAnswer(
             invocationOnMock -> {
               exportedSpanContainer.addAll(invocationOnMock.getArgument(0));
@@ -761,12 +763,10 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OtlpHttpMetricExporter mockOtlpHttpMetricExporter,
       OtlpHttpMetricExporterBuilder spyOtlpHttpMetricExporterBuilder,
       List<MetricData> exportedMetricContainer) {
-    Mockito.when(spyOtlpHttpMetricExporterBuilder.build()).thenReturn(mockOtlpHttpMetricExporter);
-    Mockito.when(mockOtlpHttpMetricExporter.shutdown())
-        .thenReturn(CompletableResultCode.ofSuccess());
-    Mockito.when(mockOtlpHttpMetricExporter.toBuilder())
-        .thenReturn(spyOtlpHttpMetricExporterBuilder);
-    Mockito.when(mockOtlpHttpMetricExporter.export(Mockito.anyCollection()))
+    when(spyOtlpHttpMetricExporterBuilder.build()).thenReturn(mockOtlpHttpMetricExporter);
+    when(mockOtlpHttpMetricExporter.shutdown()).thenReturn(CompletableResultCode.ofSuccess());
+    when(mockOtlpHttpMetricExporter.toBuilder()).thenReturn(spyOtlpHttpMetricExporterBuilder);
+    when(mockOtlpHttpMetricExporter.export(anyCollection()))
         .thenAnswer(
             invocationOnMock -> {
               exportedMetricContainer.addAll(invocationOnMock.getArgument(0));
@@ -774,14 +774,14 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
             });
     // mock the get default aggregation and aggregation temporality - they're required for valid
     // metric collection.
-    Mockito.when(mockOtlpHttpMetricExporter.getDefaultAggregation(Mockito.any()))
+    when(mockOtlpHttpMetricExporter.getDefaultAggregation(any()))
         .thenAnswer(
             (Answer<Aggregation>)
                 invocationOnMock -> {
                   InstrumentType instrumentType = invocationOnMock.getArgument(0);
                   return OtlpHttpMetricExporter.getDefault().getDefaultAggregation(instrumentType);
                 });
-    Mockito.when(mockOtlpHttpMetricExporter.getAggregationTemporality(Mockito.any()))
+    when(mockOtlpHttpMetricExporter.getAggregationTemporality(any()))
         .thenAnswer(
             (Answer<AggregationTemporality>)
                 invocationOnMock -> {
@@ -798,17 +798,15 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OtlpGrpcMetricExporter mockOtlpGrpcMetricExporter,
       OtlpGrpcMetricExporterBuilder spyOtlpGrpcMetricExporterBuilder,
       List<MetricData> exportedMetricContainer) {
-    Mockito.lenient()
-        .when(spyOtlpGrpcMetricExporterBuilder.build())
-        .thenReturn(mockOtlpGrpcMetricExporter);
-    Mockito.lenient()
+    lenient().when(spyOtlpGrpcMetricExporterBuilder.build()).thenReturn(mockOtlpGrpcMetricExporter);
+    lenient()
         .when(mockOtlpGrpcMetricExporter.shutdown())
         .thenReturn(CompletableResultCode.ofSuccess());
-    Mockito.lenient()
+    lenient()
         .when(mockOtlpGrpcMetricExporter.toBuilder())
         .thenReturn(spyOtlpGrpcMetricExporterBuilder);
-    Mockito.lenient()
-        .when(mockOtlpGrpcMetricExporter.export(Mockito.anyCollection()))
+    lenient()
+        .when(mockOtlpGrpcMetricExporter.export(anyCollection()))
         .thenAnswer(
             invocationOnMock -> {
               exportedMetricContainer.addAll(invocationOnMock.getArgument(0));
@@ -816,16 +814,16 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
             });
     // mock the get default aggregation and aggregation temporality - they're required for valid
     // metric collection.
-    Mockito.lenient()
-        .when(mockOtlpGrpcMetricExporter.getDefaultAggregation(Mockito.any()))
+    lenient()
+        .when(mockOtlpGrpcMetricExporter.getDefaultAggregation(any()))
         .thenAnswer(
             (Answer<Aggregation>)
                 invocationOnMock -> {
                   InstrumentType instrumentType = invocationOnMock.getArgument(0);
                   return OtlpGrpcMetricExporter.getDefault().getDefaultAggregation(instrumentType);
                 });
-    Mockito.lenient()
-        .when(mockOtlpGrpcMetricExporter.getAggregationTemporality(Mockito.any()))
+    lenient()
+        .when(mockOtlpGrpcMetricExporter.getAggregationTemporality(any()))
         .thenAnswer(
             (Answer<AggregationTemporality>)
                 invocationOnMock -> {
@@ -833,7 +831,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
                   return OtlpGrpcMetricExporter.getDefault()
                       .getAggregationTemporality(instrumentType);
                 });
-    Mockito.lenient()
+    lenient()
         .when(mockOtlpGrpcMetricExporter.getMemoryMode())
         .thenReturn(MemoryMode.IMMUTABLE_DATA);
   }
@@ -914,7 +912,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
   private void prepareMockBehaviorForGoogleCredentials() {
     AccessToken fakeAccessToken = new AccessToken("fake", Date.from(Instant.now()));
     try {
-      Mockito.lenient()
+      lenient()
           .when(mockedGoogleCredentials.getRequestMetadata())
           .thenReturn(
               ImmutableMap.of(

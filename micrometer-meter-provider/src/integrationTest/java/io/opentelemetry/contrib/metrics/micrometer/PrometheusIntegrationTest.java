@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.micrometer.prometheusmetrics.PrometheusConfig;
@@ -42,13 +43,12 @@ import io.opentelemetry.api.metrics.ObservableLongCounter;
 import io.opentelemetry.api.metrics.ObservableLongGauge;
 import io.opentelemetry.api.metrics.ObservableLongUpDownCounter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PrometheusIntegrationTest {
+class PrometheusIntegrationTest {
   private static final AttributeKey<String> KEY1 = AttributeKey.stringKey("key1");
   private static final AttributeKey<String> KEY2 = AttributeKey.stringKey("key2");
   private static final String VALUE1 = "value1";
@@ -103,7 +103,7 @@ public class PrometheusIntegrationTest {
     LongCounterBuilder builder =
         meter.counterBuilder("longCounter").setDescription("LongCounter test").setUnit("units");
 
-    ((ExtendedLongCounterBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     LongCounter longCounter = builder.build();
 
@@ -151,7 +151,7 @@ public class PrometheusIntegrationTest {
     LongCounterBuilder builder =
         meter.counterBuilder("longCounter").setDescription("LongCounter test").setUnit("units");
 
-    ((ExtendedLongCounterBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableLongCounter observableLongCounter =
         builder.buildWithCallback(
@@ -206,7 +206,7 @@ public class PrometheusIntegrationTest {
             .setDescription("DoubleCounter test")
             .setUnit("units");
 
-    ((ExtendedDoubleCounterBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     DoubleCounter doubleCounter = builder.build();
 
@@ -259,7 +259,7 @@ public class PrometheusIntegrationTest {
             .setDescription("DoubleCounter test")
             .setUnit("units");
 
-    ((ExtendedDoubleCounterBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableDoubleCounter observableDoubleCounter =
         builder.buildWithCallback(
@@ -323,8 +323,7 @@ public class PrometheusIntegrationTest {
             .setDescription("LongUpDownCounter test")
             .setUnit("units");
 
-    ((ExtendedLongUpDownCounterBuilder) builder)
-        .setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongUpDownCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     LongUpDownCounter longUpDownCounter = builder.build();
 
@@ -385,8 +384,7 @@ public class PrometheusIntegrationTest {
             .setDescription("LongUpDownCounter test")
             .setUnit("units");
 
-    ((ExtendedLongUpDownCounterBuilder) builder)
-        .setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongUpDownCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableLongUpDownCounter observableLongUpDownCounter =
         builder.buildWithCallback(
@@ -450,8 +448,7 @@ public class PrometheusIntegrationTest {
             .setDescription("DoubleUpDownCounter test")
             .setUnit("units");
 
-    ((ExtendedDoubleUpDownCounterBuilder) builder)
-        .setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleUpDownCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     DoubleUpDownCounter doubleUpDownCounter = builder.build();
 
@@ -504,8 +501,7 @@ public class PrometheusIntegrationTest {
             .setDescription("DoubleUpDownCounter test")
             .setUnit("units");
 
-    ((ExtendedDoubleUpDownCounterBuilder) builder)
-        .setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleUpDownCounterBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableDoubleUpDownCounter observableDoubleUpDownCounter =
         builder.buildWithCallback(
@@ -578,7 +574,7 @@ public class PrometheusIntegrationTest {
             .setDescription("DoubleHistogram test")
             .setUnit("units");
 
-    ((ExtendedDoubleHistogramBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleHistogramBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     DoubleHistogram doubleHistogram = builder.build();
 
@@ -722,7 +718,7 @@ public class PrometheusIntegrationTest {
             .setDescription("LongHistogram test")
             .setUnit("units");
 
-    ((ExtendedLongHistogramBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongHistogramBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     LongHistogram longHistogram = builder.build();
 
@@ -843,7 +839,7 @@ public class PrometheusIntegrationTest {
     DoubleGaugeBuilder builder =
         meter.gaugeBuilder("doubleGauge").setDescription("DoubleGauge test").setUnit("units");
 
-    ((ExtendedDoubleGaugeBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedDoubleGaugeBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableDoubleGauge observableDoubleGauge =
         builder.buildWithCallback(
@@ -893,7 +889,7 @@ public class PrometheusIntegrationTest {
     LongGaugeBuilder builder =
         meter.gaugeBuilder("longGauge").ofLongs().setDescription("LongGauge test").setUnit("units");
 
-    ((ExtendedLongGaugeBuilder) builder).setAttributesAdvice(Collections.singletonList(KEY1));
+    ((ExtendedLongGaugeBuilder) builder).setAttributesAdvice(singletonList(KEY1));
 
     try (ObservableLongGauge observableLongGauge =
         builder.buildWithCallback(
