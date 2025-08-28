@@ -115,7 +115,7 @@ class GcpAuthExtensionEndToEndTest {
   }
 
   @Test
-  public void authExtensionSmokeTest() {
+  void authExtensionSmokeTest() {
     template.getForEntity(
         URI.create("http://localhost:" + testApplicationPort + "/ping"), String.class);
 

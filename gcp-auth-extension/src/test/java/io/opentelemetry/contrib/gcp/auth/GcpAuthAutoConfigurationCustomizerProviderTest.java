@@ -10,6 +10,7 @@ import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomiz
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_ALL;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_METRICS;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_TRACES;
+import static java.util.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,7 +56,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -384,7 +384,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
   @ParameterizedTest
   @MethodSource("provideQuotaBehaviorTestCases")
   @SuppressWarnings("CannotMockMethod")
-  public void testQuotaProjectBehavior(QuotaProjectIdTestBehavior testCase) throws IOException {
+  void testQuotaProjectBehavior(QuotaProjectIdTestBehavior testCase) throws IOException {
     // Set resource project system property
     System.setProperty(
         ConfigurableOption.GOOGLE_CLOUD_PROJECT.getSystemProperty(), DUMMY_GCP_RESOURCE_PROJECT_ID);
@@ -398,14 +398,13 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       mockedRequestMetadata =
           ImmutableMap.of(
               "Authorization",
-              Collections.singletonList("Bearer " + fakeAccessToken.getTokenValue()),
+              singletonList("Bearer " + fakeAccessToken.getTokenValue()),
               QUOTA_USER_PROJECT_HEADER,
-              Collections.singletonList(DUMMY_GCP_QUOTA_PROJECT_ID));
+              singletonList(DUMMY_GCP_QUOTA_PROJECT_ID));
     } else {
       mockedRequestMetadata =
           ImmutableMap.of(
-              "Authorization",
-              Collections.singletonList("Bearer " + fakeAccessToken.getTokenValue()));
+              "Authorization", singletonList("Bearer " + fakeAccessToken.getTokenValue()));
     }
     // mock credentials to return the prepared request metadata
     Mockito.when(mockedGoogleCredentials.getRequestMetadata()).thenReturn(mockedRequestMetadata);
@@ -920,9 +919,9 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
           .thenReturn(
               ImmutableMap.of(
                   "Authorization",
-                  Collections.singletonList("Bearer " + fakeAccessToken.getTokenValue()),
+                  singletonList("Bearer " + fakeAccessToken.getTokenValue()),
                   QUOTA_USER_PROJECT_HEADER,
-                  Collections.singletonList(DUMMY_GCP_QUOTA_PROJECT_ID)));
+                  singletonList(DUMMY_GCP_QUOTA_PROJECT_ID)));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -966,7 +965,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
                   @Override
                   public <T> List<T> load(Class<T> spiClass) {
                     if (spiClass == ConfigurableSpanExporterProvider.class) {
-                      return Collections.singletonList(
+                      return singletonList(
                           spiClass.cast(
                               new ConfigurableSpanExporterProvider() {
                                 @Override
@@ -982,7 +981,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
                               }));
                     }
                     if (spiClass == ConfigurableMetricExporterProvider.class) {
-                      return Collections.singletonList(
+                      return singletonList(
                           spiClass.cast(
                               new ConfigurableMetricExporterProvider() {
                                 @Override
