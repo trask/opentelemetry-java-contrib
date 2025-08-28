@@ -7,7 +7,7 @@ package io.opentelemetry.contrib.metrics.micrometer;
 
 import java.util.List;
 
-public class TestCallbackRegistrar implements CallbackRegistrar, Runnable {
+class TestCallbackRegistrar implements CallbackRegistrar, Runnable {
 
   private final List<Runnable> callbacks;
 

@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +43,6 @@ import io.opentelemetry.api.metrics.ObservableDoubleUpDownCounter;
 import io.opentelemetry.api.metrics.ObservableLongCounter;
 import io.opentelemetry.api.metrics.ObservableLongGauge;
 import io.opentelemetry.api.metrics.ObservableLongUpDownCounter;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
@@ -602,7 +602,7 @@ class PrometheusIntegrationTest {
     DoubleHistogram doubleHistogram =
         meter
             .histogramBuilder("doubleHistogram")
-            .setExplicitBucketBoundariesAdvice(Arrays.asList(1.0, 2.0, 3.0))
+            .setExplicitBucketBoundariesAdvice(asList(1.0, 2.0, 3.0))
             .setDescription("DoubleHistogram test")
             .setUnit("units")
             .build();
@@ -747,7 +747,7 @@ class PrometheusIntegrationTest {
         meter
             .histogramBuilder("longHistogram")
             .ofLongs()
-            .setExplicitBucketBoundariesAdvice(Arrays.asList(1L, 2L, 3L))
+            .setExplicitBucketBoundariesAdvice(asList(1L, 2L, 3L))
             .setDescription("LongHistogram test")
             .setUnit("units")
             .build();
