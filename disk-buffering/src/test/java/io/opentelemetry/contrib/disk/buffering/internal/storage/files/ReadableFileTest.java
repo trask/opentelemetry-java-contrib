@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.disk.buffering.internal.storage.files;
 
 import static io.opentelemetry.contrib.disk.buffering.internal.storage.TestData.MAX_FILE_AGE_FOR_READ_MILLIS;
 import static io.opentelemetry.contrib.disk.buffering.internal.storage.TestData.getConfiguration;
+import static java.util.Collections.singleton;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,7 +109,7 @@ class ReadableFileTest {
     try (FileOutputStream out = new FileOutputStream(source)) {
       for (LogRecordData item :
           Arrays.asList(FIRST_LOG_RECORD, SECOND_LOG_RECORD, THIRD_LOG_RECORD)) {
-        SERIALIZER.initialize(Collections.singleton(item));
+        SERIALIZER.initialize(singleton(item));
         SERIALIZER.writeBinaryTo(out);
         SERIALIZER.reset();
       }

@@ -12,7 +12,7 @@ import io.opentelemetry.maven.OtelExecutionListener;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class MojoGoalExecutionHandlerConfigurationTest {
+class MojoGoalExecutionHandlerConfigurationTest {
 
   @Test
   public void mojoGoalExecutionHandlers() {

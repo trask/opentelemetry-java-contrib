@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer.internal.instruments;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +25,6 @@ import io.opentelemetry.contrib.metrics.micrometer.TestCallbackRegistrar;
 import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
-import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -169,7 +169,7 @@ class MicrometerDoubleHistogramTest {
 
     ((ExtendedDoubleHistogramBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));
@@ -214,7 +214,7 @@ class MicrometerDoubleHistogramTest {
         MicrometerDoubleHistogram.builder(meterSharedState, "histogram")
             .setDescription("description")
             .setUnit("unit")
-            .setExplicitBucketBoundariesAdvice(Arrays.asList(10.0, 20.0, 30.0))
+            .setExplicitBucketBoundariesAdvice(asList(10.0, 20.0, 30.0))
             .build();
 
     underTest.record(5.0);

@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
  * https://github.com/takari/takari-lifecycle/blob/master/takari-lifecycle-plugin/src/test/java/io/takari/maven/plugins/plugin/PluginDescriptorMojoTest.java
  */
 @SuppressWarnings({"DeduplicateConstants", "deprecation"})
-public class MojoGoalExecutionHandlerTest {
+class MojoGoalExecutionHandlerTest {
 
   @Test
   public void testMavenDeploy() throws Exception {

@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.exporters;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.Mockito.clearInvocations;
@@ -22,7 +23,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -54,7 +54,7 @@ class SignalStorageExporterTest {
 
     // Adding more items
     clearInvocations(callback);
-    resultCode = storageExporter.exportToStorage(Collections.singletonList(item3));
+    resultCode = storageExporter.exportToStorage(singletonList(item3));
 
     assertThat(resultCode.isSuccess()).isTrue();
     verify(callback).onExportSuccess(signalType);
@@ -81,8 +81,7 @@ class SignalStorageExporterTest {
     when(storage.write(anyCollection()))
         .thenReturn(CompletableFuture.completedFuture(WriteResult.create(false, null)));
 
-    CompletableResultCode resultCode =
-        storageExporter.exportToStorage(Collections.singletonList(item1));
+    CompletableResultCode resultCode = storageExporter.exportToStorage(singletonList(item1));
 
     assertThat(resultCode.isSuccess()).isFalse();
     assertThat(resultCode.getFailureThrowable()).isNull();
@@ -95,7 +94,7 @@ class SignalStorageExporterTest {
     when(storage.write(anyCollection()))
         .thenReturn(CompletableFuture.completedFuture(WriteResult.create(false, exception)));
 
-    resultCode = storageExporter.exportToStorage(Collections.singletonList(item1));
+    resultCode = storageExporter.exportToStorage(singletonList(item1));
 
     assertThat(resultCode.isSuccess()).isFalse();
     assertThat(resultCode.getFailureThrowable()).isEqualTo(exception);

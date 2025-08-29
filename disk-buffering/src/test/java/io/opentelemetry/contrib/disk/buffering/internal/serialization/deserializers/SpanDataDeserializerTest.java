@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.deserializers;
 
+import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.opentelemetry.api.trace.SpanKind;
@@ -14,7 +15,6 @@ import io.opentelemetry.contrib.disk.buffering.testutils.BaseSignalSerializerTes
 import io.opentelemetry.contrib.disk.buffering.testutils.TestData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
-import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class SpanDataDeserializerTest extends BaseSignalSerializerTest<SpanData> {
@@ -33,8 +33,8 @@ class SpanDataDeserializerTest extends BaseSignalSerializerTest<SpanData> {
           .setTotalRecordedLinks(0)
           .setTotalRecordedEvents(0)
           .setTotalAttributeCount(0)
-          .setEvents(Collections.emptyList())
-          .setLinks(Collections.emptyList())
+          .setEvents(emptyList())
+          .setLinks(emptyList())
           .build();
 
   @Test
