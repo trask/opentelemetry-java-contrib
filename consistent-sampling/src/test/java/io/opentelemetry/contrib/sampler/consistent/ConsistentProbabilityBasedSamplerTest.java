@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.sampler.consistent;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,7 +17,6 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ import org.hipparchus.stat.inference.GTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ConsistentProbabilityBasedSamplerTest {
+class ConsistentProbabilityBasedSamplerTest {
 
   private Context parentContext;
   private String traceId;
@@ -42,7 +42,7 @@ public class ConsistentProbabilityBasedSamplerTest {
     name = "name";
     spanKind = SpanKind.SERVER;
     attributes = Attributes.empty();
-    parentLinks = Collections.emptyList();
+    parentLinks = emptyList();
   }
 
   private void test(SplittableRandom rng, double samplingProbability) {
