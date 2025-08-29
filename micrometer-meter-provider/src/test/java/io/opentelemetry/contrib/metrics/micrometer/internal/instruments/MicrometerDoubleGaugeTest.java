@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.metrics.micrometer.internal.instruments;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.micrometer.core.instrument.Gauge;
@@ -21,7 +22,6 @@ import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -134,7 +134,7 @@ class MicrometerDoubleGaugeTest {
 
     ((ExtendedDoubleGaugeBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));

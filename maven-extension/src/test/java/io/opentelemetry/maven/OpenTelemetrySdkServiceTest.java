@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
  * Note: if otel-java-contrib bumps to Java 11+, we could use junit-pioneer's
  * {@code @SetSystemProperty} and {@code @ClearSystemProperty} but no bump is planned for now.
  */
-public class OpenTelemetrySdkServiceTest {
+class OpenTelemetrySdkServiceTest {
 
   /** Verify default config */
   @Test
