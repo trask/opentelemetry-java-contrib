@@ -6,6 +6,8 @@
 package io.opentelemetry.contrib.metrics.prometheus.clientbridge;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
@@ -37,8 +39,6 @@ import io.prometheus.client.exporter.common.TextFormat;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.assertj.core.presentation.StandardRepresentation;
@@ -59,7 +59,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ true,
               AggregationTemporality.CUMULATIVE,
-              Collections.singletonList(
+              singletonList(
                   ImmutableDoublePointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData NON_MONOTONIC_CUMULATIVE_DOUBLE_SUM =
@@ -72,7 +72,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ false,
               AggregationTemporality.CUMULATIVE,
-              Collections.singletonList(
+              singletonList(
                   ImmutableDoublePointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData MONOTONIC_DELTA_DOUBLE_SUM =
@@ -85,7 +85,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ true,
               AggregationTemporality.DELTA,
-              Collections.singletonList(
+              singletonList(
                   ImmutableDoublePointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData NON_MONOTONIC_DELTA_DOUBLE_SUM =
@@ -98,7 +98,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ false,
               AggregationTemporality.DELTA,
-              Collections.singletonList(
+              singletonList(
                   ImmutableDoublePointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData MONOTONIC_CUMULATIVE_LONG_SUM =
@@ -111,7 +111,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ true,
               AggregationTemporality.CUMULATIVE,
-              Collections.singletonList(
+              singletonList(
                   ImmutableLongPointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData NON_MONOTONIC_CUMULATIVE_LONG_SUM =
@@ -124,7 +124,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ false,
               AggregationTemporality.CUMULATIVE,
-              Collections.singletonList(
+              singletonList(
                   ImmutableLongPointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData MONOTONIC_DELTA_LONG_SUM =
@@ -137,7 +137,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ true,
               AggregationTemporality.DELTA,
-              Collections.singletonList(
+              singletonList(
                   ImmutableLongPointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData NON_MONOTONIC_DELTA_LONG_SUM =
@@ -150,7 +150,7 @@ class MetricAdapterTest {
           ImmutableSumData.create(
               /* isMonotonic= */ false,
               AggregationTemporality.DELTA,
-              Collections.singletonList(
+              singletonList(
                   ImmutableLongPointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
 
@@ -162,7 +162,7 @@ class MetricAdapterTest {
           "description",
           "1",
           ImmutableGaugeData.create(
-              Collections.singletonList(
+              singletonList(
                   ImmutableDoublePointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData LONG_GAUGE =
@@ -173,7 +173,7 @@ class MetricAdapterTest {
           "description",
           "1",
           ImmutableGaugeData.create(
-              Collections.singletonList(
+              singletonList(
                   ImmutableLongPointData.create(
                       1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))));
   private static final MetricData SUMMARY =
@@ -184,7 +184,7 @@ class MetricAdapterTest {
           "description",
           "1",
           ImmutableSummaryData.create(
-              Collections.singletonList(
+              singletonList(
                   ImmutableSummaryPointData.create(
                       1633947011000000000L,
                       1633950672000000000L,
@@ -203,7 +203,7 @@ class MetricAdapterTest {
           "1",
           ImmutableHistogramData.create(
               AggregationTemporality.DELTA,
-              Collections.singletonList(
+              singletonList(
                   ImmutableHistogramPointData.create(
                       1633947011000000000L,
                       1633950672000000000L,
@@ -213,9 +213,9 @@ class MetricAdapterTest {
                       0.0,
                       false,
                       0.0,
-                      Collections.emptyList(),
-                      Collections.singletonList(2L),
-                      Collections.singletonList(
+                      emptyList(),
+                      singletonList(2L),
+                      singletonList(
                           ImmutableDoubleExemplarData.create(
                               Attributes.empty(),
                               TimeUnit.MILLISECONDS.toNanos(1L),
@@ -320,8 +320,7 @@ class MetricAdapterTest {
 
   @Test
   void toSamples_LongPoints() {
-    assertThat(
-            MetricAdapter.toSamples("full_name", MetricDataType.LONG_SUM, Collections.emptyList()))
+    assertThat(MetricAdapter.toSamples("full_name", MetricDataType.LONG_SUM, emptyList()))
         .isEmpty();
 
     assertThat(
@@ -334,13 +333,7 @@ class MetricAdapterTest {
                     ImmutableLongPointData.create(
                         1633939689000000000L, 1633943350000000000L, KP_VP_ATTR, 7))))
         .containsExactly(
-            new Sample(
-                "full_name",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                5,
-                null,
-                1633950672000L),
+            new Sample("full_name", emptyList(), emptyList(), 5, null, 1633950672000L),
             new Sample(
                 "full_name",
                 ImmutableList.of("kp"),
@@ -359,13 +352,7 @@ class MetricAdapterTest {
                     ImmutableLongPointData.create(
                         1633939689000000000L, 1633943350000000000L, KP_VP_ATTR, 7))))
         .containsExactly(
-            new Sample(
-                "full_name",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                5,
-                null,
-                1633950672000L),
+            new Sample("full_name", emptyList(), emptyList(), 5, null, 1633950672000L),
             new Sample(
                 "full_name",
                 ImmutableList.of("kp"),
@@ -377,16 +364,14 @@ class MetricAdapterTest {
 
   @Test
   void toSamples_DoublePoints() {
-    assertThat(
-            MetricAdapter.toSamples(
-                "full_name", MetricDataType.DOUBLE_SUM, Collections.emptyList()))
+    assertThat(MetricAdapter.toSamples("full_name", MetricDataType.DOUBLE_SUM, emptyList()))
         .isEmpty();
 
     assertThat(
             MetricAdapter.toSamples(
                 "full_name",
                 MetricDataType.DOUBLE_SUM,
-                Collections.singletonList(
+                singletonList(
                     ImmutableDoublePointData.create(
                         1633947011000000000L, 1633950672000000000L, KP_VP_ATTR, 5))))
         .containsExactly(
@@ -408,13 +393,7 @@ class MetricAdapterTest {
                     ImmutableDoublePointData.create(
                         1633939689000000000L, 1633943350000000000L, KP_VP_ATTR, 7))))
         .containsExactly(
-            new Sample(
-                "full_name",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                5,
-                null,
-                1633950672000L),
+            new Sample("full_name", emptyList(), emptyList(), 5, null, 1633950672000L),
             new Sample(
                 "full_name",
                 ImmutableList.of("kp"),
@@ -426,9 +405,7 @@ class MetricAdapterTest {
 
   @Test
   void toSamples_SummaryPoints() {
-    assertThat(
-            MetricAdapter.toSamples("full_name", MetricDataType.SUMMARY, Collections.emptyList()))
-        .isEmpty();
+    assertThat(MetricAdapter.toSamples("full_name", MetricDataType.SUMMARY, emptyList())).isEmpty();
 
     assertThat(
             MetricAdapter.toSamples(
@@ -476,7 +453,7 @@ class MetricAdapterTest {
                         Attributes.empty(),
                         7,
                         15.3,
-                        Collections.emptyList()),
+                        emptyList()),
                     ImmutableSummaryPointData.create(
                         1633939689000000000L,
                         1633943350000000000L,
@@ -487,20 +464,8 @@ class MetricAdapterTest {
                             ImmutableValueAtQuantile.create(0.9, 1.1),
                             ImmutableValueAtQuantile.create(0.99, 12.3))))))
         .containsExactly(
-            new Sample(
-                "full_name_count",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                7,
-                null,
-                1633950672000L),
-            new Sample(
-                "full_name_sum",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                15.3,
-                null,
-                1633950672000L),
+            new Sample("full_name_count", emptyList(), emptyList(), 7, null, 1633950672000L),
+            new Sample("full_name_sum", emptyList(), emptyList(), 15.3, null, 1633950672000L),
             new Sample(
                 "full_name_count",
                 ImmutableList.of("kp"),
@@ -533,8 +498,7 @@ class MetricAdapterTest {
 
   @Test
   void toSamples_HistogramPoints() {
-    assertThat(
-            MetricAdapter.toSamples("full_name", MetricDataType.HISTOGRAM, Collections.emptyList()))
+    assertThat(MetricAdapter.toSamples("full_name", MetricDataType.HISTOGRAM, emptyList()))
         .isEmpty();
 
     java.util.List<Sample> result =

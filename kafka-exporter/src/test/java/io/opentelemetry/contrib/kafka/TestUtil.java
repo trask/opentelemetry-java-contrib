@@ -12,7 +12,7 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
 import java.util.concurrent.TimeUnit;
 
-public class TestUtil {
+class TestUtil {
   private TestUtil() {}
 
   public static SpanData makeBasicSpan(String spanName) {

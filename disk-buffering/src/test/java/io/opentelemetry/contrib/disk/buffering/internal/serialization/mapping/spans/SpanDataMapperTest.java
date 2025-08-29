@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.trace.SpanKind;
@@ -17,8 +19,6 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
-import java.util.Arrays;
-import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class SpanDataMapperTest {
@@ -44,8 +44,8 @@ class SpanDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
-          .setLinks(Arrays.asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
+          .setEvents(singletonList(EVENT_DATA))
+          .setLinks(asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
           .setTotalRecordedLinks(2)
@@ -63,8 +63,8 @@ class SpanDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
-          .setLinks(Collections.singletonList(LINK_DATA))
+          .setEvents(singletonList(EVENT_DATA))
+          .setLinks(singletonList(LINK_DATA))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
           .setTotalRecordedLinks(2)

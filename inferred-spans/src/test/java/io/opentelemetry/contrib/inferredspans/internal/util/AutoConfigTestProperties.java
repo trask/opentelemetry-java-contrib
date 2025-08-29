@@ -8,7 +8,7 @@ package io.opentelemetry.contrib.inferredspans.internal.util;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import javax.annotation.Nullable;
 
-public class AutoConfigTestProperties extends TemporaryProperties {
+class AutoConfigTestProperties extends TemporaryProperties {
 
   public AutoConfigTestProperties() {
     put("otel.java.global-autoconfigure.enabled", "true");

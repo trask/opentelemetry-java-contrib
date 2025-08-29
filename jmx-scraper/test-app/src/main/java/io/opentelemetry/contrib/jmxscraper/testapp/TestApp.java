@@ -10,7 +10,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 @SuppressWarnings("all") // for busy wait + stdout
-public class TestApp implements TestAppMxBean {
+class TestApp implements TestAppMxBean {
 
   private volatile boolean running;
 

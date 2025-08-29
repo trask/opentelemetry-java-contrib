@@ -8,6 +8,8 @@ package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.m
 import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeContext;
 import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeLongGauge;
 import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeLongPointData;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,8 +46,6 @@ import io.opentelemetry.sdk.metrics.internal.data.ImmutableSummaryData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableSummaryPointData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableValueAtQuantile;
 import io.opentelemetry.sdk.resources.Resource;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -106,9 +106,9 @@ class MetricDataMapperTest {
     ValueAtQuantile value = ImmutableValueAtQuantile.create(2.0, 1.0);
     SummaryPointData pointData =
         ImmutableSummaryPointData.create(
-            1L, 2L, TestData.ATTRIBUTES, 1L, 2.0, Collections.singletonList(value));
+            1L, 2L, TestData.ATTRIBUTES, 1L, 2.0, singletonList(value));
 
-    SummaryData data = ImmutableSummaryData.create(Collections.singletonList(pointData));
+    SummaryData data = ImmutableSummaryData.create(singletonList(pointData));
 
     MetricData summaryMetric =
         ImmutableMetricData.createDoubleSummary(
@@ -163,7 +163,7 @@ class MetricDataMapperTest {
         "Double gauge name",
         "Double gauge description",
         "ms",
-        ImmutableGaugeData.create(Collections.singletonList(point)));
+        ImmutableGaugeData.create(singletonList(point)));
   }
 
   @NotNull
@@ -171,7 +171,7 @@ class MetricDataMapperTest {
     SpanContext context = makeContext(flags);
     DoubleExemplarData doubleExemplarData =
         ImmutableDoubleExemplarData.create(TestData.ATTRIBUTES, 100L, context, 1.0);
-    return Collections.singletonList(doubleExemplarData);
+    return singletonList(doubleExemplarData);
   }
 
   @NotNull
@@ -179,7 +179,7 @@ class MetricDataMapperTest {
     LongPointData pointData = makeLongPointData(flags);
     SumData<LongPointData> sumData =
         ImmutableSumData.create(
-            true, AggregationTemporality.DELTA, Collections.singletonList(pointData));
+            true, AggregationTemporality.DELTA, singletonList(pointData));
     return ImmutableMetricData.createLongSum(
         TestData.RESOURCE_FULL,
         TestData.INSTRUMENTATION_SCOPE_INFO_FULL,
@@ -194,7 +194,7 @@ class MetricDataMapperTest {
     DoublePointData doublePointData = makeDoublePointData(flags);
     SumData<DoublePointData> sumData =
         ImmutableSumData.create(
-            true, AggregationTemporality.DELTA, Collections.singletonList(doublePointData));
+            true, AggregationTemporality.DELTA, singletonList(doublePointData));
 
     return ImmutableMetricData.createDoubleSum(
         TestData.RESOURCE_FULL,
@@ -216,7 +216,7 @@ class MetricDataMapperTest {
     ExponentialHistogramBuckets positiveBucket =
         ImmutableExponentialHistogramBuckets.create(1, 10, Arrays.asList(1L, 10L));
     ExponentialHistogramBuckets negativeBucket =
-        ImmutableExponentialHistogramBuckets.create(1, 0, Collections.emptyList());
+        ImmutableExponentialHistogramBuckets.create(1, 0, emptyList());
 
     ExponentialHistogramPointData pointData =
         ImmutableExponentialHistogramPointData.create(
@@ -236,7 +236,7 @@ class MetricDataMapperTest {
 
     ExponentialHistogramData histogramData =
         ImmutableExponentialHistogramData.create(
-            AggregationTemporality.CUMULATIVE, Collections.singletonList(pointData));
+            AggregationTemporality.CUMULATIVE, singletonList(pointData));
 
     return ImmutableMetricData.createExponentialHistogram(
         TestData.RESOURCE_FULL,
@@ -259,13 +259,13 @@ class MetricDataMapperTest {
             4.0,
             true,
             7.0,
-            Collections.singletonList(10.0),
+            singletonList(10.0),
             Arrays.asList(1L, 2L),
             makeDoubleExemplars(flags));
 
     HistogramData data =
         ImmutableHistogramData.create(
-            AggregationTemporality.CUMULATIVE, Collections.singletonList(dataPoint));
+            AggregationTemporality.CUMULATIVE, singletonList(dataPoint));
 
     return ImmutableMetricData.createDoubleHistogram(
         TestData.RESOURCE_FULL,

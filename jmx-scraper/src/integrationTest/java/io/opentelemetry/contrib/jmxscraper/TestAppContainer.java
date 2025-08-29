@@ -22,7 +22,7 @@ import org.testcontainers.shaded.com.google.errorprone.annotations.CanIgnoreRetu
 import org.testcontainers.utility.MountableFile;
 
 /** Test container that allows to execute TestApp in an isolated container */
-public class TestAppContainer extends GenericContainer<TestAppContainer> {
+class TestAppContainer extends GenericContainer<TestAppContainer> {
 
   private final Map<String, String> properties;
   private String login;

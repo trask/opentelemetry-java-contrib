@@ -30,7 +30,7 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 /** Utility that allows to manage keystores programmatically without using 'keytool' CLI program */
-public class TestKeyStore {
+class TestKeyStore {
 
   private static final String TYPE = "JKS";
 

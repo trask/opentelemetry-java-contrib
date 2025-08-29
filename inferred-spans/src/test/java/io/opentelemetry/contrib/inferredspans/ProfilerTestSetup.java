@@ -14,7 +14,7 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ProfilerTestSetup implements AutoCloseable {
+class ProfilerTestSetup implements AutoCloseable {
 
   public OpenTelemetrySdk sdk;
 
