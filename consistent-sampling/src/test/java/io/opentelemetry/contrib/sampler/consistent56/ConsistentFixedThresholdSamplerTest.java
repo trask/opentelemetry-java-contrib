@@ -17,7 +17,6 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import java.util.List;
 import java.util.SplittableRandom;
 import org.hipparchus.stat.inference.AlternativeHypothesis;
@@ -40,7 +39,7 @@ class ConsistentFixedThresholdSamplerTest {
     name = "name";
     spanKind = SpanKind.SERVER;
     attributes = Attributes.empty();
-    parentLinks = Collections.emptyList();
+    parentLinks = emptyList();
   }
 
   private void testSampling(SplittableRandom rng, double samplingProbability) {

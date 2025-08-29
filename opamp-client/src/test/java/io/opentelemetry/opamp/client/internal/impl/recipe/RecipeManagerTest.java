@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.opamp.client.internal.request.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -61,6 +60,6 @@ class RecipeManagerTest {
 
   @Nonnull
   private static List<Field> getFieldsAsList(Field... fields) {
-    return new ArrayList<>(Arrays.asList(fields));
+    return new ArrayList<>(asList(fields));
   }
 }

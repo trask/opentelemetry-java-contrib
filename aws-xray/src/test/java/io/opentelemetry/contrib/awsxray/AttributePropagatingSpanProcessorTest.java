@@ -17,7 +17,6 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +33,7 @@ class AttributePropagatingSpanProcessorTest {
     tracer =
         SdkTracerProvider.builder()
             .addSpanProcessor(
-                AttributePropagatingSpanProcessor.create(
-                    spanNameKey, Arrays.asList(testKey1, testKey2)))
+                AttributePropagatingSpanProcessor.create(spanNameKey, asList(testKey1, testKey2)))
             .build()
             .get("awsxray");
   }

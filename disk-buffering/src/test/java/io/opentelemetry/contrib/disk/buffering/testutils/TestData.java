@@ -19,7 +19,6 @@ import io.opentelemetry.sdk.metrics.internal.data.ImmutableLongExemplarData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableLongPointData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableMetricData;
 import io.opentelemetry.sdk.resources.Resource;
-import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unchecked")
@@ -97,8 +96,7 @@ public final class TestData {
   public static MetricData makeLongGauge(
       TraceFlags flags, Resource resource, InstrumentationScopeInfo instrumentationScopeInfo) {
     LongPointData point = makeLongPointData(flags);
-    GaugeData<LongPointData> gaugeData =
-        ImmutableGaugeData.create(Collections.singletonList(point));
+    GaugeData<LongPointData> gaugeData = ImmutableGaugeData.create(singletonList(point));
     return ImmutableMetricData.createLongGauge(
         resource,
         instrumentationScopeInfo,
@@ -111,8 +109,7 @@ public final class TestData {
   @NotNull
   public static LongPointData makeLongPointData(TraceFlags flags) {
     LongExemplarData longExemplarData = makeLongExemplarData(flags);
-    return ImmutableLongPointData.create(
-        1L, 2L, ATTRIBUTES, 1L, Collections.singletonList(longExemplarData));
+    return ImmutableLongPointData.create(1L, 2L, ATTRIBUTES, 1L, singletonList(longExemplarData));
   }
 
   @NotNull

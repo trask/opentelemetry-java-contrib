@@ -17,7 +17,6 @@ import io.opentelemetry.proto.metrics.v1.ScopeMetrics;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -26,9 +25,9 @@ class ProtoMetricsDataMapperTest {
   @Test
   void verifyConversionDataStructure() {
     MetricData gauge1 = TestData.makeLongGauge(TraceFlags.getDefault());
-    List<MetricData> signals = Collections.singletonList(gauge1);
+    List<MetricData> signals = singletonList(gauge1);
     MetricData expectedGauge1 = TestData.makeLongGauge(TraceFlags.getSampled());
-    List<MetricData> expectedSignals = Collections.singletonList(expectedGauge1);
+    List<MetricData> expectedSignals = singletonList(expectedGauge1);
 
     ExportMetricsServiceRequest proto = mapToProto(signals);
 

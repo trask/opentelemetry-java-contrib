@@ -30,7 +30,6 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.ExceptionEventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -252,7 +251,7 @@ class AwsSpanMetricsProcessorTest {
     InstrumentationScopeInfo awsSdkScopeInfo =
         InstrumentationScopeInfo.builder("aws-sdk").setVersion("version").build();
     ExceptionEventData mockEventData = mock(ExceptionEventData.class);
-    List<EventData> events = new ArrayList<>(Arrays.asList(mockEventData));
+    List<EventData> events = new ArrayList<>(asList(mockEventData));
 
     // Configure latency
     when(readableSpanMock.getLatencyNanos()).thenReturn(TEST_LATENCY_NANOS);

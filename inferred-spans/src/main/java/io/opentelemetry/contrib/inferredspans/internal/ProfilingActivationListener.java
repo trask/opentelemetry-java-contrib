@@ -37,8 +37,7 @@ public class ProfilingActivationListener implements Closeable {
   // (e.g. after SDK shutdown). However, in theory nothing prevents users from starting
   // two SDKs at the same time, so it is safest to use a List here.
   @SuppressWarnings("NonFinalStaticField")
-  private static volatile List<ProfilingActivationListener> activeListeners =
-      Collections.emptyList();
+  private static volatile List<ProfilingActivationListener> activeListeners = emptyList();
 
   private static class ContextStorageWrapper implements ContextStorage {
 

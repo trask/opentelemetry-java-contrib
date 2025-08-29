@@ -6,7 +6,6 @@
 package io.opentelemetry.maven.handler;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,8 +66,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = mavenDeployHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -109,8 +107,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = buildImageHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -153,8 +150,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = buildImageHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -197,8 +193,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = buildImageHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -238,8 +233,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = buildImageHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -279,8 +273,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = snykTestHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =
@@ -315,8 +308,7 @@ class MojoGoalExecutionHandlerTest {
 
     List<MavenGoal> supportedGoals = snykTestHandler.getSupportedGoals();
     assertThat(supportedGoals)
-        .isEqualTo(
-            singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
+        .isEqualTo(singletonList(MavenGoal.create(mojoGroupId, mojoArtifactId, mojoGoal)));
 
     try (SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build()) {
       SpanBuilder spanBuilder =

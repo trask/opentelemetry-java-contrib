@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -846,7 +845,7 @@ class SamplingRuleApplierTest {
         "span",
         SpanKind.CLIENT,
         Attributes.empty(),
-        Collections.emptyList());
+        emptyList());
   }
 
   private static GetSamplingRulesResponse.SamplingRule readSamplingRule(String resourcePath) {

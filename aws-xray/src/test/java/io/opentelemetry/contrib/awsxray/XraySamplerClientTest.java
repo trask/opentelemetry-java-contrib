@@ -20,8 +20,6 @@ import com.linecorp.armeria.testing.junit5.server.mock.MockWebServerExtension;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,7 +108,7 @@ class XraySamplerClientTest {
     Date timestamp2 = Date.from(Instant.parse("2018-07-07T00:20:06Z"));
     GetSamplingTargetsRequest samplingTargetsRequest =
         GetSamplingTargetsRequest.create(
-            Arrays.asList(
+            asList(
                 GetSamplingTargetsRequest.SamplingStatisticsDocument.newBuilder()
                     .setRuleName("Test")
                     .setClientId("ABCDEF1234567890ABCDEF10")
@@ -172,9 +170,7 @@ class XraySamplerClientTest {
   void getSamplingTargets_malformed() {
     server.enqueue(HttpResponse.of(HttpStatus.OK, MediaType.JSON, "notjson"));
     assertThatThrownBy(
-            () ->
-                client.getSamplingTargets(
-                    GetSamplingTargetsRequest.create(Collections.emptyList())))
+            () -> client.getSamplingTargets(GetSamplingTargetsRequest.create(emptyList())))
         .isInstanceOf(UncheckedIOException.class)
         .hasMessage("Failed to deserialize response.");
   }

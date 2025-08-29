@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.Collections;
 import java.util.List;
 import javax.management.ObjectName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,7 @@ class GroovyRunnerTest {
         new JmxClient(config) {
           @Override
           public List<ObjectName> query(ObjectName objectName) {
-            return Collections.emptyList();
+            return emptyList();
           }
         };
 
@@ -69,7 +68,7 @@ class GroovyRunnerTest {
         new JmxClient(config) {
           @Override
           public List<ObjectName> query(ObjectName objectName) {
-            return Collections.emptyList();
+            return emptyList();
           }
         };
 
@@ -94,7 +93,7 @@ class GroovyRunnerTest {
         new JmxClient(config) {
           @Override
           public List<ObjectName> query(ObjectName objectName) {
-            return Collections.emptyList();
+            return emptyList();
           }
         };
 

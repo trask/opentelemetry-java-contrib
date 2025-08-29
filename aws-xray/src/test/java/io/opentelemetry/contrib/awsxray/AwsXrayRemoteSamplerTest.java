@@ -26,7 +26,6 @@ import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -213,7 +212,7 @@ class AwsXrayRemoteSamplerTest {
             "span",
             SpanKind.SERVER,
             Attributes.of(AttributeKey.stringKey("test"), name),
-            Collections.emptyList())
+            emptyList())
         .getDecision();
   }
 }

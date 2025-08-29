@@ -102,7 +102,7 @@ public abstract class AbstractIntegrationTest {
 
     if (configFromStdin) {
       String cmd = String.join(" ", scraperCommand);
-      scraperCommand = Arrays.asList("sh", "-c", "cat /app/" + configName + " | " + cmd + " -");
+      scraperCommand = asList("sh", "-c", "cat /app/" + configName + " | " + cmd + " -");
     } else {
       scraperCommand.add("/app/" + configName);
     }
@@ -175,7 +175,7 @@ public abstract class AbstractIntegrationTest {
   @SafeVarargs
   @SuppressWarnings("varargs")
   protected final void waitAndAssertMetrics(Consumer<Metric>... assertions) {
-    waitAndAssertMetrics(Arrays.asList(assertions));
+    waitAndAssertMetrics(asList(assertions));
   }
 
   protected void assertGauge(Metric metric, String name, String description, String unit) {

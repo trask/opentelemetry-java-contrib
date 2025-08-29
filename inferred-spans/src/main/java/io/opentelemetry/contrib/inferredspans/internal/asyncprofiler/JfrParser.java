@@ -11,7 +11,6 @@ import io.opentelemetry.contrib.inferredspans.internal.pooling.Recyclable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -39,7 +38,7 @@ public class JfrParser implements Recyclable {
 
   private static final byte[] MAGIC_BYTES = new byte[] {'F', 'L', 'R', '\0'};
   private static final Set<String> JAVA_FRAME_TYPES =
-      new HashSet<>(Arrays.asList("Interpreted", "JIT compiled", "Inlined"));
+      new HashSet<>(asList("Interpreted", "JIT compiled", "Inlined"));
   private static final int BIG_FILE_BUFFER_SIZE = 5 * 1024 * 1024;
   private static final int SMALL_FILE_BUFFER_SIZE = 4 * 1024;
   private static final String SYMBOL_EXCLUDED = "3x cluded";

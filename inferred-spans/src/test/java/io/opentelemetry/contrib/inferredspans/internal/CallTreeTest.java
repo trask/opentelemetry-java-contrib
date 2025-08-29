@@ -68,19 +68,19 @@ class CallTreeTest {
         CallTree.createRoot(
             ObjectPool.createRecyclable(100, CallTree.Root::new), traceContext.serialize(), 0);
     ObjectPool<CallTree> callTreePool = ObjectPool.createRecyclable(100, CallTree::new);
-    root.addStackTrace(Arrays.asList(StackFrame.of("A", "a")), 0, callTreePool, 0);
+    root.addStackTrace(asList(StackFrame.of("A", "a")), 0, callTreePool, 0);
     root.addStackTrace(
-        Arrays.asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
+        asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
         TimeUnit.MILLISECONDS.toNanos(10),
         callTreePool,
         0);
     root.addStackTrace(
-        Arrays.asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
+        asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
         TimeUnit.MILLISECONDS.toNanos(20),
         callTreePool,
         0);
     root.addStackTrace(
-        Arrays.asList(StackFrame.of("A", "a")), TimeUnit.MILLISECONDS.toNanos(30), callTreePool, 0);
+        asList(StackFrame.of("A", "a")), TimeUnit.MILLISECONDS.toNanos(30), callTreePool, 0);
     root.end(callTreePool, 0);
 
     assertThat(root.getCount()).isEqualTo(4);
@@ -161,7 +161,7 @@ class CallTreeTest {
         },
         new Object[][] {
           {"a", 3},
-          {"  d", 1, Arrays.asList("c", "b")}
+          {"  d", 1, asList("c", "b")}
         });
   }
 
@@ -227,7 +227,7 @@ class CallTreeTest {
           {"    2", 7},
           {"      b", 2},
           {"        c", 1},
-          {"      e", 1, Arrays.asList("d")},
+          {"      e", 1, asList("d")},
         });
   }
 
@@ -308,7 +308,7 @@ class CallTreeTest {
             new Object[][] {
               {"a", 9},
               {"  1", 2},
-              {"  c", 3, Arrays.asList("b")},
+              {"  c", 3, asList("b")},
               {"    2", 2},
             });
     assertThat(spans.get("a").getLinks())
@@ -339,7 +339,7 @@ class CallTreeTest {
             new Object[][] {
               {"a", 11},
               {"  1", 2},
-              {"  c", 4, Arrays.asList("b")},
+              {"  c", 4, asList("b")},
               {"    2", 4},
               {"      3", 2},
             });
@@ -494,7 +494,7 @@ class CallTreeTest {
             },
             new Object[][] {
               {"1", 11},
-              {"  b", 2, Arrays.asList("a")},
+              {"  b", 2, asList("a")},
               {"  2", 6},
               {"    3", 4},
               {"      c", 2}
@@ -520,7 +520,7 @@ class CallTreeTest {
         },
         new Object[][] {
           {"1", 13},
-          {"  b", 4, Arrays.asList("a")},
+          {"  b", 4, asList("a")},
           {"    2", 2},
           {"  3", 6},
           {"    4", 4},
@@ -598,7 +598,7 @@ class CallTreeTest {
           {"1", 9},
           {"  a", 2},
           {"  2", 4},
-          {"    c", 2, Arrays.asList("b")}
+          {"    c", 2, asList("b")}
         });
   }
 
@@ -883,7 +883,7 @@ class CallTreeTest {
         String spanName = ((String) expectedSpan[0]).trim();
         int durationMs = (int) expectedSpan[1] * 10;
         List<String> stackTrace =
-            expectedSpan.length == 3 ? (List<String>) expectedSpan[2] : Arrays.asList();
+            expectedSpan.length == 3 ? (List<String>) expectedSpan[2] : asList();
         int nestingLevel = getNestingLevel((String) expectedSpan[0]);
         String parentName = getParentName(expectedSpans, i, nestingLevel);
         if (parentName == null) {

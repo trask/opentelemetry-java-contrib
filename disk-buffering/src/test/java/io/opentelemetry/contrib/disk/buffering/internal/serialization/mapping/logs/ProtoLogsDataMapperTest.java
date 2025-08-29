@@ -19,7 +19,6 @@ import io.opentelemetry.proto.logs.v1.ScopeLogs;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +101,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyConversionDataStructure() {
-    List<LogRecordData> signals = Collections.singletonList(LOG_RECORD);
+    List<LogRecordData> signals = singletonList(LOG_RECORD);
 
     ExportLogsServiceRequest result = mapToProto(signals);
 
@@ -181,7 +180,7 @@ class ProtoLogsDataMapperTest {
 
   @Test
   void verifyLogWithEventName() {
-    List<LogRecordData> signals = Collections.singletonList(LOG_RECORD_WITH_EVENT_NAME);
+    List<LogRecordData> signals = singletonList(LOG_RECORD_WITH_EVENT_NAME);
 
     ExportLogsServiceRequest result = mapToProto(signals);
 

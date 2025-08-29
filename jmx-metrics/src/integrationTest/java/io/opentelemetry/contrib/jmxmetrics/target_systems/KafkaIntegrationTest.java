@@ -14,7 +14,6 @@ import io.opentelemetry.proto.metrics.v1.NumberDataPoint;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -98,7 +97,7 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
   }
 
   List<Consumer<Metric>> kafkaBrokerAssertions() {
-    return Arrays.asList(
+    return asList(
         metric ->
             assertSumWithAttributes(
                 metric,
@@ -228,7 +227,7 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void endToEnd() {
-      List<String> topics = Arrays.asList("test-topic-1", "test-topic-2", "test-topic-3");
+      List<String> topics = asList("test-topic-1", "test-topic-2", "test-topic-3");
       waitAndAssertMetrics(
           metric ->
               assertKafkaGauge(
@@ -293,7 +292,7 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void endToEnd() {
-      List<String> topics = Collections.singletonList("test-topic-1");
+      List<String> topics = singletonList("test-topic-1");
       waitAndAssertMetrics(
           metric ->
               assertKafkaGauge(
@@ -371,7 +370,7 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
     @Test
     void endToEnd() {
       List<String> gcLabels =
-          Arrays.asList(
+          asList(
               "CodeHeap 'non-nmethods'",
               "CodeHeap 'non-profiled nmethods'",
               "CodeHeap 'profiled nmethods'",
@@ -382,7 +381,7 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
               "Metaspace");
       List<Consumer<Metric>> assertions = new ArrayList<>(kafkaBrokerAssertions());
       assertions.addAll(
-          Arrays.asList(
+          asList(
               metric ->
                   assertGauge(metric, "jvm.classes.loaded", "number of loaded classes", "{class}"),
               metric ->
@@ -391,14 +390,14 @@ abstract class KafkaIntegrationTest extends AbstractIntegrationTest {
                       "jvm.gc.collections.count",
                       "total number of collections that have occurred",
                       "{collection}",
-                      Arrays.asList("G1 Young Generation", "G1 Old Generation")),
+                      asList("G1 Young Generation", "G1 Old Generation")),
               metric ->
                   assertTypedSum(
                       metric,
                       "jvm.gc.collections.elapsed",
                       "the approximate accumulated collection elapsed time in milliseconds",
                       "ms",
-                      Arrays.asList("G1 Young Generation", "G1 Old Generation")),
+                      asList("G1 Young Generation", "G1 Old Generation")),
               metric ->
                   assertGauge(metric, "jvm.memory.heap.committed", "current heap usage", "By"),
               metric -> assertGauge(metric, "jvm.memory.heap.init", "current heap usage", "By"),

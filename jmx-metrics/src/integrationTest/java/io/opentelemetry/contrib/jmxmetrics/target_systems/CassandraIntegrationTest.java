@@ -8,7 +8,6 @@ package io.opentelemetry.contrib.jmxmetrics.target_systems;
 import static org.assertj.core.api.Assertions.entry;
 
 import io.opentelemetry.contrib.jmxmetrics.AbstractIntegrationTest;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import org.assertj.core.api.MapAssert;
@@ -133,8 +132,8 @@ class CassandraIntegrationTest extends AbstractIntegrationTest {
 
   @SuppressWarnings("unchecked")
   private static Consumer<MapAssert<String, String>>[] getRequestErrorCountAttributes() {
-    List<String> operations = Arrays.asList("RangeSlice", "Read", "Write");
-    List<String> statuses = Arrays.asList("Timeout", "Failure", "Unavailable");
+    List<String> operations = asList("RangeSlice", "Read", "Write");
+    List<String> statuses = asList("Timeout", "Failure", "Unavailable");
 
     return operations.stream()
         .flatMap(

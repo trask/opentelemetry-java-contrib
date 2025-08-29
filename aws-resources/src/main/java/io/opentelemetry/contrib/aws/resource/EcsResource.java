@@ -103,14 +103,14 @@ public final class EcsResource {
           .getLogGroupArn()
           .ifPresent(
               logGroupArn -> {
-                attrBuilders.put(AWS_LOG_GROUP_ARNS, Collections.singletonList(logGroupArn));
+                attrBuilders.put(AWS_LOG_GROUP_ARNS, singletonList(logGroupArn));
               });
 
       logArnBuilder
           .getLogStreamArn()
           .ifPresent(
               logStreamArn -> {
-                attrBuilders.put(AWS_LOG_STREAM_ARNS, Collections.singletonList(logStreamArn));
+                attrBuilders.put(AWS_LOG_STREAM_ARNS, singletonList(logStreamArn));
               });
     } catch (IOException e) {
       logger.log(Level.WARNING, "Can't get ECS metadata", e);

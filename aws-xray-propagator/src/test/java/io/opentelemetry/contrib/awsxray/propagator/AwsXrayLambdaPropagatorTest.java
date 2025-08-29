@@ -130,7 +130,7 @@ class AwsXrayLambdaPropagatorTest extends AwsXrayPropagatorTest {
 
     assertThat(span.toSpanData().getLinks())
         .isEqualTo(
-            Collections.singletonList(
+            singletonList(
                 LinkData.create(
                     SpanContext.createFromRemoteParent(
                         "00000001240000000000000000000001",

@@ -5,6 +5,8 @@
 
 package io.opentelemetry.contrib.awsxray;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -23,9 +25,7 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +78,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes = buildMetricAttributes(CONTAINS_NO_ATTRIBUTES);
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     Collection<SpanData> exportedSpans = delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -94,7 +94,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes = buildMetricAttributes(CONTAINS_NO_ATTRIBUTES);
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     Collection<SpanData> exportedSpans = delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -110,7 +110,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes = buildMetricAttributes(CONTAINS_ATTRIBUTES);
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     List<SpanData> exportedSpans = (List<SpanData>) delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -130,7 +130,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes = buildMetricAttributes(CONTAINS_ATTRIBUTES);
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     List<SpanData> exportedSpans = (List<SpanData>) delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -162,8 +162,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes3 = buildMetricAttributes(CONTAINS_NO_ATTRIBUTES);
     configureMocksForExport(spanDataMock3, metricAttributes3);
 
-    awsMetricAttributesSpanExporter.export(
-        Arrays.asList(spanDataMock1, spanDataMock2, spanDataMock3));
+    awsMetricAttributesSpanExporter.export(asList(spanDataMock1, spanDataMock2, spanDataMock3));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     List<SpanData> exportedSpans = (List<SpanData>) delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(3);
@@ -201,7 +200,7 @@ class AwsMetricAttributesSpanExporterTest {
             "new value3");
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     List<SpanData> exportedSpans = (List<SpanData>) delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -223,7 +222,7 @@ class AwsMetricAttributesSpanExporterTest {
     Attributes metricAttributes = buildMetricAttributes(CONTAINS_ATTRIBUTES);
     configureMocksForExport(spanDataMock, metricAttributes);
 
-    awsMetricAttributesSpanExporter.export(Collections.singletonList(spanDataMock));
+    awsMetricAttributesSpanExporter.export(singletonList(spanDataMock));
     verify(delegateMock, times(1)).export(delegateExportCaptor.capture());
     List<SpanData> exportedSpans = (List<SpanData>) delegateExportCaptor.getValue();
     assertThat(exportedSpans.size()).isEqualTo(1);
@@ -260,11 +259,11 @@ class AwsMetricAttributesSpanExporterTest {
     when(spanDataMock.getStartEpochNanos()).thenReturn(testStartEpochNanos);
     assertThat(exportedSpan.getStartEpochNanos()).isEqualTo(testStartEpochNanos);
 
-    List<EventData> eventsMock = Collections.singletonList(mock(EventData.class));
+    List<EventData> eventsMock = singletonList(mock(EventData.class));
     when(spanDataMock.getEvents()).thenReturn(eventsMock);
     assertThat(exportedSpan.getEvents()).isEqualTo(eventsMock);
 
-    List<LinkData> linksMock = Collections.singletonList(mock(LinkData.class));
+    List<LinkData> linksMock = singletonList(mock(LinkData.class));
     when(spanDataMock.getLinks()).thenReturn(linksMock);
     assertThat(exportedSpan.getLinks()).isEqualTo(linksMock);
 

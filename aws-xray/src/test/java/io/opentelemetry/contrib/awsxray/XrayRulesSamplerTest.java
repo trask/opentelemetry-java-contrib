@@ -21,7 +21,6 @@ import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -103,7 +102,7 @@ class XrayRulesSamplerTest {
             Resource.getDefault(),
             clock,
             Sampler.alwaysOn(),
-            Arrays.asList(rule1, rule4, rule3, rule2));
+            asList(rule1, rule4, rule3, rule2));
 
     assertThat(doSample(sampler, "cat-service"))
         .isEqualTo(SamplingResult.create(SamplingDecision.RECORD_AND_SAMPLE));
@@ -176,6 +175,6 @@ class XrayRulesSamplerTest {
         name,
         SpanKind.CLIENT,
         Attributes.of(AttributeKey.stringKey("test"), name),
-        Collections.emptyList());
+        emptyList());
   }
 }

@@ -22,7 +22,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.SplittableRandom;
@@ -161,7 +160,7 @@ class ConsistentSamplerTest {
     String name = "name";
     SpanKind spanKind = SpanKind.SERVER;
     Attributes attributes = Attributes.empty();
-    List<LinkData> parentLinks = Collections.emptyList();
+    List<LinkData> parentLinks = emptyList();
 
     Context parentContext = createParentContext(traceId, spanId, parentP, parentR, parentSampled);
     ConsistentSampler sampler = createConsistentSampler(samplerP, generatedR);

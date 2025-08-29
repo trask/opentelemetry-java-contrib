@@ -23,7 +23,6 @@ import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -79,7 +78,7 @@ class RuleBasedRoutingSamplerComponentProviderTest {
                 "GET /actuator/health",
                 SpanKind.SERVER,
                 Attributes.builder().put("url.path", "/actuator/health").build(),
-                Collections.emptyList()))
+                emptyList()))
         .isEqualTo(SamplingResult.drop());
 
     // SERVER span to other path should be recorded and sampled
@@ -90,7 +89,7 @@ class RuleBasedRoutingSamplerComponentProviderTest {
                 "GET /actuator/health",
                 SpanKind.SERVER,
                 Attributes.builder().put("url.path", "/v1/users").build(),
-                Collections.emptyList()))
+                emptyList()))
         .isEqualTo(SamplingResult.recordAndSample());
   }
 

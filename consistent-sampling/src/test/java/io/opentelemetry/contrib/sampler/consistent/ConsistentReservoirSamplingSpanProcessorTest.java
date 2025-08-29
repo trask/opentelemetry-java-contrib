@@ -225,8 +225,7 @@ class ConsistentReservoirSamplingSpanProcessorTest {
         SdkTracerProvider.builder()
             .addSpanProcessor(
                 ConsistentReservoirSamplingSpanProcessor.create(
-                    SpanExporter.composite(
-                        Arrays.asList(waitingSpanExporter1, waitingSpanExporter2)),
+                    SpanExporter.composite(asList(waitingSpanExporter1, waitingSpanExporter2)),
                     RESERVOIR_SIZE,
                     EXPORT_PERIOD_100_MILLIS_AS_NANOS))
             .build();
@@ -273,7 +272,7 @@ class ConsistentReservoirSamplingSpanProcessorTest {
         SdkTracerProvider.builder()
             .addSpanProcessor(
                 ConsistentReservoirSamplingSpanProcessor.create(
-                    SpanExporter.composite(Arrays.asList(failingExporter, workingExporter)),
+                    SpanExporter.composite(asList(failingExporter, workingExporter)),
                     RESERVOIR_SIZE,
                     EXPORT_PERIOD_100_MILLIS_AS_NANOS))
             .build();

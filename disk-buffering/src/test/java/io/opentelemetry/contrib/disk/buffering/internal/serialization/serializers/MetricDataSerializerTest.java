@@ -45,7 +45,6 @@ import io.opentelemetry.sdk.metrics.internal.data.ImmutableSummaryData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableSummaryPointData;
 import io.opentelemetry.sdk.metrics.internal.data.ImmutableValueAtQuantile;
 import java.util.Arrays;
-import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
@@ -212,7 +211,7 @@ class MetricDataSerializerTest extends BaseSignalSerializerTest<MetricData> {
         ImmutableExponentialHistogramBuckets.create(1, 10, Arrays.asList(1L, 10L));
 
     ExponentialHistogramBuckets negativeBucket =
-        ImmutableExponentialHistogramBuckets.create(1, 0, Collections.emptyList());
+        ImmutableExponentialHistogramBuckets.create(1, 0, emptyList());
 
     DoubleExemplarData exemplar = makeDoubleExemplar(flags);
     ExponentialHistogramPointData pointData =

@@ -20,7 +20,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.context.propagation.TextMapGetter;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.context.propagation.TextMapSetter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -80,7 +79,7 @@ public final class AwsXrayPropagator implements TextMapPropagator {
   private static final String INVALID_LINEAGE = "-1:11111111:0";
   private static final int NUM_OF_LINEAGE_DELIMITERS = 2;
 
-  private static final List<String> FIELDS = Collections.singletonList(TRACE_HEADER_KEY);
+  private static final List<String> FIELDS = singletonList(TRACE_HEADER_KEY);
 
   private static final AwsXrayPropagator INSTANCE = new AwsXrayPropagator();
 

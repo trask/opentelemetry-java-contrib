@@ -24,7 +24,6 @@ import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,7 +66,7 @@ class MicrometerLongCounterTest {
     assertThat(id.getName()).isEqualTo("counter");
     assertThat(id.getTags())
         .isEqualTo(
-            Arrays.asList(
+            asList(
                 Tag.of(Constants.OTEL_INSTRUMENTATION_NAME, "meter"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_VERSION, "1.0")));
     assertThat(id.getDescription()).isEqualTo("description");
@@ -110,7 +109,7 @@ class MicrometerLongCounterTest {
     assertThat(id.getName()).isEqualTo("counter");
     assertThat(id.getTags())
         .isEqualTo(
-            Arrays.asList(
+            asList(
                 Tag.of("key", "value"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_NAME, "meter"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_VERSION, "1.0")));
@@ -154,7 +153,7 @@ class MicrometerLongCounterTest {
     assertThat(id.getName()).isEqualTo("counter");
     assertThat(id.getTags())
         .isEqualTo(
-            Arrays.asList(
+            asList(
                 Tag.of("key", "value"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_NAME, "meter"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_VERSION, "1.0")));
@@ -188,7 +187,7 @@ class MicrometerLongCounterTest {
 
     ((ExtendedLongCounterBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));
@@ -207,7 +206,7 @@ class MicrometerLongCounterTest {
     assertThat(id.getName()).isEqualTo("counter");
     assertThat(id.getTags())
         .isEqualTo(
-            Arrays.asList(
+            asList(
                 Tag.of("key", "value"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_NAME, "meter"),
                 Tag.of(Constants.OTEL_INSTRUMENTATION_VERSION, "1.0")));
@@ -343,7 +342,7 @@ class MicrometerLongCounterTest {
 
     ((ExtendedLongCounterBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));

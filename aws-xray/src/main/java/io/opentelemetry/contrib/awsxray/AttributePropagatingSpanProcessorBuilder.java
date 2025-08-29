@@ -9,7 +9,6 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.opentelemetry.api.common.AttributeKey;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class AttributePropagatingSpanProcessorBuilder {
 
   private AttributeKey<String> spanNamePropagationKey = AwsAttributeKeys.AWS_LOCAL_OPERATION;
   private List<AttributeKey<String>> attributesKeysToPropagate =
-      Arrays.asList(AwsAttributeKeys.AWS_REMOTE_SERVICE, AwsAttributeKeys.AWS_REMOTE_OPERATION);
+      asList(AwsAttributeKeys.AWS_REMOTE_SERVICE, AwsAttributeKeys.AWS_REMOTE_OPERATION);
 
   public static AttributePropagatingSpanProcessorBuilder create() {
     return new AttributePropagatingSpanProcessorBuilder();

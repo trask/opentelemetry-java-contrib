@@ -14,7 +14,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,6 +42,6 @@ class OrElseSamplerTest {
         "span",
         SpanKind.CLIENT,
         Attributes.empty(),
-        Collections.emptyList());
+        emptyList());
   }
 }

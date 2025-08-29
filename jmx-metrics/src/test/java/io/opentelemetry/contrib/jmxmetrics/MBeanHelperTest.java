@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import groovy.lang.Closure;
 import groovy.util.Eval;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -86,7 +85,7 @@ class MBeanHelperTest {
 
     registerThings(thingName);
     MBeanHelper mBeanHelper =
-        new MBeanHelper(jmxClient, Arrays.asList(thingName + ",thing=0", thingName + ",thing=1"));
+        new MBeanHelper(jmxClient, asList(thingName + ",thing=0", thingName + ",thing=1"));
     mBeanHelper.fetch();
     assertThat(mBeanHelper.getAttribute("SomeAttribute"))
         .hasSameElementsAs(

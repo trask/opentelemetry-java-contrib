@@ -6,7 +6,6 @@
 package io.opentelemetry.contrib.jmxmetrics.target_systems;
 
 import io.opentelemetry.contrib.jmxmetrics.AbstractIntegrationTest;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
@@ -23,7 +22,7 @@ class JvmTargetSystemIntegrationTest extends AbstractIntegrationTest {
   @Test
   void endToEnd() {
     List<String> gcLabels =
-        Arrays.asList(
+        asList(
             "Code Cache",
             "Par Eden Space",
             "CMS Old Gen",
@@ -38,14 +37,14 @@ class JvmTargetSystemIntegrationTest extends AbstractIntegrationTest {
                 "jvm.gc.collections.count",
                 "total number of collections that have occurred",
                 "{collection}",
-                Arrays.asList("ConcurrentMarkSweep", "ParNew")),
+                asList("ConcurrentMarkSweep", "ParNew")),
         metric ->
             assertTypedSum(
                 metric,
                 "jvm.gc.collections.elapsed",
                 "the approximate accumulated collection elapsed time in milliseconds",
                 "ms",
-                Arrays.asList("ConcurrentMarkSweep", "ParNew")),
+                asList("ConcurrentMarkSweep", "ParNew")),
         metric -> assertGauge(metric, "jvm.memory.heap.committed", "current heap usage", "By"),
         metric -> assertGauge(metric, "jvm.memory.heap.init", "current heap usage", "By"),
         metric -> assertGauge(metric, "jvm.memory.heap.max", "current heap usage", "By"),

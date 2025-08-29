@@ -18,7 +18,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalLong;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,7 @@ class ConsistentSamplerTest {
     private static final String name = "name";
     private static final SpanKind spanKind = SpanKind.SERVER;
     private static final Attributes attributes = Attributes.empty();
-    private static final List<LinkData> parentLinks = Collections.emptyList();
+    private static final List<LinkData> parentLinks = emptyList();
     private boolean parentSampled = true;
 
     private OptionalLong parentThreshold = OptionalLong.empty();

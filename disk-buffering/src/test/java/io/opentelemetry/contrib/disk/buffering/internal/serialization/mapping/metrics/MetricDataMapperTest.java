@@ -178,8 +178,7 @@ class MetricDataMapperTest {
   private static MetricData makeLongSum(TraceFlags flags) {
     LongPointData pointData = makeLongPointData(flags);
     SumData<LongPointData> sumData =
-        ImmutableSumData.create(
-            true, AggregationTemporality.DELTA, singletonList(pointData));
+        ImmutableSumData.create(true, AggregationTemporality.DELTA, singletonList(pointData));
     return ImmutableMetricData.createLongSum(
         TestData.RESOURCE_FULL,
         TestData.INSTRUMENTATION_SCOPE_INFO_FULL,
@@ -193,8 +192,7 @@ class MetricDataMapperTest {
   private static MetricData makeDoubleSum(TraceFlags flags) {
     DoublePointData doublePointData = makeDoublePointData(flags);
     SumData<DoublePointData> sumData =
-        ImmutableSumData.create(
-            true, AggregationTemporality.DELTA, singletonList(doublePointData));
+        ImmutableSumData.create(true, AggregationTemporality.DELTA, singletonList(doublePointData));
 
     return ImmutableMetricData.createDoubleSum(
         TestData.RESOURCE_FULL,
@@ -264,8 +262,7 @@ class MetricDataMapperTest {
             makeDoubleExemplars(flags));
 
     HistogramData data =
-        ImmutableHistogramData.create(
-            AggregationTemporality.CUMULATIVE, singletonList(dataPoint));
+        ImmutableHistogramData.create(AggregationTemporality.CUMULATIVE, singletonList(dataPoint));
 
     return ImmutableMetricData.createDoubleHistogram(
         TestData.RESOURCE_FULL,

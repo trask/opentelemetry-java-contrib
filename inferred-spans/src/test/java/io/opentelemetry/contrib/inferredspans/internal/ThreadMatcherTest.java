@@ -8,7 +8,6 @@ package io.opentelemetry.contrib.inferredspans.internal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +33,6 @@ class ThreadMatcherTest {
           }
         },
         threads);
-    assertThat(threads).isEqualTo(Arrays.asList(Thread.currentThread()));
+    assertThat(threads).isEqualTo(asList(Thread.currentThread()));
   }
 }

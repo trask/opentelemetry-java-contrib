@@ -33,7 +33,6 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
@@ -112,8 +111,8 @@ class SpanFromDiskExporterTest {
         .setTotalRecordedEvents(0)
         .setTotalRecordedLinks(0)
         .setTotalAttributeCount(attributes.size())
-        .setLinks(Collections.emptyList())
-        .setEvents(Collections.emptyList())
+        .setLinks(emptyList())
+        .setEvents(emptyList())
         .setResource(Resource.getDefault())
         .build();
   }
@@ -137,8 +136,8 @@ class SpanFromDiskExporterTest {
         .setTotalRecordedEvents(0)
         .setTotalRecordedLinks(0)
         .setTotalAttributeCount(attributes.size())
-        .setLinks(Collections.emptyList())
-        .setEvents(Collections.emptyList())
+        .setLinks(emptyList())
+        .setEvents(emptyList())
         .setResource(Resource.getDefault())
         .build();
   }

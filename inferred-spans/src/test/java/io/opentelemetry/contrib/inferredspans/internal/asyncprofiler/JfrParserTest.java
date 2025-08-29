@@ -13,7 +13,6 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
@@ -42,9 +41,8 @@ class JfrParserTest {
 
     jfrParser.parse(
         file,
-        Collections.emptyList(),
-        Collections.singletonList(
-            caseSensitiveMatcher("io.opentelemetry.contrib.inferredspans.*")));
+        emptyList(),
+        singletonList(caseSensitiveMatcher("io.opentelemetry.contrib.inferredspans.*")));
     AtomicInteger stackTraces = new AtomicInteger();
     ArrayList<StackFrame> stackFrames = new ArrayList<>();
     jfrParser.consumeStackTraces(

@@ -86,7 +86,7 @@ public class JmxClient {
   public List<ObjectName> query(final ObjectName objectName) {
     MBeanServerConnection mbsc = getConnection();
     if (mbsc == null) {
-      return Collections.emptyList();
+      return emptyList();
     }
 
     try {
@@ -95,7 +95,7 @@ public class JmxClient {
       return objectNames;
     } catch (IOException e) {
       logger.log(Level.WARNING, "Could not query remote JMX server: ", e);
-      return Collections.emptyList();
+      return emptyList();
     }
   }
 }

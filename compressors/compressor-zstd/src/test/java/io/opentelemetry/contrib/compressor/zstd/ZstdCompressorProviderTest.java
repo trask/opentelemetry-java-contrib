@@ -33,7 +33,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
@@ -98,7 +97,7 @@ class ZstdCompressorProviderTest {
             .build()) {
       assertThat(
               exporter
-                  .export(Collections.singletonList(generateFakeLogRecordData()))
+                  .export(singletonList(generateFakeLogRecordData()))
                   .join(10, TimeUnit.SECONDS)
                   .isSuccess())
           .isTrue();
@@ -123,7 +122,7 @@ class ZstdCompressorProviderTest {
                                           .isEqualTo("log body");
                                       assertThat(logRecord.getAttributesList())
                                           .isEqualTo(
-                                              Collections.singletonList(
+                                              singletonList(
                                                   KeyValue.newBuilder()
                                                       .setKey("key")
                                                       .setValue(

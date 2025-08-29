@@ -12,7 +12,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.platform.commons.support.HierarchyTraversalMode;
@@ -58,7 +57,7 @@ public class OtelReflectionUtils {
         return childProcessors;
       }
     } else {
-      return Collections.singletonList(active);
+      return singletonList(active);
     }
   }
 

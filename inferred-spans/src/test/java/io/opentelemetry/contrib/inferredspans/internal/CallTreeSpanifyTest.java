@@ -21,8 +21,6 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.semconv.CodeAttributes;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
@@ -104,7 +102,7 @@ class CallTreeSpanifyTest {
     ObjectPool<CallTree> childPool = ObjectPool.createRecyclable(2, CallTree::new);
 
     CallTree.Root root = CallTree.createRoot(rootPool, rootContext.serialize(), 0);
-    root.addStackTrace(Collections.singletonList(StackFrame.of("A", "a")), 0, childPool, 0);
+    root.addStackTrace(singletonList(StackFrame.of("A", "a")), 0, childPool, 0);
 
     String childSpanId = "a1b2c3d4e5f64242";
     TraceContext spanContext =
@@ -115,12 +113,12 @@ class CallTreeSpanifyTest {
 
     root.onActivation(spanContext.serialize(), TimeUnit.MILLISECONDS.toNanos(5));
     root.addStackTrace(
-        Arrays.asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
+        asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
         TimeUnit.MILLISECONDS.toNanos(10),
         childPool,
         0);
     root.addStackTrace(
-        Arrays.asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
+        asList(StackFrame.of("A", "b"), StackFrame.of("A", "a")),
         TimeUnit.MILLISECONDS.toNanos(20),
         childPool,
         0);
@@ -128,10 +126,7 @@ class CallTreeSpanifyTest {
         spanContext.serialize(), rootContext.serialize(), TimeUnit.MILLISECONDS.toNanos(25));
 
     root.addStackTrace(
-        Collections.singletonList(StackFrame.of("A", "a")),
-        TimeUnit.MILLISECONDS.toNanos(30),
-        childPool,
-        0);
+        singletonList(StackFrame.of("A", "a")), TimeUnit.MILLISECONDS.toNanos(30), childPool, 0);
     root.end(childPool, 0);
 
     assertThat(root.getCount()).isEqualTo(4);
@@ -194,12 +189,12 @@ class CallTreeSpanifyTest {
     ObjectPool<CallTree> childPool = ObjectPool.createRecyclable(2, CallTree::new);
 
     CallTree.Root root = CallTree.createRoot(rootPool, childSpanContext.serialize(), 0);
-    root.addStackTrace(Collections.singletonList(StackFrame.of("A", "a")), 10_000, childPool, 0);
+    root.addStackTrace(singletonList(StackFrame.of("A", "a")), 10_000, childPool, 0);
 
     root.onActivation(rootContext.serialize(), 20_000);
     root.onDeactivation(rootContext.serialize(), childSpanContext.serialize(), 30_000);
 
-    root.addStackTrace(Collections.singletonList(StackFrame.of("A", "a")), 40_000, childPool, 0);
+    root.addStackTrace(singletonList(StackFrame.of("A", "a")), 40_000, childPool, 0);
     root.end(childPool, 0);
 
     InMemorySpanExporter exporter = InMemorySpanExporter.create();
@@ -238,12 +233,12 @@ class CallTreeSpanifyTest {
     ObjectPool<CallTree> childPool = ObjectPool.createRecyclable(2, CallTree::new);
 
     CallTree.Root root = CallTree.createRoot(rootPool, rootContext.serialize(), 0);
-    root.addStackTrace(Collections.singletonList(StackFrame.of("A", "a")), 10_000, childPool, 0);
+    root.addStackTrace(singletonList(StackFrame.of("A", "a")), 10_000, childPool, 0);
 
     root.onActivation(rootContext.serialize(), 20_000);
     root.onDeactivation(rootContext.serialize(), rootContext.serialize(), 30_000);
 
-    root.addStackTrace(Collections.singletonList(StackFrame.of("A", "a")), 40_000, childPool, 0);
+    root.addStackTrace(singletonList(StackFrame.of("A", "a")), 40_000, childPool, 0);
     root.end(childPool, 0);
 
     InMemorySpanExporter exporter = InMemorySpanExporter.create();

@@ -5,7 +5,6 @@
 
 package io.opentelemetry.contrib.jmxmetrics;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
@@ -36,7 +35,7 @@ class JmxConfig {
   // These properties need to be copied into System Properties if provided via the property
   // file so that they are available to the JMX Connection builder
   static final List<String> JAVA_SYSTEM_PROPERTIES =
-      Arrays.asList(
+      asList(
           "javax.net.ssl.keyStore",
           "javax.net.ssl.keyStorePassword",
           "javax.net.ssl.keyStoreType",
@@ -45,7 +44,7 @@ class JmxConfig {
           "javax.net.ssl.trustStoreType");
 
   static final List<String> AVAILABLE_TARGET_SYSTEMS =
-      Arrays.asList(
+      asList(
           "activemq",
           "cassandra",
           "hbase",
@@ -93,8 +92,7 @@ class JmxConfig {
     groovyScript = properties.getProperty(GROOVY_SCRIPT);
     targetSystem = properties.getProperty(TARGET_SYSTEM, "").toLowerCase().trim();
 
-    List<String> targets =
-        Arrays.asList(isBlank(targetSystem) ? new String[0] : targetSystem.split(","));
+    List<String> targets = asList(isBlank(targetSystem) ? new String[0] : targetSystem.split(","));
     targetSystems = new LinkedHashSet<>(targets);
 
     int interval = getProperty(INTERVAL_MILLISECONDS, 10000);

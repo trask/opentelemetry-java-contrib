@@ -15,7 +15,6 @@ import io.opentelemetry.sdk.testing.time.TestClock;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import java.time.Duration;
-import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class RateLimitingSamplerTest {
@@ -35,7 +34,7 @@ class RateLimitingSamplerTest {
                     "span",
                     SpanKind.CLIENT,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.RECORD_AND_SAMPLE);
     // Balanced used up
@@ -47,7 +46,7 @@ class RateLimitingSamplerTest {
                     "span",
                     SpanKind.CLIENT,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.DROP);
 
@@ -61,7 +60,7 @@ class RateLimitingSamplerTest {
                     "span",
                     SpanKind.CLIENT,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.DROP);
     clock.advance(Duration.ofMillis(900));
@@ -74,7 +73,7 @@ class RateLimitingSamplerTest {
                     "span",
                     SpanKind.CLIENT,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.RECORD_AND_SAMPLE);
   }

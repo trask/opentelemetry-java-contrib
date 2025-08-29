@@ -26,7 +26,6 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ class FromDiskExporterImplTest {
   private SignalDeserializer<SpanData> deserializer;
   private Clock clock;
   private FromDiskExporterImpl<SpanData> exporter;
-  private final List<SpanData> deserializedData = Collections.emptyList();
+  private final List<SpanData> deserializedData = emptyList();
   @TempDir File rootDir;
   private static final String STORAGE_FOLDER_NAME = SignalTypes.spans.name();
 

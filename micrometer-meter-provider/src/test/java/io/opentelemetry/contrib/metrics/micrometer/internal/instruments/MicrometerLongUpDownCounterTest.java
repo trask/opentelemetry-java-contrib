@@ -23,7 +23,6 @@ import io.opentelemetry.contrib.metrics.micrometer.internal.Constants;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterProviderSharedState;
 import io.opentelemetry.contrib.metrics.micrometer.internal.state.MeterSharedState;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
@@ -184,7 +183,7 @@ class MicrometerLongUpDownCounterTest {
 
     ((ExtendedLongUpDownCounterBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));
@@ -334,7 +333,7 @@ class MicrometerLongUpDownCounterTest {
 
     ((ExtendedLongUpDownCounterBuilder) builder)
         .setAttributesAdvice(
-            Arrays.asList(
+            asList(
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_NAME),
                 AttributeKey.stringKey(Constants.OTEL_INSTRUMENTATION_VERSION),
                 AttributeKey.stringKey("key")));

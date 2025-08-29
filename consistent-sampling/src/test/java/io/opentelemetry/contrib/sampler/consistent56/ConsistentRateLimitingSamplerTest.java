@@ -20,7 +20,6 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.SplittableRandom;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +49,7 @@ class ConsistentRateLimitingSamplerTest {
     name = "name";
     spanKind = SpanKind.SERVER;
     attributes = Attributes.empty();
-    parentLinks = Collections.emptyList();
+    parentLinks = emptyList();
     random = new SplittableRandom(0L);
   }
 

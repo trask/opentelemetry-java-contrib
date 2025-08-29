@@ -20,7 +20,6 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ class LinksBasedSamplerTest {
                     SPAN_NAME,
                     SPAN_KIND,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.RECORD_AND_SAMPLE);
   }
@@ -72,7 +71,7 @@ class LinksBasedSamplerTest {
                     SPAN_NAME,
                     SPAN_KIND,
                     Attributes.empty(),
-                    Collections.emptyList())
+                    emptyList())
                 .getDecision())
         .isEqualTo(SamplingDecision.DROP);
   }

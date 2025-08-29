@@ -5,6 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,9 +20,7 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +47,7 @@ class ProtoSpansDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
+          .setEvents(singletonList(EVENT_DATA))
           .setLinks(Arrays.asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
@@ -67,7 +66,7 @@ class ProtoSpansDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
+          .setEvents(singletonList(EVENT_DATA))
           .setLinks(Arrays.asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
@@ -86,7 +85,7 @@ class ProtoSpansDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
+          .setEvents(singletonList(EVENT_DATA))
           .setLinks(Arrays.asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
@@ -105,7 +104,7 @@ class ProtoSpansDataMapperTest {
           .setEndEpochNanos(2L)
           .setKind(SpanKind.CLIENT)
           .setStatus(StatusData.error())
-          .setEvents(Collections.singletonList(EVENT_DATA))
+          .setEvents(singletonList(EVENT_DATA))
           .setLinks(Arrays.asList(LINK_DATA, LINK_DATA_WITH_TRACE_STATE))
           .setTotalAttributeCount(10)
           .setTotalRecordedEvents(2)
@@ -114,7 +113,7 @@ class ProtoSpansDataMapperTest {
 
   @Test
   void verifyConversionDataStructure() {
-    List<SpanData> signals = Collections.singletonList(SPAN_DATA);
+    List<SpanData> signals = singletonList(SPAN_DATA);
 
     ExportTraceServiceRequest proto = mapToProto(signals);
 
