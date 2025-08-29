@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.gcp.auth;
 
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.GCP_USER_PROJECT_ID_KEY;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.QUOTA_USER_PROJECT_HEADER;
+import static java.util.stream.Collectors.toList;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,7 +29,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -182,7 +182,7 @@ class GcpAuthExtensionEndToEndTest {
   }
 
   private static List<Headers> extractHeadersFromRequests(HttpRequest[] requests) {
-    return Arrays.stream(requests).map(HttpRequest::getHeaders).collect(Collectors.toList());
+    return Arrays.stream(requests).map(HttpRequest::getHeaders).collect(toList());
   }
 
   /**
@@ -199,7 +199,7 @@ class GcpAuthExtensionEndToEndTest {
         .map(Optional::get)
         .flatMap(
             exportTraceServiceRequest -> exportTraceServiceRequest.getResourceSpansList().stream())
-        .collect(Collectors.toList());
+        .collect(toList());
   }
 
   private static Optional<ExportTraceServiceRequest> getExportTraceServiceRequest(Body<?> body) {

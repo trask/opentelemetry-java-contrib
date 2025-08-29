@@ -16,6 +16,7 @@ import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.HOST_
 import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.HOST_TYPE;
 import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.OS_TYPE;
 import static io.opentelemetry.contrib.azure.resource.IncubatingAttributes.OS_VERSION;
+import static java.util.function.Function.identity;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -41,7 +42,7 @@ public class AzureVmResourceProvider extends CloudResourceProvider {
     final Function<String, String> transform;
 
     Entry(AttributeKey<String> key) {
-      this(key, Function.identity());
+      this(key, identity());
     }
 
     Entry(AttributeKey<String> key, Function<String, String> transform) {

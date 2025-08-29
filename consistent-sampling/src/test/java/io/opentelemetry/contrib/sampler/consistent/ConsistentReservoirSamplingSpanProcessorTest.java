@@ -51,7 +51,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.ArgumentMatcher;
-import org.mockito.ArgumentMatchers;
 
 class ConsistentReservoirSamplingSpanProcessorTest {
 
@@ -266,7 +265,7 @@ class ConsistentReservoirSamplingSpanProcessorTest {
     when(failingExporter.shutdown()).thenReturn(CompletableResultCode.ofSuccess());
     doThrow(new IllegalArgumentException("No export for you."))
         .when(failingExporter)
-        .export(ArgumentMatchers.anyList());
+        .export(anyList());
 
     WaitingSpanExporter workingExporter = new WaitingSpanExporter(1);
 

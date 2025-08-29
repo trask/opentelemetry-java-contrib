@@ -7,6 +7,7 @@ package io.opentelemetry.contrib.inferredspans.internal;
 
 import static io.opentelemetry.contrib.inferredspans.internal.semconv.Attributes.LINK_IS_CHILD;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
+import static java.util.function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import io.opentelemetry.api.trace.Span;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -875,7 +875,7 @@ class CallTreeTest {
           CallTree.DEFAULT_PARENT_OVERRIDE);
       Map<String, SpanData> spans =
           profilerSetup.getSpans().stream()
-              .collect(toMap(s -> s.getName().replaceAll(".*#", ""), Function.identity()));
+              .collect(toMap(s -> s.getName().replaceAll(".*#", ""), identity()));
       assertThat(profilerSetup.getSpans()).hasSize(expectedSpans.length + 1);
 
       for (int i = 0; i < expectedSpans.length; i++) {

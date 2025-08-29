@@ -5,12 +5,14 @@
 
 package io.opentelemetry.contrib.gcp.auth;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.GCP_USER_PROJECT_ID_KEY;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.QUOTA_USER_PROJECT_HEADER;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_ALL;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_METRICS;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.SIGNAL_TYPE_TRACES;
 import static java.util.Collections.singletonList;
+import static java.util.concurrent.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -73,7 +75,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -170,7 +171,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OpenTelemetrySdk sdk = buildOpenTelemetrySdkWithExporter(mockOtlpHttpSpanExporter);
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
 
       verify(mockOtlpHttpSpanExporter, times(1)).toBuilder();
@@ -188,9 +189,8 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
               spanData -> {
                 assertThat(spanData.getResource().getAttributes().asMap())
                     .containsEntry(
-                        AttributeKey.stringKey(GCP_USER_PROJECT_ID_KEY),
-                        DUMMY_GCP_RESOURCE_PROJECT_ID)
-                    .containsEntry(AttributeKey.stringKey("foo"), "bar");
+                        stringKey(GCP_USER_PROJECT_ID_KEY), DUMMY_GCP_RESOURCE_PROJECT_ID)
+                    .containsEntry(stringKey("foo"), "bar");
                 assertThat(spanData.getAttributes().asMap())
                     .containsKey(AttributeKey.longKey("work_loop"));
               });
@@ -223,7 +223,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OpenTelemetrySdk sdk = buildOpenTelemetrySdkWithExporter(mockOtlpGrpcSpanExporter);
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
 
       verify(mockOtlpGrpcSpanExporter, times(1)).toBuilder();
@@ -241,9 +241,8 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
               spanData -> {
                 assertThat(spanData.getResource().getAttributes().asMap())
                     .containsEntry(
-                        AttributeKey.stringKey(GCP_USER_PROJECT_ID_KEY),
-                        DUMMY_GCP_RESOURCE_PROJECT_ID)
-                    .containsEntry(AttributeKey.stringKey("foo"), "bar");
+                        stringKey(GCP_USER_PROJECT_ID_KEY), DUMMY_GCP_RESOURCE_PROJECT_ID)
+                    .containsEntry(stringKey("foo"), "bar");
                 assertThat(spanData.getAttributes().asMap())
                     .containsKey(AttributeKey.longKey("work_loop"));
               });
@@ -278,7 +277,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OpenTelemetrySdk sdk = buildOpenTelemetrySdkWithExporter(mockOtlpHttpMetricExporter);
       generateTestMetric(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
 
       verify(mockOtlpHttpMetricExporter, times(1)).toBuilder();
@@ -296,9 +295,8 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
               metricData -> {
                 assertThat(metricData.getResource().getAttributes().asMap())
                     .containsEntry(
-                        AttributeKey.stringKey(GCP_USER_PROJECT_ID_KEY),
-                        DUMMY_GCP_RESOURCE_PROJECT_ID)
-                    .containsEntry(AttributeKey.stringKey("foo"), "bar");
+                        stringKey(GCP_USER_PROJECT_ID_KEY), DUMMY_GCP_RESOURCE_PROJECT_ID)
+                    .containsEntry(stringKey("foo"), "bar");
                 assertThat(metricData.getLongSumData().getPoints())
                     .hasSizeGreaterThan(0)
                     .allSatisfy(
@@ -337,7 +335,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OpenTelemetrySdk sdk = buildOpenTelemetrySdkWithExporter(mockOtlpGrpcMetricExporter);
       generateTestMetric(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
 
       verify(mockOtlpGrpcMetricExporter, times(1)).toBuilder();
@@ -355,9 +353,8 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
               metricData -> {
                 assertThat(metricData.getResource().getAttributes().asMap())
                     .containsEntry(
-                        AttributeKey.stringKey(GCP_USER_PROJECT_ID_KEY),
-                        DUMMY_GCP_RESOURCE_PROJECT_ID)
-                    .containsEntry(AttributeKey.stringKey("foo"), "bar");
+                        stringKey(GCP_USER_PROJECT_ID_KEY), DUMMY_GCP_RESOURCE_PROJECT_ID)
+                    .containsEntry(stringKey("foo"), "bar");
                 assertThat(metricData.getLongSumData().getPoints())
                     .hasSizeGreaterThan(0)
                     .allSatisfy(
@@ -440,7 +437,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       OpenTelemetrySdk sdk = buildOpenTelemetrySdkWithExporter(mockOtlpGrpcSpanExporter);
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
       verify(spyOtlpGrpcSpanExporterBuilder, times(1))
           .setHeaders(traceHeaderSupplierCaptor.capture());
@@ -508,7 +505,7 @@ class GcpAuthAutoConfigurationCustomizerProviderTest {
       generateTestMetric(sdk);
       generateTestSpan(sdk);
       CompletableResultCode code = sdk.shutdown();
-      CompletableResultCode joinResult = code.join(10, TimeUnit.SECONDS);
+      CompletableResultCode joinResult = code.join(10, SECONDS);
       assertTrue(joinResult.isSuccess());
 
       // Check Traces modification conditions
