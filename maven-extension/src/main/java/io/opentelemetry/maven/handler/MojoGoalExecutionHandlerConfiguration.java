@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public class MojoGoalExecutionHandlerConfiguration {
+public final class MojoGoalExecutionHandlerConfiguration {
 
   public static Map<MavenGoal, MojoGoalExecutionHandler> loadMojoGoalExecutionHandler(
       ClassLoader classLoader) {

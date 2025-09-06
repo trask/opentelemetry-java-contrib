@@ -18,7 +18,7 @@ import org.eclipse.aether.transfer.TransferEvent;
  *
  * @see io.opentelemetry.api.common.Attributes
  */
-public class MavenOtelSemanticAttributes {
+public final class MavenOtelSemanticAttributes {
 
   /**
    * See {@code

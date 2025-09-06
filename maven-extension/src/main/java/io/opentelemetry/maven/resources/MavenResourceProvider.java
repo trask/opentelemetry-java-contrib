@@ -17,7 +17,7 @@ import org.apache.maven.Maven;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MavenResourceProvider implements ResourceProvider {
+public final class MavenResourceProvider implements ResourceProvider {
 
   private static final Logger logger = LoggerFactory.getLogger(MavenResourceProvider.class);
 

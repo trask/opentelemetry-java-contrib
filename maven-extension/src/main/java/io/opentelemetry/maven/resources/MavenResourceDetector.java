@@ -9,7 +9,7 @@ import io.opentelemetry.api.incubator.config.DeclarativeConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.ComponentProvider;
 import io.opentelemetry.sdk.resources.Resource;
 
-public class MavenResourceDetector implements ComponentProvider<Resource> {
+public final class MavenResourceDetector implements ComponentProvider<Resource> {
 
   @Override
   public Class<Resource> getType() {
