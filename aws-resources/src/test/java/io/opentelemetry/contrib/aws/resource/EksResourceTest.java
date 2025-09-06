@@ -34,7 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class EksResourceTest {
+public final class EksResourceTest {
 
   @Mock private DockerHelper mockDockerHelper;
 
