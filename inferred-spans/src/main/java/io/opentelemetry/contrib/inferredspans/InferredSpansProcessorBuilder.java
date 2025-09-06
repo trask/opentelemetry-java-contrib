@@ -19,7 +19,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("CanIgnoreReturnValueSuggester")
-public class InferredSpansProcessorBuilder {
+public final class InferredSpansProcessorBuilder {
   private boolean profilerLoggingEnabled = true;
   private boolean backupDiagnosticFiles = false;
   private int asyncProfilerSafeMode = 0;

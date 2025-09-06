@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class StackTraceAutoConfig implements AutoConfigurationCustomizerProvider {
+public final class StackTraceAutoConfig implements AutoConfigurationCustomizerProvider {
 
   private static final Logger log = Logger.getLogger(StackTraceAutoConfig.class.getName());
 

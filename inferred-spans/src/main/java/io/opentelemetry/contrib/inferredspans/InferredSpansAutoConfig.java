@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class InferredSpansAutoConfig implements AutoConfigurationCustomizerProvider {
+public final class InferredSpansAutoConfig implements AutoConfigurationCustomizerProvider {
 
   private static final Logger log = Logger.getLogger(InferredSpansAutoConfig.class.getName());
 
