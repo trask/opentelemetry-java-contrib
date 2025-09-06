@@ -10,7 +10,7 @@ import static io.opentelemetry.contrib.sampler.consistent56.ConsistentSamplingUt
 import static io.opentelemetry.contrib.sampler.consistent56.ConsistentSamplingUtil.checkThreshold;
 import static io.opentelemetry.contrib.sampler.consistent56.ConsistentSamplingUtil.getMaxThreshold;
 
-public class ConsistentVariableThresholdSampler extends ConsistentThresholdSampler {
+public final class ConsistentVariableThresholdSampler extends ConsistentThresholdSampler {
 
   private volatile long threshold;
   private volatile String description = "";
