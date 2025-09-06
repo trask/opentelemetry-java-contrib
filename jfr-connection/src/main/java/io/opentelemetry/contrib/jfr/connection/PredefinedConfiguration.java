@@ -17,7 +17,7 @@ import javax.management.ReflectionException;
  * option of the JVM option 'StartFlightRecording', for example {@code
  * -XX:StartFlightRecording:settings=default.jfc}.
  */
-public class PredefinedConfiguration implements RecordingConfiguration {
+public final class PredefinedConfiguration implements RecordingConfiguration {
   private final String configurationName;
 
   @Override

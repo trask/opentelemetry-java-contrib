@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
  * @see <a
  *     href="https://docs.oracle.com/en/java/javase/11/docs/api/jdk.jfr/jdk/jfr/Recording.html">jdk.jfr.Recording</a>
  */
-public class Recording implements AutoCloseable {
+public final class Recording implements AutoCloseable {
 
   /**
    * A {@code Recording} may be in one of these states. Note that a {@code Recording} is no longer

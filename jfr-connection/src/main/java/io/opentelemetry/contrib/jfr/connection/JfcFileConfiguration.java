@@ -18,7 +18,7 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 /** A {@code RecordingConfiguration} that is read from a jfc file. */
-public class JfcFileConfiguration implements RecordingConfiguration {
+public final class JfcFileConfiguration implements RecordingConfiguration {
 
   private final String configuration;
 
