@@ -6,7 +6,6 @@
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans.models.SpanDataImpl;
@@ -119,9 +118,9 @@ class ProtoSpansDataMapperTest {
     ExportTraceServiceRequest proto = mapToProto(signals);
 
     List<ResourceSpans> resourceSpans = proto.resource_spans;
-    assertEquals(1, resourceSpans.size());
-    assertEquals(1, resourceSpans.get(0).scope_spans.size());
-    assertEquals(1, resourceSpans.get(0).scope_spans.get(0).spans.size());
+    assertThat(resourceSpans.size()).isEqualTo(1);
+    assertThat(resourceSpans.get(0).isEqualTo(1).scope_spans.size());
+    assertThat(resourceSpans.get(0).isEqualTo(1).scope_spans.get(0).spans.size());
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -133,11 +132,11 @@ class ProtoSpansDataMapperTest {
     ExportTraceServiceRequest proto = mapToProto(signals);
 
     List<ResourceSpans> resourceSpans = proto.resource_spans;
-    assertEquals(1, resourceSpans.size());
+    assertThat(resourceSpans.size()).isEqualTo(1);
     List<ScopeSpans> scopeSpans = resourceSpans.get(0).scope_spans;
-    assertEquals(1, scopeSpans.size());
+    assertThat(scopeSpans.size()).isEqualTo(1);
     List<Span> spans = scopeSpans.get(0).spans;
-    assertEquals(2, spans.size());
+    assertThat(spans.size()).isEqualTo(2);
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -149,15 +148,15 @@ class ProtoSpansDataMapperTest {
     ExportTraceServiceRequest proto = mapToProto(signals);
 
     List<ResourceSpans> resourceSpans = proto.resource_spans;
-    assertEquals(1, resourceSpans.size());
+    assertThat(resourceSpans.size()).isEqualTo(1);
     List<ScopeSpans> scopeSpans = resourceSpans.get(0).scope_spans;
-    assertEquals(2, scopeSpans.size());
+    assertThat(scopeSpans.size()).isEqualTo(2);
     ScopeSpans firstScope = scopeSpans.get(0);
     ScopeSpans secondScope = scopeSpans.get(1);
     List<Span> firstScopeSpans = firstScope.spans;
     List<Span> secondScopeSpans = secondScope.spans;
-    assertEquals(1, firstScopeSpans.size());
-    assertEquals(1, secondScopeSpans.size());
+    assertThat(firstScopeSpans.size()).isEqualTo(1);
+    assertThat(secondScopeSpans.size()).isEqualTo(1);
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -169,19 +168,19 @@ class ProtoSpansDataMapperTest {
     ExportTraceServiceRequest proto = mapToProto(signals);
 
     List<ResourceSpans> resourceSpans = proto.resource_spans;
-    assertEquals(2, resourceSpans.size());
+    assertThat(resourceSpans.size()).isEqualTo(2);
     ResourceSpans firstResourceSpans = resourceSpans.get(0);
     ResourceSpans secondResourceSpans = resourceSpans.get(1);
     List<ScopeSpans> firstScopeSpans = firstResourceSpans.scope_spans;
     List<ScopeSpans> secondScopeSpans = secondResourceSpans.scope_spans;
-    assertEquals(1, firstScopeSpans.size());
-    assertEquals(1, secondScopeSpans.size());
+    assertThat(firstScopeSpans.size()).isEqualTo(1);
+    assertThat(secondScopeSpans.size()).isEqualTo(1);
     ScopeSpans firstScope = firstScopeSpans.get(0);
     ScopeSpans secondScope = secondScopeSpans.get(0);
     List<Span> firstSpans = firstScope.spans;
     List<Span> secondSpans = secondScope.spans;
-    assertEquals(1, firstSpans.size());
-    assertEquals(1, secondSpans.size());
+    assertThat(firstSpans.size()).isEqualTo(1);
+    assertThat(secondSpans.size()).isEqualTo(1);
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }

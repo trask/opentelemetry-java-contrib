@@ -7,9 +7,8 @@ package io.opentelemetry.contrib.gcp.auth;
 
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.GCP_USER_PROJECT_ID_KEY;
 import static io.opentelemetry.contrib.gcp.auth.GcpAuthAutoConfigurationCustomizerProvider.QUOTA_USER_PROJECT_HEADER;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.stop.Stop.stopQuietly;
@@ -160,9 +159,10 @@ class GcpAuthExtensionEndToEndTest {
   private static void verifyResourceAttributes(List<ResourceSpans> extractedResourceSpans) {
     extractedResourceSpans.forEach(
         resourceSpan ->
-            assertTrue(
+            assertThat(
                 resourceSpan
                     .getResource()
+                    .isTrue()
                     .getAttributesList()
                     .contains(
                         KeyValue.newBuilder()
@@ -172,12 +172,13 @@ class GcpAuthExtensionEndToEndTest {
   }
 
   private static void verifyRequestHeaders(List<Headers> extractedHeaders) {
-    assertFalse(extractedHeaders.isEmpty());
+    assertThat(extractedHeaders.isEmpty().isFalse());
     // verify if extension added the required headers
     extractedHeaders.forEach(
         headers -> {
-          assertTrue(headers.containsEntry(QUOTA_USER_PROJECT_HEADER, DUMMY_GCP_QUOTA_PROJECT));
-          assertTrue(headers.containsEntry("Authorization", "Bearer fake.access_token"));
+          assertThat(
+              headers.containsEntry(QUOTA_USER_PROJECT_HEADER, DUMMY_GCP_QUOTA_PROJECT).isTrue());
+          assertThat(headers.containsEntry("Authorization", "Bearer fake.access_token").isTrue());
         });
   }
 

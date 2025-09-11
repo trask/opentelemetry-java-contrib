@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans.models.SpanDataImpl;
@@ -74,20 +74,21 @@ class SpanDataMapperTest {
   void verifyMapping() {
     Span proto = mapToProto(SPAN_DATA);
 
-    assertEquals(
-        SPAN_DATA,
-        mapToSdk(proto, SPAN_DATA.getResource(), SPAN_DATA.getInstrumentationScopeInfo()));
+    assertThat(
+        mapToSdk(
+            proto,
+            SPAN_DATA.getResource().isEqualTo(SPAN_DATA),
+            SPAN_DATA.getInstrumentationScopeInfo()));
   }
 
   @Test
   void verifyMappingWithTraceState() {
     Span proto = mapToProto(SPAN_DATA_WITH_TRACE_STATE);
 
-    assertEquals(
-        SPAN_DATA_WITH_TRACE_STATE,
+    assertThat(
         mapToSdk(
             proto,
-            SPAN_DATA_WITH_TRACE_STATE.getResource(),
+            SPAN_DATA_WITH_TRACE_STATE.getResource().isEqualTo(SPAN_DATA_WITH_TRACE_STATE),
             SPAN_DATA_WITH_TRACE_STATE.getInstrumentationScopeInfo()));
   }
 
