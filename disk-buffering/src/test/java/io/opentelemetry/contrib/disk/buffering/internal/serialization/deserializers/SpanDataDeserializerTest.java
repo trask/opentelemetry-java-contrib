@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.spans.models.SpanDataImpl;
@@ -44,20 +44,16 @@ class SpanDataDeserializerTest extends BaseSignalSerializerTest<SpanData> {
 
   @Test
   void whenDecodingMalformedMessage_wrapIntoDeserializationException() {
-    assertThatThrownBy(
-        () ->
-            getDeserializer()
-                .isInstanceOf(DeserializationException.class)
-                .deserialize(TestData.makeMalformedSignalBinary()));
+    assertThrows(
+        DeserializationException.class,
+        () -> getDeserializer().deserialize(TestData.makeMalformedSignalBinary()));
   }
 
   @Test
   void whenDecodingTooShortMessage_wrapIntoDeserializationException() {
-    assertThatThrownBy(
-        () ->
-            getDeserializer()
-                .isInstanceOf(DeserializationException.class)
-                .deserialize(TestData.makeTooShortSignalBinary()));
+    assertThrows(
+        DeserializationException.class,
+        () -> getDeserializer().deserialize(TestData.makeTooShortSignalBinary()));
   }
 
   @Override

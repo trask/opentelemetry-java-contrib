@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.logs;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.common.Value;
 import io.opentelemetry.api.logs.Severity;
@@ -38,11 +38,9 @@ class LogRecordDataMapperTest {
   void verifyMapping() {
     LogRecord proto = mapToProto(LOG_RECORD);
 
-    assertThat(
-        mapToSdk(
-            proto,
-            LOG_RECORD.getResource().isEqualTo(LOG_RECORD),
-            LOG_RECORD.getInstrumentationScopeInfo()));
+    assertEquals(
+        LOG_RECORD,
+        mapToSdk(proto, LOG_RECORD.getResource(), LOG_RECORD.getInstrumentationScopeInfo()));
   }
 
   private static LogRecord mapToProto(LogRecordData data) {

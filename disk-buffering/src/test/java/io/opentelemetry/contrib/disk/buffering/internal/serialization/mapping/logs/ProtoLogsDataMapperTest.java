@@ -6,6 +6,7 @@
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.mapping.logs;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.common.Value;
 import io.opentelemetry.api.logs.Severity;
@@ -106,9 +107,9 @@ class ProtoLogsDataMapperTest {
     ExportLogsServiceRequest result = mapToProto(signals);
 
     List<ResourceLogs> resourceLogsList = result.resource_logs;
-    assertThat(resourceLogsList.size()).isEqualTo(1);
-    assertThat(resourceLogsList.get(0).isEqualTo(1).scope_logs.size());
-    assertThat(resourceLogsList.get(0).isEqualTo(1).scope_logs.get(0).log_records.size());
+    assertEquals(1, resourceLogsList.size());
+    assertEquals(1, resourceLogsList.get(0).scope_logs.size());
+    assertEquals(1, resourceLogsList.get(0).scope_logs.get(0).log_records.size());
 
     assertThat(mapFromProto(result)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -120,15 +121,15 @@ class ProtoLogsDataMapperTest {
     ExportLogsServiceRequest proto = mapToProto(signals);
 
     List<ResourceLogs> resourceLogsList = proto.resource_logs;
-    assertThat(resourceLogsList.size()).isEqualTo(1);
+    assertEquals(1, resourceLogsList.size());
     List<ScopeLogs> scopeLogsList = resourceLogsList.get(0).scope_logs;
-    assertThat(scopeLogsList.size()).isEqualTo(1);
+    assertEquals(1, scopeLogsList.size());
     List<LogRecord> logRecords = scopeLogsList.get(0).log_records;
-    assertThat(logRecords.size()).isEqualTo(2);
-    assertThat(logRecords.get(0).isEqualTo("Log body").body.string_value);
-    assertThat(logRecords.get(1).isEqualTo("Other log body").body.string_value);
+    assertEquals(2, logRecords.size());
+    assertEquals("Log body", logRecords.get(0).body.string_value);
+    assertEquals("Other log body", logRecords.get(1).body.string_value);
 
-    assertThat(mapFromProto(proto).isEqualTo(2).size());
+    assertEquals(2, mapFromProto(proto).size());
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -141,15 +142,15 @@ class ProtoLogsDataMapperTest {
     ExportLogsServiceRequest proto = mapToProto(signals);
 
     List<ResourceLogs> resourceLogsList = proto.resource_logs;
-    assertThat(resourceLogsList.size()).isEqualTo(1);
+    assertEquals(1, resourceLogsList.size());
     List<ScopeLogs> scopeLogsList = resourceLogsList.get(0).scope_logs;
-    assertThat(scopeLogsList.size()).isEqualTo(2);
+    assertEquals(2, scopeLogsList.size());
     ScopeLogs firstScope = scopeLogsList.get(0);
     ScopeLogs secondScope = scopeLogsList.get(1);
     List<LogRecord> firstScopeLogs = firstScope.log_records;
     List<LogRecord> secondScopeLogs = secondScope.log_records;
-    assertThat(firstScopeLogs.size()).isEqualTo(1);
-    assertThat(secondScopeLogs.size()).isEqualTo(1);
+    assertEquals(1, firstScopeLogs.size());
+    assertEquals(1, secondScopeLogs.size());
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -161,19 +162,19 @@ class ProtoLogsDataMapperTest {
     ExportLogsServiceRequest proto = mapToProto(signals);
 
     List<ResourceLogs> resourceLogsList = proto.resource_logs;
-    assertThat(resourceLogsList.size()).isEqualTo(2);
+    assertEquals(2, resourceLogsList.size());
     ResourceLogs firstResourceLogs = resourceLogsList.get(0);
     ResourceLogs secondResourceLogs = resourceLogsList.get(1);
     List<ScopeLogs> firstScopeLogsList = firstResourceLogs.scope_logs;
     List<ScopeLogs> secondScopeLogsList = secondResourceLogs.scope_logs;
-    assertThat(firstScopeLogsList.size()).isEqualTo(1);
-    assertThat(secondScopeLogsList.size()).isEqualTo(1);
+    assertEquals(1, firstScopeLogsList.size());
+    assertEquals(1, secondScopeLogsList.size());
     ScopeLogs firstScope = firstScopeLogsList.get(0);
     ScopeLogs secondScope = secondScopeLogsList.get(0);
     List<LogRecord> firstScopeLogs = firstScope.log_records;
     List<LogRecord> secondScopeLogs = secondScope.log_records;
-    assertThat(firstScopeLogs.size()).isEqualTo(1);
-    assertThat(secondScopeLogs.size()).isEqualTo(1);
+    assertEquals(1, firstScopeLogs.size());
+    assertEquals(1, secondScopeLogs.size());
 
     assertThat(mapFromProto(proto)).containsExactlyInAnyOrderElementsOf(signals);
   }
@@ -187,7 +188,7 @@ class ProtoLogsDataMapperTest {
     List<ResourceLogs> resourceLogsList = result.resource_logs;
     LogRecord firstLog = resourceLogsList.get(0).scope_logs.get(0).log_records.get(0);
 
-    assertThat(firstLog.event_name).isEqualTo("test.event.name");
+    assertEquals("test.event.name", firstLog.event_name);
     assertThat(mapFromProto(result)).containsExactlyInAnyOrderElementsOf(signals);
   }
 

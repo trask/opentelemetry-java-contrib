@@ -9,6 +9,7 @@ import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeCon
 import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeLongGauge;
 import static io.opentelemetry.contrib.disk.buffering.testutils.TestData.makeLongPointData;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.TraceFlags;
@@ -120,11 +121,9 @@ class MetricDataMapperTest {
 
     Metric proto = mapToProto(summaryMetric);
 
-    assertThat(
-        mapToSdk(
-            proto,
-            summaryMetric.getResource().isEqualTo(summaryMetric),
-            summaryMetric.getInstrumentationScopeInfo()));
+    assertEquals(
+        summaryMetric,
+        mapToSdk(proto, summaryMetric.getResource(), summaryMetric.getInstrumentationScopeInfo()));
   }
 
   @Test

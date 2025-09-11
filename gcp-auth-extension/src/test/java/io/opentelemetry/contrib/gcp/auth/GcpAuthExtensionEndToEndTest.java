@@ -159,26 +159,22 @@ class GcpAuthExtensionEndToEndTest {
   private static void verifyResourceAttributes(List<ResourceSpans> extractedResourceSpans) {
     extractedResourceSpans.forEach(
         resourceSpan ->
-            assertThat(
-                resourceSpan
-                    .getResource()
-                    .isTrue()
-                    .getAttributesList()
-                    .contains(
-                        KeyValue.newBuilder()
-                            .setKey(GCP_USER_PROJECT_ID_KEY)
-                            .setValue(AnyValue.newBuilder().setStringValue(DUMMY_GCP_PROJECT))
-                            .build())));
+            assertThat(resourceSpan.getResource().getAttributesList())
+                .contains(
+                    KeyValue.newBuilder()
+                        .setKey(GCP_USER_PROJECT_ID_KEY)
+                        .setValue(AnyValue.newBuilder().setStringValue(DUMMY_GCP_PROJECT))
+                        .build()));
   }
 
   private static void verifyRequestHeaders(List<Headers> extractedHeaders) {
-    assertThat(extractedHeaders.isEmpty().isFalse());
+    assertThat(extractedHeaders).isNotEmpty();
     // verify if extension added the required headers
     extractedHeaders.forEach(
         headers -> {
-          assertThat(
-              headers.containsEntry(QUOTA_USER_PROJECT_HEADER, DUMMY_GCP_QUOTA_PROJECT).isTrue());
-          assertThat(headers.containsEntry("Authorization", "Bearer fake.access_token").isTrue());
+          assertThat(headers.containsEntry(QUOTA_USER_PROJECT_HEADER, DUMMY_GCP_QUOTA_PROJECT))
+              .isTrue();
+          assertThat(headers.containsEntry("Authorization", "Bearer fake.access_token")).isTrue();
         });
   }
 

@@ -5,7 +5,6 @@
 
 package io.opentelemetry.contrib.disk.buffering;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;

@@ -5,7 +5,7 @@
 
 package io.opentelemetry.contrib.disk.buffering.internal.serialization.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.opentelemetry.api.common.Value;
 import io.opentelemetry.api.logs.Severity;
@@ -39,20 +39,16 @@ class LogRecordDataDeserializerTest extends BaseSignalSerializerTest<LogRecordDa
 
   @Test
   void whenDecodingMalformedMessage_wrapIntoDeserializationException() {
-    assertThatThrownBy(
-        () ->
-            getDeserializer()
-                .isInstanceOf(DeserializationException.class)
-                .deserialize(TestData.makeMalformedSignalBinary()));
+    assertThrows(
+        DeserializationException.class,
+        () -> getDeserializer().deserialize(TestData.makeMalformedSignalBinary()));
   }
 
   @Test
   void whenDecodingTooShortMessage_wrapIntoDeserializationException() {
-    assertThatThrownBy(
-        () ->
-            getDeserializer()
-                .isInstanceOf(DeserializationException.class)
-                .deserialize(TestData.makeTooShortSignalBinary()));
+    assertThrows(
+        DeserializationException.class,
+        () -> getDeserializer().deserialize(TestData.makeTooShortSignalBinary()));
   }
 
   @Override

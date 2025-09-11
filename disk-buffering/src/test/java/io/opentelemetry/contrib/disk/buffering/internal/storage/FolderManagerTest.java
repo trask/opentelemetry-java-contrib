@@ -9,9 +9,12 @@ import static io.opentelemetry.contrib.disk.buffering.internal.storage.TestData.
 import static io.opentelemetry.contrib.disk.buffering.internal.storage.TestData.MAX_FILE_SIZE;
 import static io.opentelemetry.contrib.disk.buffering.internal.storage.TestData.MIN_FILE_AGE_FOR_READ_MILLIS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +52,7 @@ class FolderManagerTest {
     when(clock.now()).thenReturn(MILLISECONDS.toNanos(1000L));
     WritableFile file = folderManager.createWritableFile();
 
-    assertThat(file.getFile().isEqualTo("1000").getName());
+    assertEquals("1000", file.getFile().getName());
   }
 
   @Test
@@ -66,12 +69,12 @@ class FolderManagerTest {
 
     WritableFile file = folderManager.createWritableFile();
 
-    assertThat(file.getFile()).isNotEqualTo(existingFile1);
-    assertThat(file.getFile()).isNotEqualTo(existingFile2);
-    assertThat(file.getFile()).isNotEqualTo(existingFile3);
-    assertThat(existingFile2.exists()).isTrue();
-    assertThat(existingFile3.exists()).isTrue();
-    assertThat(existingFile1.exists()).isFalse();
+    assertNotEquals(existingFile1, file.getFile());
+    assertNotEquals(existingFile2, file.getFile());
+    assertNotEquals(existingFile3, file.getFile());
+    assertTrue(existingFile2.exists());
+    assertTrue(existingFile3.exists());
+    assertFalse(existingFile1.exists());
   }
 
   @Test
@@ -88,8 +91,8 @@ class FolderManagerTest {
 
     ReadableFile readableFile = folderManager.getReadableFile();
 
-    assertThat(readableFile.getFile().isEqualTo(writableFile.getFile()));
-    assertThat(writableFile.isClosed()).isTrue();
+    assertEquals(writableFile.getFile(), readableFile.getFile());
+    assertTrue(writableFile.isClosed());
   }
 
   @Test
@@ -106,14 +109,14 @@ class FolderManagerTest {
     when(clock.now()).thenReturn(MILLISECONDS.toNanos(1000L + MIN_FILE_AGE_FOR_READ_MILLIS));
 
     ReadableFile readableFile = folderManager.getReadableFile();
-    assertThat(readableFile.getFile()).isEqualTo(existingFile1);
+    assertEquals(existingFile1, readableFile.getFile());
 
     folderManager.createWritableFile();
 
-    assertThat(existingFile2.exists()).isTrue();
-    assertThat(existingFile3.exists()).isTrue();
-    assertThat(existingFile1.exists()).isFalse();
-    assertThat(readableFile.isClosed()).isTrue();
+    assertTrue(existingFile2.exists());
+    assertTrue(existingFile3.exists());
+    assertFalse(existingFile1.exists());
+    assertTrue(readableFile.isClosed());
   }
 
   @Test
@@ -130,12 +133,12 @@ class FolderManagerTest {
 
     WritableFile file = folderManager.createWritableFile();
 
-    assertThat(file.getFile()).isNotEqualTo(existingFile1);
-    assertThat(file.getFile()).isNotEqualTo(existingFile2);
-    assertThat(file.getFile()).isNotEqualTo(existingFile3);
-    assertThat(existingFile2.exists()).isTrue();
-    assertThat(existingFile1.exists()).isTrue();
-    assertThat(existingFile3.exists()).isFalse();
+    assertNotEquals(existingFile1, file.getFile());
+    assertNotEquals(existingFile2, file.getFile());
+    assertNotEquals(existingFile3, file.getFile());
+    assertTrue(existingFile2.exists());
+    assertTrue(existingFile1.exists());
+    assertFalse(existingFile3.exists());
   }
 
   @Test
@@ -149,9 +152,9 @@ class FolderManagerTest {
 
     WritableFile file = folderManager.createWritableFile();
 
-    assertThat(expiredReadableFile.exists()).isFalse();
-    assertThat(expiredWritableFile.exists()).isTrue();
-    assertThat(file.getFile()).isNotEqualTo(expiredWritableFile);
+    assertFalse(expiredReadableFile.exists());
+    assertTrue(expiredWritableFile.exists());
+    assertNotEquals(expiredWritableFile, file.getFile());
   }
 
   @Test
@@ -164,17 +167,17 @@ class FolderManagerTest {
 
     when(clock.now()).thenReturn(MILLISECONDS.toNanos(900 + MIN_FILE_AGE_FOR_READ_MILLIS));
     ReadableFile readableFile = folderManager.getReadableFile();
-    assertThat(readableFile.getFile()).isEqualTo(expiredReadableFileBeingRead);
+    assertEquals(expiredReadableFileBeingRead, readableFile.getFile());
 
     when(clock.now()).thenReturn(MILLISECONDS.toNanos(11_500L));
 
     WritableFile file = folderManager.createWritableFile();
 
-    assertThat(expiredReadableFile.exists()).isFalse();
-    assertThat(expiredReadableFileBeingRead.exists()).isFalse();
-    assertThat(expiredWritableFile.exists()).isTrue();
-    assertThat(file.getFile()).isNotEqualTo(expiredWritableFile);
-    assertThat(readableFile.isClosed()).isTrue();
+    assertFalse(expiredReadableFile.exists());
+    assertFalse(expiredReadableFileBeingRead.exists());
+    assertTrue(expiredWritableFile.exists());
+    assertNotEquals(expiredWritableFile, file.getFile());
+    assertTrue(readableFile.isClosed());
   }
 
   @Test
@@ -189,7 +192,7 @@ class FolderManagerTest {
 
     ReadableFile file = folderManager.getReadableFile();
 
-    assertThat(file.getFile()).isEqualTo(readableFile);
+    assertEquals(readableFile, file.getFile());
   }
 
   @Test
@@ -206,12 +209,12 @@ class FolderManagerTest {
 
     ReadableFile file = folderManager.getReadableFile();
 
-    assertThat(file.getFile()).isEqualTo(readableFileOlder);
+    assertEquals(readableFileOlder, file.getFile());
   }
 
   @Test
   void provideNullFileForRead_whenNoFilesAreAvailable() throws IOException {
-    assertThat(folderManager.getReadableFile().isNull());
+    assertNull(folderManager.getReadableFile());
   }
 
   @Test
@@ -220,7 +223,7 @@ class FolderManagerTest {
     File writableFile = new File(rootDir, String.valueOf(currentTime));
     createFiles(writableFile);
 
-    assertThat(folderManager.getReadableFile().isNull());
+    assertNull(folderManager.getReadableFile());
   }
 
   @Test
@@ -231,7 +234,7 @@ class FolderManagerTest {
     createFiles(expiredReadableFile1, expiredReadableFile2);
     when(clock.now()).thenReturn(creationReferenceTime + MAX_FILE_AGE_FOR_READ_MILLIS);
 
-    assertThat(folderManager.getReadableFile().isNull());
+    assertNull(folderManager.getReadableFile());
   }
 
   private static void fillWithBytes(File file, int size) throws IOException {
