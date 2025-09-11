@@ -188,7 +188,7 @@ class ProtoLogsDataMapperTest {
     List<ResourceLogs> resourceLogsList = result.resource_logs;
     LogRecord firstLog = resourceLogsList.get(0).scope_logs.get(0).log_records.get(0);
 
-    assertEquals("test.event.name", firstLog.event_name);
+    assertThat(firstLog.event_name).isEqualTo("test.event.name");
     assertThat(mapFromProto(result)).containsExactlyInAnyOrderElementsOf(signals);
   }
 
