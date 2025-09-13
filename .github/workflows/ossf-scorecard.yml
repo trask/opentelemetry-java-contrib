@@ -23,18 +23,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
-        id: create-token
-        with:
-          # analyzing classic branch protections requires a token with admin read permissions
-          # see https://github.com/ossf/scorecard-action/blob/main/docs/authentication/fine-grained-auth-token.md
-          # and https://github.com/open-telemetry/community/issues/2769
-          app-id: ${{ vars.OSSF_SCORECARD_APP_ID }}
-          private-key: ${{ secrets.OSSF_SCORECARD_PRIVATE_KEY }}
-
       - uses: ossf/scorecard-action@05b42c624433fc40578a4040d5cf5e36ddca8cde # v2.4.2
         with:
-          repo_token:  ${{ steps.create-token.outputs.token }}
           results_file: results.sarif
           results_format: sarif
           publish_results: true
@@ -49,9 +39,38 @@ jobs:
           path: results.sarif
           retention-days: 5
 
+      - name: "Filter SARIF results"
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        env:
+          FILTER_RULES: BranchProtectionID, FuzzingID
+        with:
+          script: |
+            const fs = require('fs');
+
+            const rulesToFilter = process.env.FILTER_RULES.split(',').map(r => r.trim());
+            const sarif = JSON.parse(fs.readFileSync('results.sarif', 'utf8'));
+
+            sarif.runs.forEach(run => {
+              run.tool.driver.rules = run.tool.driver.rules.filter(rule =>
+                !rulesToFilter.includes(rule.id)
+              );
+              run.results = run.results.filter(result =>
+                !rulesToFilter.includes(result.ruleId)
+              );
+            });
+
+            fs.writeFileSync('filtered-results.sarif', JSON.stringify(sarif, null, 2));
+
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Filtered SARIF file
+          path: filtered-results.sarif
+          retention-days: 5
+
       # Upload the results to GitHub's code scanning dashboard (optional).
       # Commenting out will disable upload of results to your repo's Code Scanning dashboard
       - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@192325c86100d080feab897ff886c34abd4c83a3 # v3.30.3
         with:
-          sarif_file: results.sarif
+          sarif_file: filtered-results.sarif
