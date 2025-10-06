@@ -48,7 +48,7 @@ dependencies {
   integrationTestImplementation("com.ibm.mq:com.ibm.mq.jakarta.client:9.4.3.1")
   integrationTestImplementation("jakarta.jms:jakarta.jms-api:3.1.0")
   integrationTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.4")
-  integrationTestRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+  integrationTestRuntimeOnly("org.junit.platform:junit-platform-launcher:6.0.0")
   ibmClientJar("com.ibm.mq:com.ibm.mq.allclient:9.4.3.1") {
     artifact {
       name = "com.ibm.mq.allclient"
