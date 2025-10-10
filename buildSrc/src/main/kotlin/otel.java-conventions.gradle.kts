@@ -65,7 +65,7 @@ tasks {
   }
 
   withType<Test>().configureEach {
-    useJUnitPlatform()
+    useJUnitPlatform("5.13.4")
 
     val maxTestRetries = gradle.startParameter.projectProperties["maxTestRetries"]?.toInt() ?: 0
     develocity.testRetry {
@@ -147,14 +147,10 @@ dependencies {
 
 testing {
   suites.withType(JvmTestSuite::class).configureEach {
-    useJUnitJupiter()
+    useJUnitJupiter("5.13.4")
 
     dependencies {
       implementation(project(project.path))
-
-      // this is only needed to establish the version of JUnit we want to use
-      // since Renovate doesn't currently understand useJUnitJupiter("<version>")
-      implementation("org.junit.jupiter:junit-jupiter-api:5.14.0")
 
       implementation(enforcedPlatform("org.testcontainers:testcontainers-bom:1.21.3"))
       implementation(enforcedPlatform("com.google.guava:guava-bom:33.5.0-jre"))
