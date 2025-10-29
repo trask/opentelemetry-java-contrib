@@ -3,6 +3,7 @@ name: Assign Copilot as reviewer
 on:
   pull_request_target:
     types:
+      - opened
       - ready_for_review
 
 permissions:
@@ -11,6 +12,7 @@ permissions:
 jobs:
   assign-copilot:
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
     steps:
       - name: Assign Copilot as reviewer
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
