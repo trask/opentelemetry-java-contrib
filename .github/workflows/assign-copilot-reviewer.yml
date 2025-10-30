@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   assign-copilot:
@@ -19,9 +20,74 @@ jobs:
         with:
           github-token: ${{ secrets.COPILOT_ASSIGNING_PAT }}
           script: |
-            await github.rest.pulls.requestReviewers({
+            // First, get Copilot's Bot ID from the repository
+            const suggestedActorsQuery = `
+              query($owner: String!, $repo: String!) {
+                repository(owner: $owner, name: $repo) {
+                  suggestedActors(capabilities: [CAN_BE_ASSIGNED], first: 100) {
+                    nodes {
+                      login
+                      __typename
+                      ... on Bot {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            
+            const actorsResult = await github.graphql(suggestedActorsQuery, {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            const copilotBot = actorsResult.repository.suggestedActors.nodes.find(
+              node => node.login === 'copilot-swe-agent'
+            );
+            
+            if (!copilotBot) {
+              core.setFailed('Copilot coding agent is not enabled for this repository');
+              return;
+            }
+            
+            core.info(`Found Copilot bot with ID: ${copilotBot.id}`);
+            
+            // Get the PR's global ID
+            const prQuery = `
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $number) {
+                    id
+                  }
+                }
+              }
+            `;
+            
+            const prResult = await github.graphql(prQuery, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              reviewers: ['copilot-swe-agent']
+              number: context.payload.pull_request.number
             });
+            
+            const prId = prResult.repository.pullRequest.id;
+            core.info(`PR global ID: ${prId}`);
+            
+            // Request review from Copilot using GraphQL mutation
+            const requestReviewMutation = `
+              mutation($pullRequestId: ID!, $userIds: [ID!]!) {
+                requestReviews(input: {pullRequestId: $pullRequestId, userIds: $userIds}) {
+                  pullRequest {
+                    id
+                    number
+                  }
+                }
+              }
+            `;
+            
+            await github.graphql(requestReviewMutation, {
+              pullRequestId: prId,
+              userIds: [copilotBot.id]
+            });
+            
+            core.info('Successfully requested review from Copilot');
