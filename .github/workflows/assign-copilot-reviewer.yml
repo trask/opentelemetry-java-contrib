@@ -43,11 +43,11 @@ jobs:
             });
             
             const copilotBot = actorsResult.repository.suggestedActors.nodes.find(
-              node => node.login === 'copilot-swe-agent'
+              node => node.login === 'copilot-pull-request-reviewer'
             );
             
             if (!copilotBot) {
-              core.setFailed('Copilot coding agent is not enabled for this repository');
+              core.setFailed('Copilot pull request reviewer is not enabled for this repository');
               return;
             }
             
