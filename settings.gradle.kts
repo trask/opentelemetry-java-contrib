@@ -25,10 +25,6 @@ dependencyResolutionManagement {
         includeGroupByRegex("""org\.terracotta.*""")
       }
     }
-    // for otel snapshots
-    maven {
-      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
-    }
   }
 }
 
