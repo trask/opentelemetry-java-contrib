@@ -79,6 +79,7 @@ tasks {
 
         // Requires adding compile dependency to JSpecify
         disable("AddNullMarkedToPackageInfo")
+        disable("RequireExplicitNullMarking")
 
         if (name.contains("Jmh") || name.contains("Test")) {
           // Allow underscore in test-type method names
