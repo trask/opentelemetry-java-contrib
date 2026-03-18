@@ -36,7 +36,10 @@ jobs:
         if: steps.audit.outcome == 'failure'
         run: |
           echo "=== OSS Index Vulnerability Report ==="
-          cat oss-index-cyclonedx-bom.json
+          for f in $(find . -name "oss-index-cyclonedx-bom.json" -type f); do
+            echo "--- $f ---"
+            cat "$f"
+          done
           exit 1
 
   workflow-notification:
