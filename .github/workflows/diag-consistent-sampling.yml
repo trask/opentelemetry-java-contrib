@@ -8,6 +8,9 @@ name: Diag - Consistent Sampling Slow
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - diag/consistent-sampling-slow
 
 permissions:
   contents: read
