@@ -37,6 +37,8 @@ tasks {
           "settings=profile,dumponexit=true,maxsize=250m",
         "-Xlog:gc*:file=build/diag/gc.log",
       )
+      // Optional heap-pressure experiment: -PdiagMaxHeap=256m
+      (project.findProperty("diagMaxHeap") as String?)?.let { maxHeapSize = it }
     }
   }
 }

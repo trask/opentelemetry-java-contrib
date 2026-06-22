@@ -17,29 +17,35 @@ permissions:
 
 jobs:
   diag:
-    name: ${{ matrix.os }} ${{ matrix.distribution }}-${{ matrix.test-java-version }}
+    name: ${{ matrix.os }} ${{ matrix.distribution }}-${{ matrix.test-java-version }} ${{ matrix.label }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
         include:
-          # CI's exact failing config (build-common uses zulu)
+          # reproduce the build scan's standalone `:consistent-sampling:test` (all classes)
           - os: windows-latest
             distribution: zulu
             test-java-version: 26
-          # vendor hypothesis: temurin 26 runs fast locally on Windows
-          - os: windows-latest
-            distribution: temurin
-            test-java-version: 26
-          # version baseline: zulu 25 runs fast
-          - os: windows-latest
-            distribution: zulu
-            test-java-version: 25
-          # OS dimension: zulu 26 on linux
+            label: full
+            tests: ""
+            extra: ""
           - os: ubuntu-latest
             distribution: zulu
             test-java-version: 26
+            label: full
+            tests: ""
+            extra: ""
+          # heap-pressure hypothesis: constrain heap and run only the two slow classes
+          - os: windows-latest
+            distribution: zulu
+            test-java-version: 26
+            label: lowheap
+            tests: >-
+              --tests "*.consistent.ConsistentProbabilityBasedSamplerTest"
+              --tests "*.consistent.ConsistentRateLimitingSamplerTest"
+            extra: "-PdiagMaxHeap=256m"
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -62,14 +68,13 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
 
-      - name: Run slow consistent-sampling tests with profiling
+      - name: Run consistent-sampling tests with profiling
         run: >
-          ./gradlew :consistent-sampling:test -PdiagProfiling
+          ./gradlew :consistent-sampling:test -PdiagProfiling ${{ matrix.extra }}
           "-PtestJavaVersion=${{ matrix.test-java-version }}"
           "-Porg.gradle.java.installations.paths=${{ steps.setup-java-test.outputs.path }}"
           "-Porg.gradle.java.installations.auto-download=false"
-          --tests "*.consistent.ConsistentProbabilityBasedSamplerTest"
-          --tests "*.consistent.ConsistentRateLimitingSamplerTest"
+          ${{ matrix.tests }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -77,7 +82,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: diag-${{ matrix.os }}-${{ matrix.distribution }}${{ matrix.test-java-version }}
+          name: diag-${{ matrix.os }}-${{ matrix.distribution }}${{ matrix.test-java-version }}-${{ matrix.label }}
           path: |
             consistent-sampling/build/diag/**
             consistent-sampling/build/reports/tests/**
