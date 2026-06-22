@@ -1,0 +1,82 @@
+# TEMPORARY diagnostic workflow to reproduce and profile the slow
+# consistent-sampling tests on Windows / Java 26. Remove before merging upstream.
+#
+# Triggers only via workflow_dispatch. Runs ONLY the two slow legacy tests with
+# JFR profiling enabled (-PdiagProfiling) across a small matrix to triangulate
+# whether the slowdown is Windows-specific, Java-26-specific, or the combination.
+name: Diag - Consistent Sampling Slow
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diag:
+    name: ${{ matrix.os }} ${{ matrix.distribution }}-${{ matrix.test-java-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # CI's exact failing config (build-common uses zulu)
+          - os: windows-latest
+            distribution: zulu
+            test-java-version: 26
+          # vendor hypothesis: temurin 26 runs fast locally on Windows
+          - os: windows-latest
+            distribution: temurin
+            test-java-version: 26
+          # version baseline: zulu 25 runs fast
+          - os: windows-latest
+            distribution: zulu
+            test-java-version: 25
+          # OS dimension: zulu 26 on linux
+          - os: ubuntu-latest
+            distribution: zulu
+            test-java-version: 26
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - id: setup-java-test
+        name: Set up Java ${{ matrix.test-java-version }} for tests
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.test-java-version }}
+
+      - id: setup-java
+        name: Set up Java for build
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+
+      - name: Run slow consistent-sampling tests with profiling
+        run: >
+          ./gradlew :consistent-sampling:test -PdiagProfiling
+          "-PtestJavaVersion=${{ matrix.test-java-version }}"
+          "-Porg.gradle.java.installations.paths=${{ steps.setup-java-test.outputs.path }}"
+          "-Porg.gradle.java.installations.auto-download=false"
+          --tests "*.consistent.ConsistentProbabilityBasedSamplerTest"
+          --tests "*.consistent.ConsistentRateLimitingSamplerTest"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload diagnostics
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: diag-${{ matrix.os }}-${{ matrix.distribution }}${{ matrix.test-java-version }}
+          path: |
+            consistent-sampling/build/diag/**
+            consistent-sampling/build/reports/tests/**
+            consistent-sampling/build/test-results/**
+          if-no-files-found: warn

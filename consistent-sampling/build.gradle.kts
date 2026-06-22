@@ -17,9 +17,26 @@ tasks {
   withType<Test>().configureEach {
     develocity.testRetry {
       // TODO (trask) fix flaky tests and remove this workaround
-      if (System.getenv().containsKey("CI")) {
+      // -PdiagProfiling disables retries to get clean single-run timing
+      if (System.getenv().containsKey("CI") && !project.hasProperty("diagProfiling")) {
         maxRetries.set(5)
       }
+    }
+
+    // TEMPORARY diagnostic instrumentation for slow Windows/Java 26 tests.
+    // Enable with -PdiagProfiling. Remove before merging.
+    // Uses relative paths (working dir = project dir) to stay Windows-safe
+    // (absolute Windows paths contain a ':' which breaks -Xlog parsing).
+    if (project.hasProperty("diagProfiling")) {
+      val diagDir = layout.buildDirectory.dir("diag").get().asFile
+      doFirst {
+        diagDir.mkdirs()
+      }
+      jvmArgs(
+        "-XX:StartFlightRecording=filename=build/diag/consistent-sampling.jfr," +
+          "settings=profile,dumponexit=true,maxsize=250m",
+        "-Xlog:gc*:file=build/diag/gc.log",
+      )
     }
   }
 }
